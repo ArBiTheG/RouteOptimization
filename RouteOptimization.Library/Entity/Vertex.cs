@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Library.Entity
 {
-    public class Graph
+    public class Vertex
     {
-        public List<Vertex> Vertices { get; }
-        public Graph()
+        public object Id { get; }
+        public List<Edge> Edges { get; }
+
+        public Vertex(object id)
         {
-            Vertices = new List<Vertex>();
+            Id = id;
+            Edges = new List<Edge>();
         }
     }
 }

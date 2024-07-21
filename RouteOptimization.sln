@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RouteOptimization.Android",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RouteOptimization.Desktop", "RouteOptimization.Desktop\RouteOptimization.Desktop.csproj", "{60FC4CA3-A204-496A-A92E-5005ED6DE270}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteOptimization.Library", "RouteOptimization.Library\RouteOptimization.Library.csproj", "{125AA810-4A41-4EB8-BBC2-52C646B55917}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RouteOptimization.Library", "RouteOptimization.Library\RouteOptimization.Library.csproj", "{125AA810-4A41-4EB8-BBC2-52C646B55917}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteOptimization.Console", "RouteOptimization.Console\RouteOptimization.Console.csproj", "{9BD995AF-9F21-4C47-BE99-1BBE5C63E951}"
+	ProjectSection(ProjectDependencies) = postProject
+		{125AA810-4A41-4EB8-BBC2-52C646B55917} = {125AA810-4A41-4EB8-BBC2-52C646B55917}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +40,10 @@ Global
 		{125AA810-4A41-4EB8-BBC2-52C646B55917}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{125AA810-4A41-4EB8-BBC2-52C646B55917}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{125AA810-4A41-4EB8-BBC2-52C646B55917}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BD995AF-9F21-4C47-BE99-1BBE5C63E951}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BD995AF-9F21-4C47-BE99-1BBE5C63E951}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BD995AF-9F21-4C47-BE99-1BBE5C63E951}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BD995AF-9F21-4C47-BE99-1BBE5C63E951}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
