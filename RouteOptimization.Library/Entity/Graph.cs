@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RouteOptimization.Library.Entity
+﻿namespace RouteOptimization.Library.Entity
 {
     public class Graph
     {
         public List<Vertex> Vertices { get; }
-        public Graph()
+        public Graph(List<Vertex> vertices)
         {
-            Vertices = new List<Vertex>();
+            Vertices = vertices;
+        }
+
+        public Vertex? GetVertex(int id)
+        {
+            return Vertices.FirstOrDefault(x => x.Id == id);
         }
     }
 }

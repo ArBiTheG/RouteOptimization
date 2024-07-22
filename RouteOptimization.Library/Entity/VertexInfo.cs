@@ -20,7 +20,7 @@ namespace RouteOptimization.Library.Entity
         public int CompareTo(object? obj)
         {
             if (obj == null) return 1;
-            VertexInfo otherVertexInfo = obj as VertexInfo;
+            VertexInfo? otherVertexInfo = obj as VertexInfo;
             if (otherVertexInfo != null)
                 return Weight.CompareTo(otherVertexInfo.Weight);
             else

@@ -8,15 +8,13 @@ namespace RouteOptimization.Library.Entity
 {
     public class Edge
     {
-        public Vertex From { get; }
         public Vertex To { get; }
         public double Weight { get; }
 
-        public Edge(Vertex from, Vertex to, int weight)
+        public Edge(Vertex to, double weight)
         {
-            From = from;
             To = to;
-            Weight = weight;
+            Weight = Math.Abs(weight);
         }
     }
 }

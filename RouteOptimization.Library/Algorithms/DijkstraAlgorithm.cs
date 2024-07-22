@@ -1,23 +1,30 @@
 ﻿using RouteOptimization.Library.Entity;
+using RouteOptimization.Library.Exceptions;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RouteOptimization.Library
+namespace RouteOptimization.Library.Algorithms
 {
-    public class DijkstraAlgorithm
+    public class DijkstraAlgorithm: IAlgorithm
     {
-        private static List<VertexInfo> Run(Graph graph, Vertex source)
-        {
-            List<VertexInfo> vertexInfoList = new List<VertexInfo>();
+        Graph _graph;
 
-            foreach (var vertex in graph.Vertices)
+        public DijkstraAlgorithm(Graph graph) 
+        {
+            _graph = graph;
+        }
+
+        private List<VertexInfo> Optimize(Vertex vertexBegin)
+        {
+            var vertexInfoList = new List<VertexInfo>();
+
+            foreach (var vertex in _graph.Vertices)
             {
                 var vertexInfo = new VertexInfo(vertex);
-                if (vertexInfo.Vertex == source)
+                if (vertexInfo.Vertex == vertexBegin)
                     vertexInfo.Weight = 0;
                 vertexInfoList.Add(vertexInfo);
             }
@@ -47,29 +54,39 @@ namespace RouteOptimization.Library
             return vertexInfoList;
         }
 
-        public static Route BuildRoute(Graph graph, Vertex vertexBegin, Vertex vertexEnd)
+        private double GetTotalWeight(List<VertexInfo> vertexInfoList, Vertex vertexEnd)
         {
-            List<VertexInfo> vertexInfoList = Run(graph, vertexBegin);
-
             VertexInfo info = vertexInfoList.First(i => i.Vertex == vertexEnd);
-            double weight = info.Weight;
+            return info.Weight;
+        }
 
+        private Stack<Vertex> GetRoute(List<VertexInfo> vertexInfoList, Vertex vertexBegin, Vertex vertexEnd)
+        {
             Stack<Vertex> routeResult = new Stack<Vertex>();
             routeResult.Push(vertexEnd);
 
             Vertex? vertexCursor = vertexEnd;
             while (vertexCursor != vertexBegin)
             {
-                info = vertexInfoList.First(i => i.Vertex == vertexCursor);
+                VertexInfo info = vertexInfoList.First(i => i.Vertex == vertexCursor);
                 vertexCursor = info.PreviousVertex;
 
                 if (vertexCursor == null)
-                    throw new Exception("Нет пути в точку");
+                    throw new RouteException("It is impossible to build a non-existent route");
 
                 routeResult.Push(vertexCursor);
             }
+            return routeResult;
+        }
 
-            return new Route(routeResult, weight);
+
+        public Route BuildTo(Vertex vertexBegin, Vertex vertexEnd)
+        {
+            var list = Optimize(vertexBegin);
+
+            return new Route(
+                GetRoute(list, vertexBegin, vertexEnd),
+                GetTotalWeight(list, vertexEnd));
         }
     }
 }
