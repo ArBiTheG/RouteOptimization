@@ -12,14 +12,14 @@ namespace RouteOptimization.Library.Algorithms
     {
         Graph _graph;
 
-        public DijkstraAlgorithm(Graph graph) 
+        public DijkstraAlgorithm(Graph graph)
         {
             _graph = graph;
         }
 
-        private List<VertexInfo> Optimize(Vertex vertexBegin)
+        private IEnumerable<VertexInfo> Optimize(Vertex vertexBegin)
         {
-            var vertexInfoList = new List<VertexInfo>();
+            var vertexInfoList = new HashSet<VertexInfo>();
 
             foreach (var vertex in _graph.Vertices)
             {
@@ -29,11 +29,11 @@ namespace RouteOptimization.Library.Algorithms
                 vertexInfoList.Add(vertexInfo);
             }
 
-            var notVisitedVertexInfoList = new HashSet<VertexInfo>(vertexInfoList);
+            var notVisitedVertexInfoList = vertexInfoList.OrderBy(v => v.Weight).ToHashSet();
 
             while (notVisitedVertexInfoList.Any())
             {
-                VertexInfo nearestVertexInfo = notVisitedVertexInfoList.OrderBy(v => v.Weight).First();
+                VertexInfo nearestVertexInfo = notVisitedVertexInfoList.First();
                 notVisitedVertexInfoList.Remove(nearestVertexInfo);
 
                 foreach (var edge in nearestVertexInfo.Vertex.Edges)
@@ -54,13 +54,13 @@ namespace RouteOptimization.Library.Algorithms
             return vertexInfoList;
         }
 
-        private double GetTotalWeight(List<VertexInfo> vertexInfoList, Vertex vertexEnd)
+        private double GetTotalWeight(IEnumerable<VertexInfo> vertexInfoList, Vertex vertexEnd)
         {
             VertexInfo info = vertexInfoList.First(i => i.Vertex == vertexEnd);
             return info.Weight;
         }
 
-        private Stack<Vertex> GetRoute(List<VertexInfo> vertexInfoList, Vertex vertexBegin, Vertex vertexEnd)
+        private IEnumerable<Vertex> GetRoute(IEnumerable<VertexInfo> vertexInfoList, Vertex vertexBegin, Vertex vertexEnd)
         {
             Stack<Vertex> routeResult = new Stack<Vertex>();
             routeResult.Push(vertexEnd);

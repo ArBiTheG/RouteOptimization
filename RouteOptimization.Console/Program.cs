@@ -6,7 +6,8 @@ using System.Diagnostics;
 Stopwatch stopwatch1 = new Stopwatch();
 stopwatch1.Start();
 
-Graph graph = GraphBuilder.Create()
+#region DEBUG
+Graph graph_debug = GraphBuilder.Create()
     .AddEdge(1,   2, 4)
     .AddEdge(2,   3, 4)
     .AddEdge(3,   4, 4)
@@ -1031,7 +1032,16 @@ Graph graph = GraphBuilder.Create()
     .AddEdge(1022,      1023, 4)
     .AddEdge(1023,      1024, 4)
     .AddEdge(1024,      1025, 4)
-    .AddEdge(1, 1023, 3000)
+    .Build();
+#endregion
+
+Graph graph = GraphBuilder.Create()
+    .AddEdge(1, 'B', 1)
+    .AddEdge('B', 'C', 2)
+    .AddEdge('C', 'D', 4)
+    .AddEdge('D', 'E', 1)
+    .AddEdge('C', 'A', 2)
+    .AddEdge('D', 1025, 6)
     .Build();
 
 stopwatch1.Stop();
@@ -1041,7 +1051,7 @@ Console.WriteLine("Граф был построен за: " + stopwatch1.Elapsed
 Stopwatch stopwatch2 = new Stopwatch();
 stopwatch2.Start();
 
-Route route = RouteBuilder.Create(graph)
+Route route = RouteBuilder.Create(graph_debug)
     .SetBegin(1)
     .SetEnd(1025)
     .Build();

@@ -9,11 +9,11 @@ namespace RouteOptimization.Library.Builder
 {
     public class GraphBuilder : IGraphBuilder
     {
-        List<Vertex> _vertices;
+        HashSet<Vertex> _vertices;
 
         private GraphBuilder()
         {
-            _vertices = new List<Vertex>();
+            _vertices = new HashSet<Vertex>();
         }
 
         private Vertex ReadVertex(int id)

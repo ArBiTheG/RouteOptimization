@@ -8,9 +8,9 @@ namespace RouteOptimization.Library.Entity
 {
     public class Route
     {
-        public Stack<Vertex> Vertices { get; }
+        public IEnumerable<Vertex> Vertices { get; }
         public double Weight { get; }
-        public Route(Stack<Vertex> vertices, double weight) 
+        public Route(IEnumerable<Vertex> vertices, double weight) 
         { 
             Vertices = vertices;
             Weight = weight;

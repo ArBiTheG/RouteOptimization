@@ -2,8 +2,8 @@
 {
     public class Graph
     {
-        public List<Vertex> Vertices { get; }
-        public Graph(List<Vertex> vertices)
+        public HashSet<Vertex> Vertices { get; }
+        public Graph(HashSet<Vertex> vertices)
         {
             Vertices = vertices;
         }

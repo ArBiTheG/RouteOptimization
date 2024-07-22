@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace RouteOptimization.Library.Entity
 {
-    public class VertexInfo: IComparable
+    public class VertexInfo: IComparable<VertexInfo>
     {
         public Vertex Vertex { get; }
         public double Weight { get; set; }
@@ -17,14 +18,10 @@ namespace RouteOptimization.Library.Entity
             Weight = double.PositiveInfinity;
         }
 
-        public int CompareTo(object? obj)
+        public int CompareTo(VertexInfo? vertex)
         {
-            if (obj == null) return 1;
-            VertexInfo? otherVertexInfo = obj as VertexInfo;
-            if (otherVertexInfo != null)
-                return Weight.CompareTo(otherVertexInfo.Weight);
-            else
-                throw new ArgumentException("Object is not a VertexInfo");
+            if (vertex is null) throw new ArgumentException("Некорректное значение параметра");
+            return (int)(this.Weight - vertex.Weight);
         }
     }
 }
