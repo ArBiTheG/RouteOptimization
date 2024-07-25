@@ -12,5 +12,30 @@
     <vm:MainViewModel />
   </Design.DataContext>
 
-  <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+  <SplitView IsPaneOpen="{Binding IsPaneOpen}"
+             OpenPaneLength="300"
+             CompactPaneLength="48"
+             DisplayMode="CompactInline">
+    <SplitView.Pane>
+      <StackPanel>
+        <Button HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Command="{Binding PaneOpenCloseCommand}">
+          -
+        </Button>
+        <ListBox ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedListItem}">
+          <ListBox.ItemTemplate>
+            <DataTemplate DataType="{x:Type vm:ListItemTemplate}">
+              <StackPanel>
+                <TextBlock Text="{Binding Title}"/>
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </StackPanel>
+    </SplitView.Pane>
+    <SplitView.Content>
+      <Border CornerRadius="12 0 0 0">
+        <TransitioningContentControl Content="{Binding CurrentPage}"/>
+      </Border>
+    </SplitView.Content>
+  </SplitView>
 </UserControl>
