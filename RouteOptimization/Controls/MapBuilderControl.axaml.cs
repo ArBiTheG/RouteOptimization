@@ -4,8 +4,10 @@ using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Styling;
 using DynamicData;
+using RouteOptimization.Utils;
 using SkiaSharp;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -22,6 +24,7 @@ namespace RouteOptimization.Controls
         private IBrush _brushVertexSelected;
 
         private IPen _penEdge;
+        private IPen _penEdgeSelected;
 
         // ”правление сценой
         private bool _pointerHold = false;
@@ -34,6 +37,7 @@ namespace RouteOptimization.Controls
         ScenePoint _sceneOffsetPosition;
 
         public ObservableCollection<Vertex> Vertices { get; set; }
+        public EdgeObservableCollection Edges { get; set; }
 
         public MapBuilderControl()
         {
@@ -42,6 +46,8 @@ namespace RouteOptimization.Controls
             _brushVertexSelected = new SolidColorBrush(Color.FromArgb(255, 200, 200, 255));
 
             _penEdge = new Pen(new SolidColorBrush(Color.FromArgb(255, 50,0,150)));
+            _penEdgeSelected = new Pen(new SolidColorBrush(Color.FromArgb(255, 100, 0, 255)));
+
 
             Vertices =
             [
@@ -50,9 +56,10 @@ namespace RouteOptimization.Controls
                 new Vertex(200,500),
             ];
 
-            Vertices[0].Edges.Add(new Edge(Vertices[1]));
-            Vertices[1].Edges.Add(new Edge(Vertices[2]));
-            Vertices[0].Edges.Add(new Edge(Vertices[2]));
+            Edges = new EdgeObservableCollection();
+            Edges.Add(Vertices[0], Vertices[1]);
+            Edges.Add(Vertices[1], Vertices[2]);
+            Edges.Add(Vertices[0], Vertices[2]);
 
             InitializeComponent();
 
@@ -67,8 +74,13 @@ namespace RouteOptimization.Controls
 
             foreach (Vertex vertex in Vertices.Reverse())
             {
-                PressVertex(vertex, pointerPosition.X, pointerPosition.Y, e.KeyModifiers);
+                OnClickVertex(vertex, pointerPosition.X, pointerPosition.Y, e.KeyModifiers);
             }
+            foreach (Edge edge in Edges.Reverse())
+            {
+                OnClickEdge(edge, pointerPosition.X, pointerPosition.Y, e.KeyModifiers);
+            }
+
 
             InvalidateVisual();
         }
@@ -90,9 +102,9 @@ namespace RouteOptimization.Controls
             Point pointerPosition = e.GetPosition(this);
             foreach (Vertex vertex in Vertices)
             {
-                MoveSelectedVertex(vertex, pointerPosition.X, pointerPosition.Y, e.KeyModifiers);
+                OnMoveVertex(vertex, pointerPosition.X, pointerPosition.Y, e.KeyModifiers);
             }
-            MoveScene(pointerPosition.X, pointerPosition.Y, e.KeyModifiers);
+            OnMoveScene(pointerPosition.X, pointerPosition.Y, e.KeyModifiers);
 
             InvalidateVisual();
         }
@@ -130,28 +142,57 @@ namespace RouteOptimization.Controls
                     Brushes.White);
 
             context.DrawText(ft, new Point(0, 0));
-            foreach (Vertex v in Vertices)
+
+            foreach (Edge edge in Edges)
             {
-                foreach (Edge e in v.Edges)
-                {
-                    context.DrawLine(_penEdge, GetSceneDrawPosition(v.X, v.Y), GetSceneDrawPosition(e.Vertex.X, e.Vertex.Y));
-                }
-                if (v.Selected)
-                {
-                    context.DrawEllipse(_brushVertexSelected, null, GetSceneDrawPosition(v.X, v.Y), v.Size * _zoom, v.Size * _zoom);
-                }
-                else
-                {
-                    context.DrawEllipse(_brushVertex, null, GetSceneDrawPosition(v.X, v.Y), v.Size * _zoom, v.Size * _zoom);
-                }
+                DrawEdge(context, edge);
+            }
+
+            foreach (Vertex vertex in Vertices)
+            {
+                DrawVertex(context, vertex);
+            }
+        }
+
+        private Point GetDrawPosition(double x, double y)
+        {
+            var renderSize = Bounds.Size;
+            return new Point(
+                x * _zoom - (_scenePosition.X + _sceneOffsetPosition.X) * _zoom + (renderSize.Width / 2),
+                y * _zoom - (_scenePosition.Y + _sceneOffsetPosition.Y) * _zoom + (renderSize.Height / 2));
+        }
+
+        private void DrawEdge(DrawingContext context, Edge edge)
+        {
+            if (edge.Selected)
+            {
+                context.DrawLine(_penEdgeSelected, GetDrawPosition(edge.VertexFrom.X, edge.VertexFrom.Y), GetDrawPosition(edge.VertexTo.X, edge.VertexTo.Y));
+            }
+            else
+            {
+                context.DrawLine(_penEdge, GetDrawPosition(edge.VertexFrom.X, edge.VertexFrom.Y), GetDrawPosition(edge.VertexTo.X, edge.VertexTo.Y));
+            }
+        }
+        private void DrawVertex(DrawingContext context, Vertex vertex)
+        {
+            if (vertex.Selected)
+            {
+                context.DrawEllipse(_brushVertexSelected, null, GetDrawPosition(vertex.X, vertex.Y), vertex.Size * _zoom, vertex.Size * _zoom);
+            }
+            else
+            {
+                context.DrawEllipse(_brushVertex, null, GetDrawPosition(vertex.X, vertex.Y), vertex.Size * _zoom, vertex.Size * _zoom);
             }
         }
 
 
-        private void PressVertex(Vertex vertex, double x, double y, KeyModifiers keyModifiers)
+        protected void OnClickVertex(Vertex vertex, double x, double y, KeyModifiers keyModifiers)
         {
-            if (PointerInsideVertex(vertex, x, y) &&
-                    _oneVertexSelected == false)
+            var renderSize = Bounds.Size;
+            double cursorX = (x - renderSize.Width / 2) / _zoom + _scenePosition.X;
+            double cursorY = (y - renderSize.Height / 2) / _zoom + _scenePosition.Y;
+
+            if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size) && _oneVertexSelected == false)
             {
                 _oneVertexSelected = true;
                 vertex.Selected = true;
@@ -163,7 +204,25 @@ namespace RouteOptimization.Controls
                     vertex.Selected = false;
             }
         }
-        private void MoveSelectedVertex(Vertex vertex, double x, double y, KeyModifiers keyModifiers)
+
+        protected void OnClickEdge(Edge edge, double x, double y, KeyModifiers keyModifiers)
+        {
+            var renderSize = Bounds.Size;
+            double cursorX = (x - renderSize.Width / 2) / _zoom + _scenePosition.X;
+            double cursorY = (y - renderSize.Height / 2) / _zoom + _scenePosition.Y;
+
+            if (RouteMath.CursorInLine(edge.VertexFrom.X, edge.VertexFrom.Y, edge.VertexTo.X, edge.VertexTo.Y, cursorX, cursorY, 4) && _oneVertexSelected == false)
+            {
+                _oneVertexSelected = true;
+                edge.Selected = true;
+            }
+            else
+            {
+                edge.Selected = false;
+            }
+        }
+
+        protected void OnMoveVertex(Vertex vertex, double x, double y, KeyModifiers keyModifiers)
         {
             if (vertex.Selected && keyModifiers == KeyModifiers.Shift && _pointerHold)
             {
@@ -171,31 +230,13 @@ namespace RouteOptimization.Controls
                 vertex.Y = vertex.OldY + (y - _lastPositionPointerPressed.Y) / _zoom;
             }
         }
-        private void MoveScene(double x, double y, KeyModifiers keyModifiers)
+        protected void OnMoveScene(double x, double y, KeyModifiers keyModifiers)
         {
             if (keyModifiers == KeyModifiers.Alt && _pointerHold)
             {
                 _sceneOffsetPosition.X = (_lastPositionPointerPressed.X - x) / _zoom;
                 _sceneOffsetPosition.Y = (_lastPositionPointerPressed.Y - y) / _zoom;
             }
-        }
-
-        private Point GetSceneDrawPosition(double x, double y)
-        {
-            var renderSize = Bounds.Size;
-            return new Point(
-                x * _zoom - (_scenePosition.X + _sceneOffsetPosition.X) * _zoom + (renderSize.Width / 2),
-                y * _zoom - (_scenePosition.Y + _sceneOffsetPosition.Y) * _zoom + (renderSize.Height / 2));
-        }
-
-        private bool PointerInsideVertex(Vertex vertex, double x, double y)
-        {
-            var renderSize = Bounds.Size;
-            double generalX = Math.Abs((x - renderSize.Width / 2) / _zoom + _scenePosition.X  - vertex.X);
-            double generalY = Math.Abs((y - renderSize.Height / 2) / _zoom + _scenePosition.Y  - vertex.Y);
-
-            double dist = Math.Sqrt(Math.Pow(generalX, 2) + Math.Pow(generalY, 2));
-            return vertex.Size > dist;
         }
     }
 
@@ -205,20 +246,16 @@ namespace RouteOptimization.Controls
         public double Y;
     }
 
-
     public class Vertex
     {
         public Vertex(double x, double y)
         {
-            Edges = new ObservableCollection<Edge>();
 
             X = x;
             Y = y;
             OldX = x;
             OldY = y;
         }
-
-        public ObservableCollection<Edge> Edges;
 
         public bool Selected;
 
@@ -231,10 +268,60 @@ namespace RouteOptimization.Controls
 
     public class Edge
     {
-        public Vertex Vertex { get; set; }
-        public Edge(Vertex vertex)
+        public Vertex VertexFrom { get; set; }
+        public Vertex VertexTo { get; set; }
+        public bool Selected;
+        public Edge(Vertex vertexTo, Vertex vertexFrom)
         {
-            Vertex = vertex;
+            VertexTo = vertexTo;
+            VertexFrom = vertexFrom;
+        }
+    }
+
+    public class EdgeObservableCollection: IEnumerable<Edge>
+    {
+        public ObservableCollection<Edge> Edges { get; set; }
+        public EdgeObservableCollection()
+        {
+            Edges = new ObservableCollection<Edge>();
+        }
+
+        public void Add(Vertex vertexTo, Vertex vertexFrom)
+        {
+            Edges.Add(new Edge(vertexTo, vertexFrom));
+        }
+        public void Remove(Vertex vertexTo, Vertex vertexFrom)
+        {
+            Edges.Remove(Get(vertexTo, vertexFrom));
+        }
+        public void Clear()
+        {
+            Edges.Clear();
+        }
+        public bool Contains(Vertex vertex)
+        {
+            return Edges.All(e => e.VertexTo == vertex) || 
+                Edges.All(e => e.VertexFrom == vertex);
+        }
+        public bool Contains(Vertex vertexTo, Vertex vertexFrom)
+        {
+            return Edges.All(e => e.VertexTo == vertexTo && e.VertexFrom == vertexFrom) ||
+                Edges.All(e => e.VertexTo == vertexFrom && e.VertexFrom == vertexTo);
+        }
+        public Edge Get(Vertex vertexTo, Vertex vertexFrom)
+        {
+            return Edges.FirstOrDefault(v => v.VertexTo == vertexTo && v.VertexFrom == vertexFrom) ?? 
+                Edges.First(v => v.VertexTo == vertexFrom && v.VertexFrom == vertexTo);
+        }
+
+        public IEnumerator<Edge> GetEnumerator()
+        {
+            return Edges.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Edges.GetEnumerator();
         }
     }
 }
