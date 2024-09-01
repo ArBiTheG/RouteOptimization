@@ -11,5 +11,5 @@
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
     <vm:HandleDataPageViewModel />
   </Design.DataContext>
-  <local:MapBuilderControl VerticesSource="{Binding Vertices}" EdgesSource="{Binding Edges}"/>
-</UserControl>
+  
+  </UserControl>

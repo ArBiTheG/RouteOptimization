@@ -18,8 +18,8 @@ namespace RouteOptimization.Controls.MapBuilder
         }
         public bool Selected;
         public readonly double Size = 10;
-        public double X;
-        public double Y;
+        public double X { get; set; }
+        public double Y { get; set; }
         public double LastX;
         public double LastY;
     }

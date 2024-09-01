@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,22 +7,30 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Controls.MapBuilder
 {
-    public class SceneEntity
+    public class Scene: ReactiveObject, IScene
     {
+        private double _x;
+        private double _y;
         private double _zoom;
 
-        public double X { get; set; }
-        public double Y { get; set; }
+        public double X { 
+            get => _x; 
+            set => this.RaiseAndSetIfChanged(ref _x, value); 
+        }
+        public double Y { 
+            get => _y;
+            set => this.RaiseAndSetIfChanged(ref _y, value);
+        }
         public double Zoom
         {
             get => _zoom;
-            set => _zoom = ValidateZoomValue(value);
+            set => this.RaiseAndSetIfChanged(ref _zoom, ValidateZoomValue(value));
         }
-        public SceneEntity(double x, double y, double zoom = 1)
+        public Scene(double x, double y, double zoom = 1)
         {
             X = x;
             Y = y;
-            Zoom = ValidateZoomValue(zoom);
+            Zoom = zoom;
         }
 
 

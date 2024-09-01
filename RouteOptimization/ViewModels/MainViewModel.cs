@@ -31,6 +31,7 @@ public class MainViewModel : ViewModelBase
     {
         new ListItemTemplate(typeof(HomePageViewModel), "Главная"),
         new ListItemTemplate(typeof(HandleDataPageViewModel), "Данные"),
+        new ListItemTemplate(typeof(MapBuilderPageViewModel), "Конструктор карты"),
     };
 
     public ListItemTemplate? SelectedListItem
