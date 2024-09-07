@@ -31,31 +31,25 @@ namespace RouteOptimization.Controls
 
         private IPen _penGridScene;
 
-        private double _sceneOffsetX;
-        private double _sceneOffsetY;
-
-        private bool _vertexOneSelected;
-
-        private bool _pointerHold;
         private double _pointerLastPressX;
         private double _pointerLastPressY;
 
-        private IScene _scene = new Scene(0, 0);
+        private Scene _scene = new Scene(0, 0);
         private IEnumerable<Vertex> _vertices = new List<Vertex>();
         private IEnumerable<Edge> _edges = new List<Edge>();
 
         #region SceneSource property
-        public IScene SceneSource
+        public Scene SceneSource
         {
             get { return _scene; }
             set { SetAndRaise(SceneSourceProperty, ref _scene, value); }
         }
-        public static readonly DirectProperty<MapBuilderControl, IScene> SceneSourceProperty = AvaloniaProperty.RegisterDirect<MapBuilderControl, IScene>("SceneSource", o => o._scene, (o, v) => o._scene = v);
+        public static readonly DirectProperty<MapBuilderControl, Scene> SceneSourceProperty = AvaloniaProperty.RegisterDirect<MapBuilderControl, Scene>("SceneSource", o => o._scene, (o, v) => o._scene = v);
         private static void OnSceneSourcePropertyChanged(MapBuilderControl sender, AvaloniaPropertyChangedEventArgs e)
         {
-            sender.OnScenePropertyChanged((IScene?)e.OldValue, (IScene?)e.NewValue);
+            sender.OnScenePropertyChanged((Scene?)e.OldValue, (Scene?)e.NewValue);
         }
-        private void OnScenePropertyChanged(IScene? oldValue, IScene? newValue)
+        private void OnScenePropertyChanged(Scene? oldValue, Scene? newValue)
         {
             var oldValueINotifyCollectionChanged = oldValue as INotifyCollectionChanged;
             if (oldValueINotifyCollectionChanged != null)
@@ -199,49 +193,96 @@ namespace RouteOptimization.Controls
         }
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
-            Point pointerPosition = e.GetPosition(this);
-
-            _vertexOneSelected = false;
+            var pointerPosition = e.GetPosition(this);
             _pointerLastPressX = pointerPosition.X;
             _pointerLastPressY = pointerPosition.Y;
-            _pointerHold = true;
 
-            foreach (Vertex vertex in _vertices.Reverse())
+            if (e.Pointer.Type == PointerType.Mouse)
             {
-                OnVertexClicked(vertex, pointerPosition.X, pointerPosition.Y, e.KeyModifiers);
-            }
-            foreach (Edge edge in _edges.Reverse())
-            {
-                OnEdgeClicked(edge, pointerPosition.X, pointerPosition.Y, e.KeyModifiers);
-            }
+                var properties = e.GetCurrentPoint(this).Properties;
+                if (properties.IsMiddleButtonPressed)
+                {
+                    _scene.PerformPress();
+                }
+                else if (properties.IsLeftButtonPressed)
+                {
+                    bool oneSelected = false;
 
+                    foreach (Vertex vertex in _vertices.Reverse())
+                    {
+                        var renderSize = Bounds.Size;
+                        double cursorX = (pointerPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
+                        double cursorY = (pointerPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
 
+                        if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size) && oneSelected == false)
+                        {
+                            oneSelected = true;
+                            vertex.PerformPress();
+                        }
+                        else
+                        {
+                            vertex.PerformRelease();
+                        }
+                    }
+                    foreach (Edge edge in _edges.Reverse())
+                    {
+                        var renderSize = Bounds.Size;
+                        double cursorX = (pointerPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
+                        double cursorY = (pointerPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
+
+                        if (RouteMath.CursorInLine(edge.VertexFrom.X, edge.VertexFrom.Y, edge.VertexTo.X, edge.VertexTo.Y, cursorX, cursorY, 4) && oneSelected == false)
+                        {
+                            oneSelected = true;
+                            edge.PerformPress();
+                        }
+                        else
+                        {
+                            edge.PerformRelease();
+                        }
+                    }
+                }
+            }
             InvalidateVisual();
         }
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
-            _scene.X += _sceneOffsetX;
-            _scene.Y += _sceneOffsetY;
-
-            _pointerHold = false;
-
-            _sceneOffsetX = 0;
-            _sceneOffsetY = 0;
-
-            foreach (Vertex vertex in _vertices)
+            var pointerPosition = e.GetPosition(this);
+            if (e.Pointer.Type == PointerType.Mouse)
             {
-                vertex.LastX = 0;
-                vertex.LastY = 0;
+                var properties = e.GetCurrentPoint(this).Properties;
+                if (!properties.IsMiddleButtonPressed)
+                {
+                    _scene.PerformRelease();
+                }
             }
         }
         protected override void OnPointerMoved(PointerEventArgs e)
         {
-            Point pointerPosition = e.GetPosition(this);
-            foreach (Vertex vertex in _vertices)
+            var pointerPosition = e.GetPosition(this);
+            if (e.Pointer.Type == PointerType.Mouse)
             {
-                OnVertexMoved(vertex, pointerPosition.X, pointerPosition.Y, e.KeyModifiers);
+                var properties = e.GetCurrentPoint(this).Properties;
+                if (properties.IsMiddleButtonPressed)
+                {
+                    _scene.PerformMove(
+                                (_pointerLastPressX - pointerPosition.X) / _scene.Zoom,
+                                (_pointerLastPressY - pointerPosition.Y) / _scene.Zoom
+                                );
+                }
+                else if (properties.IsLeftButtonPressed)
+                {
+                    foreach (Vertex vertex in _vertices)
+                    {
+                        if (vertex.Selected)
+                        {
+                            vertex.PerformMove(
+                                (pointerPosition.X - _pointerLastPressX) / _scene.Zoom,
+                                (pointerPosition.Y - _pointerLastPressY) / _scene.Zoom
+                                );
+                        }
+                    }
+                }
             }
-            OnSceneMoved(pointerPosition.X, pointerPosition.Y, e.KeyModifiers);
 
             InvalidateVisual();
         }
@@ -261,68 +302,13 @@ namespace RouteOptimization.Controls
         }
         #endregion
 
-        #region Virtual control methods
-        protected virtual void OnVertexClicked(Vertex vertex, double x, double y, KeyModifiers keyModifiers)
-        {
-            vertex.LastX = vertex.X;
-            vertex.LastY = vertex.Y;
-
-            var renderSize = Bounds.Size;
-            double cursorX = (x - renderSize.Width / 2) / _scene.Zoom + _scene.X;
-            double cursorY = (y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
-
-            if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size) && _vertexOneSelected == false)
-            {
-                _vertexOneSelected = true;
-                vertex.Selected = true;
-            }
-            else
-            {
-                if (keyModifiers != KeyModifiers.Shift &&
-                    keyModifiers != KeyModifiers.Control)
-                    vertex.Selected = false;
-            }
-        }
-        protected virtual void OnEdgeClicked(Edge edge, double x, double y, KeyModifiers keyModifiers)
-        {
-            var renderSize = Bounds.Size;
-            double cursorX = (x - renderSize.Width / 2) / _scene.Zoom + _scene.X;
-            double cursorY = (y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
-
-            if (RouteMath.CursorInLine(edge.VertexFrom.X, edge.VertexFrom.Y, edge.VertexTo.X, edge.VertexTo.Y, cursorX, cursorY, 4) && _vertexOneSelected == false)
-            {
-                _vertexOneSelected = true;
-                edge.Selected = true;
-            }
-            else
-            {
-                edge.Selected = false;
-            }
-        }
-        protected virtual void OnVertexMoved(Vertex vertex, double x, double y, KeyModifiers keyModifiers)
-        {
-            if (vertex.Selected && keyModifiers == KeyModifiers.Shift && _pointerHold)
-            {
-                vertex.X = vertex.LastX + (x - _pointerLastPressX) / _scene.Zoom;
-                vertex.Y = vertex.LastY + (y - _pointerLastPressY) / _scene.Zoom;
-            }
-        }
-        protected virtual void OnSceneMoved(double x, double y, KeyModifiers keyModifiers)
-        {
-            if (keyModifiers == KeyModifiers.Alt && _pointerHold)
-            {
-                _sceneOffsetX = (_pointerLastPressX - x) / _scene.Zoom;
-                _sceneOffsetY = (_pointerLastPressY - y) / _scene.Zoom;
-            }
-        }
-        #endregion
 
         private Point GetDrawPosition(double x, double y)
         {
             var window = Bounds.Size;
             return new Point(
-                x * _scene.Zoom - (_scene.X + _sceneOffsetX) * _scene.Zoom + (window.Width / 2),
-                y * _scene.Zoom - (_scene.Y + _sceneOffsetY) * _scene.Zoom + (window.Height / 2));
+                x * _scene.Zoom - _scene.X  * _scene.Zoom + (window.Width / 2),
+                y * _scene.Zoom - _scene.Y * _scene.Zoom + (window.Height / 2));
         }
 
         private void DrawEdge(DrawingContext context, Edge edge)
@@ -352,9 +338,9 @@ namespace RouteOptimization.Controls
             var window = Bounds.Size;
 
             double step = gridSize * _scene.Zoom;
-            double x_start = (step + window.Width / 2 - (_scene.X + _sceneOffsetX) * _scene.Zoom) % step;
+            double x_start = (step + window.Width / 2 - _scene.X * _scene.Zoom) % step;
             double x = x_start;
-            double y = (step + window.Height / 2 - (_scene.Y + _sceneOffsetY) * _scene.Zoom) % step;
+            double y = (step + window.Height / 2 - _scene.Y * _scene.Zoom) % step;
 
             while (y < window.Height)
             {

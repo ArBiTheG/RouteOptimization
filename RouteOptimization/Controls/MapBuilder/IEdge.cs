@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Controls.MapBuilder
 {
-    public interface IScene
+    public interface IEdge
     {
-        double X { get; set; }
-        double Y { get; set; }
-        double Zoom { get; set; }
+        IVertex VertexFrom { get; set; }
+        IVertex VertexTo { get; set; }
+        bool Selected { get; }
     }
 }
