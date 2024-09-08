@@ -1,5 +1,4 @@
 ﻿using Avalonia;
-using Avalonia.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Controls.MapBuilder
 {
-    public class EntityPointerEventArgs
+    public class EntityPointerWheelEventArgs
     {
-        public Point Position;
+        public Vector Delta;
     }
 }

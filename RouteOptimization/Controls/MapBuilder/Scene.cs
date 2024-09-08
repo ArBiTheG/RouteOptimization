@@ -1,4 +1,5 @@
-﻿using Avalonia.Input;
+﻿using Avalonia;
+using Avalonia.Input;
 using Avalonia.Styling;
 using ReactiveUI;
 using System;
@@ -46,17 +47,18 @@ namespace RouteOptimization.Controls.MapBuilder
         }
 
         private EntityPointerEventArgs pointerEventArgs = new EntityPointerEventArgs();
+        private EntityPointerWheelEventArgs pointerWheelEventArgs = new EntityPointerWheelEventArgs();
         private double _lastX;
         private double _lastY;
 
         public event EventHandler<EntityPointerEventArgs>? Moved;
         public event EventHandler? Pressed;
         public event EventHandler? Released;
+        public event EventHandler<EntityPointerWheelEventArgs>? WheelChanged;
 
-        public void PerformMove(double x, double y)
+        public void PerformMove(Point position)
         {
-            pointerEventArgs.X = x;
-            pointerEventArgs.Y = y;
+            pointerEventArgs.Position = position;
 
             OnMoved(pointerEventArgs);
             Moved?.Invoke(this, pointerEventArgs);
@@ -71,10 +73,17 @@ namespace RouteOptimization.Controls.MapBuilder
             OnReleased(EventArgs.Empty);
             Released?.Invoke(this, EventArgs.Empty);
         }
+        public void PerformWheelChanged(Vector delta)
+        {
+            pointerWheelEventArgs.Delta = delta;
+
+            OnWheelChanged(pointerWheelEventArgs);
+            WheelChanged?.Invoke(this, pointerWheelEventArgs);
+        }
         protected virtual void OnMoved(EntityPointerEventArgs e)
         {
-            X = _lastX + e.X;
-            Y = _lastY + e.Y;
+            X = _lastX + e.Position.X;
+            Y = _lastY + e.Position.Y;
         }
 
         protected virtual void OnPressed(EventArgs e)
@@ -87,6 +96,20 @@ namespace RouteOptimization.Controls.MapBuilder
         {
             _lastX = X;
             _lastY = Y;
+        }
+
+        protected virtual void OnWheelChanged(EntityPointerWheelEventArgs e)
+        {
+            if (e.Delta.Y > 0)
+            {
+                if (Zoom <= 100)
+                    Zoom *= 1.10;
+            }
+            else
+            {
+                if (Zoom >= 0.05)
+                    Zoom /= 1.10;
+            }
         }
 
     }

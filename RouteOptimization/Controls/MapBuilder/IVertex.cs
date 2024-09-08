@@ -13,5 +13,6 @@ namespace RouteOptimization.Controls.MapBuilder
         double Y { get; set; }
         double Size { get; set; }
         bool Selected { get; }
+        bool Focused { get; }
     }
 }

@@ -25,9 +25,11 @@ namespace RouteOptimization.Controls
         private IBrush _brushBackground;
         private IBrush _brushVertex;
         private IBrush _brushVertexSelected;
+        private IBrush _brushVertexFocused;
 
         private IPen _penEdge;
         private IPen _penEdgeSelected;
+        private IPen _penEdgeFocused;
 
         private IPen _penGridScene;
 
@@ -118,15 +120,19 @@ namespace RouteOptimization.Controls
 
         public MapBuilderControl()
         {
+            SceneSourceProperty.Changed.AddClassHandler<MapBuilderControl>(OnSceneSourcePropertyChanged);
             VerticesSourceProperty.Changed.AddClassHandler<MapBuilderControl>(OnVerticesSourcePropertyChanged);
             EdgesSourceProperty.Changed.AddClassHandler<MapBuilderControl>(OnEdgesSourcePropertyChanged);
 
             _brushBackground = new SolidColorBrush(Color.FromArgb(127, 25, 25, 50));
-            _brushVertex = new SolidColorBrush(Color.FromArgb(255,100,100,200));
-            _brushVertexSelected = new SolidColorBrush(Color.FromArgb(255, 200, 200, 255));
 
-            _penEdge = new Pen(new SolidColorBrush(Color.FromArgb(255, 50,0,150)));
-            _penEdgeSelected = new Pen(new SolidColorBrush(Color.FromArgb(255, 100, 0, 255)));
+            _brushVertex = new SolidColorBrush(Color.FromArgb(255,95,95,207));
+            _brushVertexFocused = new SolidColorBrush(Color.FromArgb(255, 127, 127, 239));
+            _brushVertexSelected = new SolidColorBrush(Color.FromArgb(255, 191, 191, 255));
+
+            _penEdge = new Pen(new SolidColorBrush(Color.FromArgb(255, 64,0,159)));
+            _penEdgeFocused = new Pen(new SolidColorBrush(Color.FromArgb(255, 80, 0, 191)));
+            _penEdgeSelected = new Pen(new SolidColorBrush(Color.FromArgb(255, 112, 0, 255)));
 
             _penGridScene = new Pen(new SolidColorBrush(Color.FromArgb(255, 25, 25, 50)));
 
@@ -143,15 +149,6 @@ namespace RouteOptimization.Controls
                 var renderSize = Bounds.Size;
                 context.FillRectangle(_brushBackground, new Rect(renderSize));
             };
-            var ft = new FormattedText(
-                    "Координаты X=" + Math.Round(_scene.X, 3) +
-                    " / Y=" + Math.Round(_scene.Y, 3) +
-                    "Масштаб: " + Math.Round(_scene.Zoom, 2) * 100 + "%",
-                    new CultureInfo(1),
-                    FlowDirection.LeftToRight,
-                    Typeface.Default,
-                    14,
-                    Brushes.White);
 
             if (_scene.Zoom < 0.01)
             {
@@ -177,8 +174,6 @@ namespace RouteOptimization.Controls
             {
                 DrawGrid(context, 5);
             }
-
-            context.DrawText(ft, new Point(0, 0));
 
             foreach (Edge edge in _edges)
             {
@@ -264,10 +259,10 @@ namespace RouteOptimization.Controls
                 var properties = e.GetCurrentPoint(this).Properties;
                 if (properties.IsMiddleButtonPressed)
                 {
-                    _scene.PerformMove(
+                    _scene.PerformMove(new Point(
                                 (_pointerLastPressX - pointerPosition.X) / _scene.Zoom,
                                 (_pointerLastPressY - pointerPosition.Y) / _scene.Zoom
-                                );
+                                ));
                 }
                 else if (properties.IsLeftButtonPressed)
                 {
@@ -275,12 +270,46 @@ namespace RouteOptimization.Controls
                     {
                         if (vertex.Selected)
                         {
-                            vertex.PerformMove(
+                            vertex.PerformMove(new Point(
                                 (pointerPosition.X - _pointerLastPressX) / _scene.Zoom,
                                 (pointerPosition.Y - _pointerLastPressY) / _scene.Zoom
-                                );
+                                ));
                         }
                     }
+                }
+            }
+
+            bool oneFocused = false;
+            foreach (Vertex vertex in _vertices.Reverse())
+            {
+                var renderSize = Bounds.Size;
+                double cursorX = (pointerPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
+                double cursorY = (pointerPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
+
+                if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size) && oneFocused == false)
+                {
+                    oneFocused = true;
+                    vertex.PerformEnter();
+                }
+                else
+                {
+                    vertex.PerformExit();
+                }
+            }
+            foreach (Edge edge in _edges.Reverse())
+            {
+                var renderSize = Bounds.Size;
+                double cursorX = (pointerPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
+                double cursorY = (pointerPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
+
+                if (RouteMath.CursorInLine(edge.VertexFrom.X, edge.VertexFrom.Y, edge.VertexTo.X, edge.VertexTo.Y, cursorX, cursorY, 4) && oneFocused == false)
+                {
+                    oneFocused = true;
+                    edge.PerformEnter();
+                }
+                else
+                {
+                    edge.PerformExit();
                 }
             }
 
@@ -288,20 +317,10 @@ namespace RouteOptimization.Controls
         }
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
-            if (e.Delta.Y > 0)
-            {
-                if (_scene.Zoom <= 100)
-                    _scene.Zoom *= 1.10;
-            }
-            else
-            {
-                if (_scene.Zoom >= 0.05)
-                    _scene.Zoom /= 1.10;
-            }
+            _scene.PerformWheelChanged(e.Delta);
             InvalidateVisual();
         }
         #endregion
-
 
         private Point GetDrawPosition(double x, double y)
         {
@@ -317,6 +336,10 @@ namespace RouteOptimization.Controls
             {
                 context.DrawLine(_penEdgeSelected, GetDrawPosition(edge.VertexFrom.X, edge.VertexFrom.Y), GetDrawPosition(edge.VertexTo.X, edge.VertexTo.Y));
             }
+            else if (edge.Focused)
+            {
+                context.DrawLine(_penEdgeFocused, GetDrawPosition(edge.VertexFrom.X, edge.VertexFrom.Y), GetDrawPosition(edge.VertexTo.X, edge.VertexTo.Y));
+            }
             else
             {
                 context.DrawLine(_penEdge, GetDrawPosition(edge.VertexFrom.X, edge.VertexFrom.Y), GetDrawPosition(edge.VertexTo.X, edge.VertexTo.Y));
@@ -327,6 +350,10 @@ namespace RouteOptimization.Controls
             if (vertex.Selected)
             {
                 context.DrawEllipse(_brushVertexSelected, null, GetDrawPosition(vertex.X, vertex.Y), vertex.Size * _scene.Zoom, vertex.Size * _scene.Zoom);
+            }
+            else if (vertex.Focused)
+            {
+                context.DrawEllipse(_brushVertexFocused, null, GetDrawPosition(vertex.X, vertex.Y), vertex.Size * _scene.Zoom, vertex.Size * _scene.Zoom);
             }
             else
             {

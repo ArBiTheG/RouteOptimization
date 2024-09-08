@@ -8,9 +8,13 @@ namespace RouteOptimization.Controls.MapBuilder
 {
     public class Edge: IEdge
     {
+        bool _selected;
+        bool _focused;
+
         public IVertex VertexFrom { get; set; }
         public IVertex VertexTo { get; set; }
-        public bool Selected { get; set; }
+        public bool Selected { get => _selected; }
+        public bool Focused { get => _focused; }
 
         public Edge(IVertex vertexTo, IVertex vertexFrom)
         {
@@ -46,22 +50,22 @@ namespace RouteOptimization.Controls.MapBuilder
 
         protected virtual void OnPressed(EventArgs e)
         {
-            Selected = true;
+            _selected = true;
         }
 
         protected virtual void OnReleased(EventArgs e)
         {
-            Selected = false;
-        }
-
-        protected virtual void OnExited(EventArgs e)
-        {
-            throw new NotImplementedException();
+            _selected = false;
         }
 
         protected virtual void OnEntered(EventArgs e)
         {
-            throw new NotImplementedException();
+            _focused = true;
+        }
+
+        protected virtual void OnExited(EventArgs e)
+        {
+            _focused = false;
         }
     }
 }
