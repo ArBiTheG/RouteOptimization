@@ -28,14 +28,8 @@ namespace RouteOptimization.ViewModels.Pages
         public MapBuilderPageViewModel()
         {
             Vertices = new ObservableCollection<Vertex>();
-            Vertices.Add(new Vertex(30, 100));
-            Vertices.Add(new Vertex(100, 200));
-            Vertices.Add(new Vertex(150, 150));
 
             Edges = new ObservableCollection<Edge>();
-            Edges.Add(new Edge(Vertices[0], Vertices[1]));
-            Edges.Add(new Edge(Vertices[1], Vertices[2]));
-            Edges.Add(new Edge(Vertices[0], Vertices[2]));
         }
     }
 }

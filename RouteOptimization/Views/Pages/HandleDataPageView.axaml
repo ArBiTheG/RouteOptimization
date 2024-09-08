@@ -11,5 +11,39 @@
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
     <vm:HandleDataPageViewModel />
   </Design.DataContext>
-  
+  <DockPanel>
+    <TextBlock DockPanel.Dock="Top" Text="Управление данными"/>
+    <WrapPanel Grid.IsSharedSizeScope="True">
+      <Button Margin="2" Width="256" Height="128">
+        <Grid>
+          <TextBlock>Пункты</TextBlock>
+          <Image Width="96" Height="96" Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/office.png"/>
+        </Grid>
+      </Button>
+      <Button Margin="2" Width="256" Height="128">
+        <Grid>
+          <TextBlock>Маршруты</TextBlock>
+          <Image Width="96" Height="96" Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/route.png"/>
+        </Grid>
+      </Button>
+      <Button Margin="2" Width="256" Height="128">
+        <Grid>
+          <TextBlock>Автомобили</TextBlock>
+          <Image Width="128" Height="128" Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/truck.png"/>
+        </Grid>
+      </Button>
+      <Button Margin="2" Width="256" Height="128">
+        <Grid>
+          <TextBlock>Товары</TextBlock>
+          <Image Width="96" Height="96"  Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/box.png"/>
+        </Grid>
+      </Button>
+      <Button Margin="2" Width="256" Height="128">
+        <Grid>
+          <TextBlock>Настройки данных</TextBlock>
+          <Image Width="96" Height="96"  Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/gear.png"/>
+        </Grid>
+      </Button>
+    </WrapPanel>
+  </DockPanel>
   </UserControl>

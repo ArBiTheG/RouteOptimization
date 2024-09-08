@@ -15,11 +15,9 @@ namespace RouteOptimization.Controls.MapBuilder
         double _lastX;
         double _lastY;
 
-        public Vertex(double x, double y)
+        public Vertex()
         {
             Size = 10;
-            X = x;
-            Y = y;
         }
 
         public bool Selected { get => _selected; }

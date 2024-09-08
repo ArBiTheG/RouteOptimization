@@ -12,7 +12,7 @@ namespace RouteOptimization.ViewModels;
 public class MainViewModel : ViewModelBase
 {
     private bool _isPaneOpen = false;
-    private ViewModelBase _currentPage;
+    private ViewModelBase? _currentPage;
     private ListItemTemplate? _selectedListItem;
 
     public bool IsPaneOpen
@@ -21,7 +21,7 @@ public class MainViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _isPaneOpen, value);
     }
 
-    public ViewModelBase CurrentPage
+    public ViewModelBase? CurrentPage
     {
         get => _currentPage;
         set => this.RaiseAndSetIfChanged(ref _currentPage, value);
@@ -31,7 +31,8 @@ public class MainViewModel : ViewModelBase
     {
         new ListItemTemplate(typeof(HomePageViewModel), "Главная"),
         new ListItemTemplate(typeof(HandleDataPageViewModel), "Данные"),
-        new ListItemTemplate(typeof(MapBuilderPageViewModel), "Конструктор карты"),
+        new ListItemTemplate(typeof(MapBuilderPageViewModel), "Конструктор"),
+        new ListItemTemplate(typeof(MapRoutePageViewModel), "Маршрут"),
     };
 
     public ListItemTemplate? SelectedListItem
@@ -56,6 +57,7 @@ public class MainViewModel : ViewModelBase
         var instance = Activator.CreateInstance(value.ModelType);
         if (instance is null) return;
         CurrentPage = (ViewModelBase)instance;
+        CurrentPage.Parent = this;
     }
 
     private void ExecutePaneOpenCloseCommand()
