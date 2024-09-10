@@ -11,7 +11,7 @@
     <vm:HomePageViewModel />
   </Design.DataContext>
 
-  <DockPanel>
+  <StackPanel>
     <TextBlock DockPanel.Dock="Top" Text="Главная"/>
     <WrapPanel Grid.IsSharedSizeScope="True">
       <Button Margin="2" Width="256" Height="128">
@@ -39,5 +39,5 @@
         </Grid>
       </Button>
     </WrapPanel>
-  </DockPanel>
+  </StackPanel>
 </UserControl>

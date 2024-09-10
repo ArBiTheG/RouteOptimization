@@ -11,12 +11,12 @@
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
     <vm:HandleDataPageViewModel />
   </Design.DataContext>
-  <DockPanel>
+  <StackPanel>
     <TextBlock DockPanel.Dock="Top" Text="Управление данными"/>
     <WrapPanel Grid.IsSharedSizeScope="True">
       <Button Margin="2" Width="256" Height="128">
         <Grid>
-          <TextBlock>Пункты</TextBlock>
+          <TextBlock>Локации</TextBlock>
           <Image Width="96" Height="96" Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/office.png"/>
         </Grid>
       </Button>
@@ -34,7 +34,7 @@
       </Button>
       <Button Margin="2" Width="256" Height="128">
         <Grid>
-          <TextBlock>Товары</TextBlock>
+          <TextBlock>Отгрузки</TextBlock>
           <Image Width="96" Height="96"  Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/box.png"/>
         </Grid>
       </Button>
@@ -45,5 +45,5 @@
         </Grid>
       </Button>
     </WrapPanel>
-  </DockPanel>
+  </StackPanel>
   </UserControl>
