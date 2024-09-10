@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Models
 {
-    public class Item : IItem
+    public interface IVehicleStatus
     {
-        public int Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        int Id { get; set; }
+        string Name { get; set; }
     }
 }

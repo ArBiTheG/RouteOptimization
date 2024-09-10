@@ -9,10 +9,10 @@ namespace RouteOptimization.Repository
 {
     public interface IOfficesRepository
     {
-        Task<IEnumerable<IOffice?>> GetAll();
-        Task<IOffice?> GetByID(int id);
-        Task<IOffice?> Create(IOffice entity);
-        Task Edit(IOffice entity);
-        Task Delete(IOffice entity);
+        Task<IEnumerable<ILocation?>> GetAll();
+        Task<ILocation?> GetByID(int id);
+        Task<ILocation?> Create(ILocation entity);
+        Task Edit(ILocation entity);
+        Task Delete(ILocation entity);
     }
 }

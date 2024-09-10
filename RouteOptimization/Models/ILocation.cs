@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Models
 {
-    public interface ICar
+    public interface ILocation
     {
         int Id { get; set; }
+        string? Name { get; set; }
+        string? Description { get; set; }
+        double X { get; set; }
+        double Y { get; set; }
     }
 }

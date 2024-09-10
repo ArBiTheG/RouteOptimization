@@ -10,10 +10,10 @@ namespace RouteOptimization.Repository.SQLite
 {
     public class SQLiteContext: DbContext
     {
-        public DbSet<IOffice> Offices { get; set; } = null!;
+        public DbSet<ILocation> Offices { get; set; } = null!;
         public DbSet<IRoute> Routes { get; set; } = null!;
-        public DbSet<IItem> Items { get; set; } = null!;
-        public DbSet<ICar> Cars { get; set; } = null!;
+        public DbSet<IShipment> Items { get; set; } = null!;
+        public DbSet<IVehicle> Cars { get; set; } = null!;
         public SQLiteContext()
         {
             Database.EnsureCreated();

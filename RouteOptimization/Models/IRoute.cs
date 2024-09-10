@@ -9,10 +9,11 @@ namespace RouteOptimization.Models
     public interface IRoute
     {
         int Id { get; set; }
+        int StartLocationId { get; set; }
+        ILocation? StartLocation { get; set; }
+        int EndLocationId { get; set; }
+        ILocation? EndLocation { get; set; }
         double Distance { get; set; }
-        int BeginId { get; set; }
-        IOffice Begin { get; set; }
-        int EndId { get; set; }
-        IOffice End { get; set; }
+        double Time { get; set; }
     }
 }
