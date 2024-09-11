@@ -8,41 +8,41 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Repository.SQLite
 {
-    public class SQLiteOfficesRepository : IOfficesRepository
+    public class SQLiteShipmentsRepository : IShipmentsRepository
     {
-        public async Task<ILocation?> Create(ILocation entity)
+        public async Task<IShipment?> Create(IShipment entity)
         {
             using SQLiteContext context = new SQLiteContext();
-            await context.Offices.AddAsync(entity);
+            await context.Shipments.AddAsync(entity);
             await context.SaveChangesAsync();
             return entity;
         }
 
-        public async Task Delete(ILocation entity)
+        public async Task Delete(IShipment entity)
         {
             using SQLiteContext context = new SQLiteContext();
-            context.Offices.Remove(entity);
+            context.Shipments.Remove(entity);
             await context.SaveChangesAsync();
         }
 
-        public async Task Edit(ILocation entity)
+        public async Task Edit(IShipment entity)
         {
             using SQLiteContext context = new SQLiteContext();
-            context.Offices.Entry(entity).State = EntityState.Modified;
+            context.Shipments.Entry(entity).State = EntityState.Modified;
             await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ILocation?>> GetAll()
+        public async Task<IEnumerable<IShipment?>> GetAll()
         {
             using SQLiteContext context = new SQLiteContext();
-            await context.Offices.LoadAsync();
-            return context.Offices.Local.ToArray();
+            await context.Shipments.LoadAsync();
+            return context.Shipments.Local.ToArray();
         }
 
-        public async Task<ILocation?> GetByID(int id)
+        public async Task<IShipment?> GetByID(int id)
         {
             using SQLiteContext context = new SQLiteContext();
-            return await context.Offices.FirstOrDefaultAsync(c => c.Id == id);
+            return await context.Shipments.FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

@@ -14,19 +14,19 @@
   <StackPanel>
     <TextBlock DockPanel.Dock="Top" Text="Главная"/>
     <WrapPanel Grid.IsSharedSizeScope="True">
-      <Button Margin="2" Width="256" Height="128">
+      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Handle">
         <Grid>
           <TextBlock>Управление данными</TextBlock>
           <Image Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/database.png"/>
         </Grid>
       </Button>
-      <Button Margin="2" Width="256" Height="128">
+      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Builder">
         <Grid>
           <TextBlock>Конструктор карты</TextBlock>
           <Image Width="128" Height="128" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/map_construct.png"/>
         </Grid>
       </Button>
-      <Button Margin="2" Width="256" Height="128">
+      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Route">
         <Grid>
           <TextBlock>Установить маршрут</TextBlock>
           <Image Width="128" Height="128" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/map_route.png"/>

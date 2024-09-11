@@ -14,25 +14,25 @@
   <StackPanel>
     <TextBlock DockPanel.Dock="Top" Text="Управление данными"/>
     <WrapPanel Grid.IsSharedSizeScope="True">
-      <Button Margin="2" Width="256" Height="128">
+      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Locations">
         <Grid>
           <TextBlock>Локации</TextBlock>
           <Image Width="96" Height="96" Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/office.png"/>
         </Grid>
       </Button>
-      <Button Margin="2" Width="256" Height="128">
+      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Routes">
         <Grid>
           <TextBlock>Маршруты</TextBlock>
           <Image Width="96" Height="96" Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/route.png"/>
         </Grid>
       </Button>
-      <Button Margin="2" Width="256" Height="128">
+      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Vehicles">
         <Grid>
           <TextBlock>Автомобили</TextBlock>
           <Image Width="128" Height="128" Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/truck.png"/>
         </Grid>
       </Button>
-      <Button Margin="2" Width="256" Height="128">
+      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Shipments">
         <Grid>
           <TextBlock>Отгрузки</TextBlock>
           <Image Width="96" Height="96"  Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/box.png"/>

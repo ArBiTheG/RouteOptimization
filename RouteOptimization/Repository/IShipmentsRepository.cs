@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Repository
 {
-    public interface IItemsRepository
+    public interface IShipmentsRepository
     {
         Task<IEnumerable<IShipment?>> GetAll();
         Task<IShipment?> GetByID(int id);

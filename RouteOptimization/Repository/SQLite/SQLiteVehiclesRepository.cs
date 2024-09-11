@@ -1,0 +1,48 @@
+﻿using Microsoft.EntityFrameworkCore;
+using RouteOptimization.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RouteOptimization.Repository.SQLite
+{
+    public class SQLiteVehiclesRepository : IVehiclesRepository
+    {
+        public async Task<IVehicle?> Create(IVehicle entity)
+        {
+            using SQLiteContext context = new SQLiteContext();
+            await context.Vehicles.AddAsync(entity);
+            await context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task Delete(IVehicle entity)
+        {
+            using SQLiteContext context = new SQLiteContext();
+            context.Vehicles.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task Edit(IVehicle entity)
+        {
+            using SQLiteContext context = new SQLiteContext();
+            context.Vehicles.Entry(entity).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<IVehicle?>> GetAll()
+        {
+            using SQLiteContext context = new SQLiteContext();
+            await context.Vehicles.LoadAsync();
+            return context.Vehicles.Local.ToArray();
+        }
+
+        public async Task<IVehicle?> GetByID(int id)
+        {
+            using SQLiteContext context = new SQLiteContext();
+            return await context.Vehicles.FirstOrDefaultAsync(c => c.Id == id);
+        }
+    }
+}

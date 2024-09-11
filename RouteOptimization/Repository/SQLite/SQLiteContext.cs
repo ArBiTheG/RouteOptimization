@@ -10,17 +10,19 @@ namespace RouteOptimization.Repository.SQLite
 {
     public class SQLiteContext: DbContext
     {
-        public DbSet<ILocation> Offices { get; set; } = null!;
+        public DbSet<ILocation> Locations { get; set; } = null!;
         public DbSet<IRoute> Routes { get; set; } = null!;
-        public DbSet<IShipment> Items { get; set; } = null!;
-        public DbSet<IVehicle> Cars { get; set; } = null!;
+        public DbSet<IShipment> Shipments { get; set; } = null!;
+        public DbSet<IVehicle> Vehicles { get; set; } = null!;
+        public DbSet<IVehicleStatus> VehicleStatuses { get; set; } = null!;
+        public DbSet<IVehicleType> VehicleTypes { get; set; } = null!;
         public SQLiteContext()
         {
             Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=Schedule.db");
+            optionsBuilder.UseSqlite("Data Source=Data.db");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

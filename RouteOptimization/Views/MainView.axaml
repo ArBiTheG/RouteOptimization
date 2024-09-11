@@ -21,15 +21,13 @@
         <Button HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Command="{Binding PaneOpenCloseCommand}">
           -
         </Button>
-        <ListBox ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedListItem}">
-          <ListBox.ItemTemplate>
-            <DataTemplate DataType="{x:Type vm:ListItemTemplate}">
-              <StackPanel>
-                <TextBlock Text="{Binding Title}"/>
-              </StackPanel>
-            </DataTemplate>
-          </ListBox.ItemTemplate>
-        </ListBox>
+        <StackPanel>
+          <Button HorizontalAlignment="Stretch" Content="Главная" Command="{Binding OpenPage}" CommandParameter="Home"/>
+          <Button HorizontalAlignment="Stretch" Content="Данные" Command="{Binding OpenPage}" CommandParameter="Handle"/>
+          <Button HorizontalAlignment="Stretch" Content="Конструктор" Command="{Binding OpenPage}" CommandParameter="Builder"/>
+          <Button HorizontalAlignment="Stretch" Content="Маршрут" Command="{Binding OpenPage}" CommandParameter="Route"/>
+        </StackPanel>
+        
       </StackPanel>
     </SplitView.Pane>
     <SplitView.Content>

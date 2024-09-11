@@ -8,41 +8,41 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Repository.SQLite
 {
-    public class SQLiteItemsRepository : IItemsRepository
+    public class SQLiteLocationsRepository : ILocationsRepository
     {
-        public async Task<IShipment?> Create(IShipment entity)
+        public async Task<ILocation?> Create(ILocation entity)
         {
             using SQLiteContext context = new SQLiteContext();
-            await context.Items.AddAsync(entity);
+            await context.Locations.AddAsync(entity);
             await context.SaveChangesAsync();
             return entity;
         }
 
-        public async Task Delete(IShipment entity)
+        public async Task Delete(ILocation entity)
         {
             using SQLiteContext context = new SQLiteContext();
-            context.Items.Remove(entity);
+            context.Locations.Remove(entity);
             await context.SaveChangesAsync();
         }
 
-        public async Task Edit(IShipment entity)
+        public async Task Edit(ILocation entity)
         {
             using SQLiteContext context = new SQLiteContext();
-            context.Items.Entry(entity).State = EntityState.Modified;
+            context.Locations.Entry(entity).State = EntityState.Modified;
             await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<IShipment?>> GetAll()
+        public async Task<IEnumerable<ILocation?>> GetAll()
         {
             using SQLiteContext context = new SQLiteContext();
-            await context.Items.LoadAsync();
-            return context.Items.Local.ToArray();
+            await context.Locations.LoadAsync();
+            return context.Locations.Local.ToArray();
         }
 
-        public async Task<IShipment?> GetByID(int id)
+        public async Task<ILocation?> GetByID(int id)
         {
             using SQLiteContext context = new SQLiteContext();
-            return await context.Items.FirstOrDefaultAsync(c => c.Id == id);
+            return await context.Locations.FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

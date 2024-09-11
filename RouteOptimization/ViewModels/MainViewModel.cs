@@ -6,14 +6,23 @@ using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reflection.Metadata;
 
 namespace RouteOptimization.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
+    private PageItem[] PageItems { get; } =
+    {
+            new PageItem("Home", typeof(HomePageViewModel)),
+            new PageItem("Handle", typeof(HandleDataPageViewModel)),
+            new PageItem("Builder", typeof(MapBuilderPageViewModel)),
+            new PageItem("Route", typeof(MapRoutePageViewModel)),
+    };
+
     private bool _isPaneOpen = false;
     private ViewModelBase? _currentPage;
-    private ListItemTemplate? _selectedListItem;
+    private HistoryRouter<ViewModelBase> _router;
 
     public bool IsPaneOpen
     {
@@ -21,59 +30,42 @@ public class MainViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _isPaneOpen, value);
     }
 
+
+    public ReactiveCommand<Unit, Unit> PaneOpenCloseCommand { get; }
+    public ReactiveCommand<string, Unit> OpenPage { get; }
+
     public ViewModelBase? CurrentPage
     {
         get => _currentPage;
         set => this.RaiseAndSetIfChanged(ref _currentPage, value);
     }
 
-    public ObservableCollection<ListItemTemplate> Items { get; } = new ()
+
+    public MainViewModel(HistoryRouter<ViewModelBase> router)
     {
-        new ListItemTemplate(typeof(HomePageViewModel), "Главная"),
-        new ListItemTemplate(typeof(HandleDataPageViewModel), "Данные"),
-        new ListItemTemplate(typeof(MapBuilderPageViewModel), "Конструктор"),
-        new ListItemTemplate(typeof(MapRoutePageViewModel), "Маршрут"),
-    };
+        _router = router;
+        _router.CurrentViewModelChanged += (viewModel) => CurrentPage = viewModel;
 
-    public ListItemTemplate? SelectedListItem
-    {
-        get => _selectedListItem;
-        set => this.RaiseAndSetIfChanged(ref _selectedListItem, value);
-    }
+        _router.GoTo(typeof(HomePageViewModel));
 
-    public ReactiveCommand<Unit, Unit> PaneOpenCloseCommand { get; }
-
-    public MainViewModel()
-    {
-        CurrentPage = new HomePageViewModel();
-
-        this.WhenAnyValue(vm => vm.SelectedListItem).Subscribe(t => UpdateSelectedListItemCommand(_selectedListItem));
         PaneOpenCloseCommand = ReactiveCommand.Create(ExecutePaneOpenCloseCommand);
-    }
-
-    private void UpdateSelectedListItemCommand(ListItemTemplate? value)
-    {
-        if (value is null) return;
-        var instance = Activator.CreateInstance(value.ModelType);
-        if (instance is null) return;
-        CurrentPage = (ViewModelBase)instance;
-        CurrentPage.Parent = this;
+        OpenPage = ReactiveCommand.Create<string>(ExecuteOpenPage);
     }
 
     private void ExecutePaneOpenCloseCommand()
     {
         IsPaneOpen = !_isPaneOpen;
     }
-}
 
-public class ListItemTemplate
-{
-    public string Title { get;}
-    public Type ModelType { get; }
-    public ListItemTemplate(Type type, string title)
+    private void ExecuteOpenPage(string pageName)
     {
-        ModelType = type;
-        Title = title;
+        foreach (var item in PageItems)
+        {
+            if (item.Name == pageName)
+            {
+                _router.GoTo(item.ModelType);
+            }
+        }
     }
 }
 
