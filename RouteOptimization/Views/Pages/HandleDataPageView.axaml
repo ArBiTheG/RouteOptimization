@@ -12,7 +12,7 @@
     <vm:HandleDataPageViewModel />
   </Design.DataContext>
   <StackPanel>
-    <TextBlock DockPanel.Dock="Top" Text="Управление данными"/>
+    <TextBlock Text="Управление данными" FontSize="24"/>
     <WrapPanel Grid.IsSharedSizeScope="True">
       <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Locations">
         <Grid>

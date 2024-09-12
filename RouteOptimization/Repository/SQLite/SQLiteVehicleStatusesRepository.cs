@@ -8,41 +8,41 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Repository.SQLite
 {
-    public class SQLiteVehicleTypes: IVehicleTypesRepository
+    public class SQLiteVehicleStatusesRepository : IVehicleStatusesRepository
     {
-        public async Task<IVehicleType?> Create(IVehicleType entity)
+        public async Task<IVehicleStatus?> Create(IVehicleStatus entity)
         {
             using SQLiteContext context = new SQLiteContext();
-            await context.VehicleTypes.AddAsync(entity);
+            await context.VehicleStatuses.AddAsync(entity);
             await context.SaveChangesAsync();
             return entity;
         }
 
-        public async Task Delete(IVehicleType entity)
+        public async Task Delete(IVehicleStatus entity)
         {
             using SQLiteContext context = new SQLiteContext();
-            context.VehicleTypes.Remove(entity);
+            context.VehicleStatuses.Remove(entity);
             await context.SaveChangesAsync();
         }
 
-        public async Task Edit(IVehicleType entity)
+        public async Task Edit(IVehicleStatus entity)
         {
             using SQLiteContext context = new SQLiteContext();
-            context.VehicleTypes.Entry(entity).State = EntityState.Modified;
+            context.VehicleStatuses.Entry(entity).State = EntityState.Modified;
             await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<IVehicleType?>> GetAll()
+        public async Task<IEnumerable<IVehicleStatus?>> GetAll()
         {
             using SQLiteContext context = new SQLiteContext();
-            await context.VehicleTypes.LoadAsync();
-            return context.VehicleTypes.Local.ToArray();
+            await context.VehicleStatuses.LoadAsync();
+            return context.VehicleStatuses.Local.ToArray();
         }
 
-        public async Task<IVehicleType?> GetByID(int id)
+        public async Task<IVehicleStatus?> GetByID(int id)
         {
             using SQLiteContext context = new SQLiteContext();
-            return await context.VehicleTypes.FirstOrDefaultAsync(c => c.Id == id);
+            return await context.VehicleStatuses.FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

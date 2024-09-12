@@ -22,10 +22,30 @@
           -
         </Button>
         <StackPanel>
-          <Button HorizontalAlignment="Stretch" Content="Главная" Command="{Binding OpenPage}" CommandParameter="Home"/>
-          <Button HorizontalAlignment="Stretch" Content="Данные" Command="{Binding OpenPage}" CommandParameter="Handle"/>
-          <Button HorizontalAlignment="Stretch" Content="Конструктор" Command="{Binding OpenPage}" CommandParameter="Builder"/>
-          <Button HorizontalAlignment="Stretch" Content="Маршрут" Command="{Binding OpenPage}" CommandParameter="Route"/>
+          <Button HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="48" Command="{Binding OpenPage}" CommandParameter="Home">
+            <StackPanel Orientation="Horizontal">
+              <Image Width="32" Source="avares://RouteOptimization/Assets/Icons/home.png"/>
+              <TextBlock Margin="10" Text="Главная"/>
+            </StackPanel>
+          </Button>
+          <Button HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="48" Command="{Binding OpenPage}" CommandParameter="Handle">
+            <StackPanel Orientation="Horizontal">
+              <Image Width="32" Source="avares://RouteOptimization/Assets/Icons/database.png"/>
+              <TextBlock Margin="10" Text="Данные"/>
+            </StackPanel>
+          </Button>
+          <Button HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="48" Command="{Binding OpenPage}" CommandParameter="Builder">
+            <StackPanel Orientation="Horizontal">
+              <Image Width="32" Source="avares://RouteOptimization/Assets/Icons/crane.png"/>
+              <TextBlock Margin="10" Text="Конструктор"/>
+            </StackPanel>
+          </Button>
+          <Button HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="48" Command="{Binding OpenPage}" CommandParameter="Route">
+            <StackPanel Orientation="Horizontal">
+              <Image Width="32" Source="avares://RouteOptimization/Assets/Icons/office.png"/>
+              <TextBlock Margin="10" Text="Маршрут"/>
+            </StackPanel>
+          </Button>
         </StackPanel>
         
       </StackPanel>
