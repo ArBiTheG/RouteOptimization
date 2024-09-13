@@ -4,7 +4,6 @@ using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Styling;
 using DynamicData;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using RouteOptimization.Controls.MapBuilder;
 using RouteOptimization.Utils;
 using SkiaSharp;

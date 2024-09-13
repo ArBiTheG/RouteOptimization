@@ -5,8 +5,6 @@ VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RouteOptimization", "RouteOptimization\RouteOptimization.csproj", "{BF36C3AF-2BF2-43AE-A74C-BDA003D66FC0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RouteOptimization.Android", "RouteOptimization.Android\RouteOptimization.Android.csproj", "{892E3193-4B09-412C-B605-051F3A22ECC4}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RouteOptimization.Desktop", "RouteOptimization.Desktop\RouteOptimization.Desktop.csproj", "{60FC4CA3-A204-496A-A92E-5005ED6DE270}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RouteOptimization.Library", "RouteOptimization.Library\RouteOptimization.Library.csproj", "{125AA810-4A41-4EB8-BBC2-52C646B55917}"
@@ -26,12 +24,6 @@ Global
 		{BF36C3AF-2BF2-43AE-A74C-BDA003D66FC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF36C3AF-2BF2-43AE-A74C-BDA003D66FC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF36C3AF-2BF2-43AE-A74C-BDA003D66FC0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{892E3193-4B09-412C-B605-051F3A22ECC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{892E3193-4B09-412C-B605-051F3A22ECC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{892E3193-4B09-412C-B605-051F3A22ECC4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{892E3193-4B09-412C-B605-051F3A22ECC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{892E3193-4B09-412C-B605-051F3A22ECC4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{892E3193-4B09-412C-B605-051F3A22ECC4}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{60FC4CA3-A204-496A-A92E-5005ED6DE270}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{60FC4CA3-A204-496A-A92E-5005ED6DE270}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60FC4CA3-A204-496A-A92E-5005ED6DE270}.Release|Any CPU.ActiveCfg = Release|Any CPU
