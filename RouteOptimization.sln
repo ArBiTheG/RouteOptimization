@@ -14,6 +14,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RouteOptimization.Console",
 		{125AA810-4A41-4EB8-BBC2-52C646B55917} = {125AA810-4A41-4EB8-BBC2-52C646B55917}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteOptimization.WpfApp", "RouteOptimization.WpfApp\RouteOptimization.WpfApp.csproj", "{6F8D8FAB-2876-41E6-87E9-200815B41824}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{9BD995AF-9F21-4C47-BE99-1BBE5C63E951}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BD995AF-9F21-4C47-BE99-1BBE5C63E951}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BD995AF-9F21-4C47-BE99-1BBE5C63E951}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F8D8FAB-2876-41E6-87E9-200815B41824}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F8D8FAB-2876-41E6-87E9-200815B41824}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F8D8FAB-2876-41E6-87E9-200815B41824}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F8D8FAB-2876-41E6-87E9-200815B41824}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

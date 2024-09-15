@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="RouteOptimization.WpfApp.View.DatabaseView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RouteOptimization.WpfApp.View"
+             xmlns:vm="clr-namespace:RouteOptimization.WpfApp.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <d:UserControl.DataContext>
+        <vm:DatabaseVM/>
+    </d:UserControl.DataContext>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" FontSize="18" Text="База данных"/>
+
+            <UniformGrid Grid.Row="1" Columns="4" Rows="4">
+                <Button ClipToBounds="True" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        Command="{Binding ChangePageCommand}" CommandParameter="Locations">
+                    <Grid>
+                        <TextBlock>Локации</TextBlock>
+                        <Image Height="64" Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/office.png"/>
+                    </Grid>
+                </Button>
+                <Button ClipToBounds="True" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        Command="{Binding ChangePageCommand}" CommandParameter="Routes">
+                    <Grid>
+                        <TextBlock>Маршруты</TextBlock>
+                        <Image Height="64" Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/route.png"/>
+                    </Grid>
+                </Button>
+                <Button ClipToBounds="True" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        Command="{Binding ChangePageCommand}" CommandParameter="Vehicles">
+                    <Grid>
+                        <TextBlock>Автомобили</TextBlock>
+                        <Image Height="64" Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/truck.png"/>
+                    </Grid>
+                </Button>
+                <Button ClipToBounds="True" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        Command="{Binding ChangePageCommand}" CommandParameter="Shipments">
+                    <Grid>
+                        <TextBlock>Отгрузки</TextBlock>
+                        <Image Height="64"  Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/box.png"/>
+                    </Grid>
+                </Button>
+                <Button ClipToBounds="True" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                    <Grid>
+                        <TextBlock>Настройки данных</TextBlock>
+                        <Image Height="64"  Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/gear.png"/>
+                    </Grid>
+                </Button>
+            </UniformGrid>
+        </Grid>
+    </Grid>
+</UserControl>

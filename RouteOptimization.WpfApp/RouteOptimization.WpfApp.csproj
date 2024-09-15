@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Icons\box.png" />
+    <None Remove="Assets\Icons\crane.png" />
+    <None Remove="Assets\Icons\database.png" />
+    <None Remove="Assets\Icons\gear.png" />
+    <None Remove="Assets\Icons\home.png" />
+    <None Remove="Assets\Icons\map_construct.png" />
+    <None Remove="Assets\Icons\map_route.png" />
+    <None Remove="Assets\Icons\office.png" />
+    <None Remove="Assets\Icons\route.png" />
+    <None Remove="Assets\Icons\truck.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Icons\box.png" />
+    <Resource Include="Assets\Icons\crane.png" />
+    <Resource Include="Assets\Icons\database.png" />
+    <Resource Include="Assets\Icons\gear.png" />
+    <Resource Include="Assets\Icons\home.png" />
+    <Resource Include="Assets\Icons\map_construct.png" />
+    <Resource Include="Assets\Icons\map_route.png" />
+    <Resource Include="Assets\Icons\office.png" />
+    <Resource Include="Assets\Icons\route.png" />
+    <Resource Include="Assets\Icons\truck.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModel\Dialogs\" />
+    <Folder Include="View\Dialogs\" />
+  </ItemGroup>
+
+</Project>
