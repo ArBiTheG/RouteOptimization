@@ -2,6 +2,8 @@
 using RouteOptimization.WpfApp.Repository;
 using RouteOptimization.WpfApp.Repository.SQLite;
 using RouteOptimization.WpfApp.Utilties;
+using RouteOptimization.WpfApp.View.Dialogs;
+using RouteOptimization.WpfApp.ViewModel.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -45,19 +47,44 @@ namespace RouteOptimization.WpfApp.ViewModel.Database
             throw new NotImplementedException();
         }
 
-        private void ExecuteEditCommand(object? obj)
+        private async void ExecuteEditCommand(object? obj)
         {
-            throw new NotImplementedException();
+            var entity = obj as Location;
+            if (entity != null)
+            {
+                if (ShowDialogEditor(entity) == true)
+                {
+                    await _repository.Edit(entity);
+                }
+            }
         }
 
-        private void ExecuteAddCommand(object? obj)
+        private async void ExecuteAddCommand(object? obj)
         {
-            throw new NotImplementedException();
+            var entity = new Location();
+            if (ShowDialogEditor(entity) == true)
+            {
+                await _repository.Create(entity);
+            }
         }
 
         private async void ExecuteLoadCommand(object? obj)
         {
             List = new (await _repository.GetAll());
+        }
+
+        private bool? ShowDialogEditor(ILocation location)
+        {
+            var dialogViewModel = new LocationEditorDialogViewModel()
+            {
+                Location = location,
+            };
+
+            var dialog = new LocationEditorDialogView()
+            {
+                DataContext = dialogViewModel
+            };
+            return dialog.ShowDialog();
         }
     }
 }

@@ -39,9 +39,4 @@
     <Resource Include="Assets\Icons\truck.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewModel\Dialogs\" />
-    <Folder Include="View\Dialogs\" />
-  </ItemGroup>
-
 </Project>
