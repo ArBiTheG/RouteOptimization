@@ -9,9 +9,11 @@ namespace RouteOptimization.WpfApp.Models
     public class Vehicle: IVehicle
     {
         public int Id { get; set; }
+        public int TypeId { get; set; }
         public VehicleType? Type { get; set; }
         public double Capacity { get; set; }
         public string LicensePlate { get; set; }
+        public int StatusId { get; set; }
         public VehicleStatus? Status { get; set; }
     }
 }

@@ -4,8 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RouteOptimization.WpfApp.View.Dialogs"
+        xmlns:vm="clr-namespace:RouteOptimization.WpfApp.ViewModel.Dialogs"
         mc:Ignorable="d"
         Title="Редактирование локации" Height="400" Width="600" ResizeMode="NoResize">
+    <d:Window.DataContext>
+        <vm:LocationEditorDialogViewModel/>
+    </d:Window.DataContext>
     <Grid Margin="4">
         <Grid>
             <Grid.RowDefinitions>
@@ -14,14 +18,41 @@
             </Grid.RowDefinitions>
             <Border Grid.Row="0">
                 <StackPanel>
-                    <Grid>
+                    <Grid Margin="2">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="3*"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Имя:"/>
-                        <TextBox Grid.Column="1"/>
+                        <TextBlock Grid.Column="0" Text="Наименование:"/>
+                        <TextBox Grid.Column="1" Text="{Binding Location.Name}"/>
+                    </Grid>
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Описание:"/>
+                        <TextBox Grid.Column="1" Height="64" Text="{Binding Location.Description}"/>
+                    </Grid>
+                    <Grid Margin="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Позиция"/>
+                        <TextBlock Grid.Row="0"  Grid.Column="1" Text="Широта:"/>
+                        <TextBox Margin="1" Grid.Row="0" Grid.Column="2" Text="{Binding Location.X}"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="1"  Text="Долгота:"/>
+                        <TextBox Margin="1" Grid.Row="1" Grid.Column="2" Text="{Binding Location.Y}"/>
                     </Grid>
                 </StackPanel>
             </Border>

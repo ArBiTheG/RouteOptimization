@@ -4,8 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RouteOptimization.WpfApp.View.Dialogs"
+        xmlns:vm="clr-namespace:RouteOptimization.WpfApp.ViewModel.Dialogs"
         mc:Ignorable="d"
         Title="Редактирование автомобиля" Height="400" Width="600" ResizeMode="NoResize">
+    <d:Window.DataContext>
+        <vm:VehicleEditorDialogViewModel/>
+    </d:Window.DataContext>
     <Grid Margin="4">
         <Grid>
             <Grid.RowDefinitions>
@@ -14,14 +18,41 @@
             </Grid.RowDefinitions>
             <Border Grid.Row="0">
                 <StackPanel>
-                    <Grid>
+                    <Grid Margin="2">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Имя:"/>
-                        <TextBox Grid.Column="1"/>
+                        <TextBlock Grid.Column="0" Text="Номер грузовика:"/>
+                        <TextBox Grid.Column="1" Text="{Binding Vehicle.LicensePlate}"/>
+                    </Grid>
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Вместимость:"/>
+                        <TextBox Grid.Column="1" Text="{Binding Vehicle.Capacity}"/>
+                    </Grid>
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Тип автомобиля:"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Types}" SelectedItem="{Binding Vehicle.Type}" DisplayMemberPath="Name"/>
+                    </Grid>
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Статус автомобиля:"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Statuses}" SelectedItem="{Binding Vehicle.Status}" DisplayMemberPath="Name"/>
                     </Grid>
                 </StackPanel>
             </Border>
