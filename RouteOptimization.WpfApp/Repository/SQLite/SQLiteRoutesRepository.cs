@@ -36,13 +36,13 @@ namespace RouteOptimization.WpfApp.Repository.SQLite
         {
             using SQLiteContext context = new SQLiteContext();
             await context.Routes.LoadAsync();
-            return context.Routes.Local.ToArray();
+            return context.Routes.Include(u => u.EndLocation).Include(u => u.StartLocation).ToArray();
         }
 
         public async Task<Route?> GetByID(int id)
         {
             using SQLiteContext context = new SQLiteContext();
-            return await context.Routes.FirstOrDefaultAsync(c => c.Id == id);
+            return await context.Routes.Include(u => u.EndLocation).Include(u => u.StartLocation).FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

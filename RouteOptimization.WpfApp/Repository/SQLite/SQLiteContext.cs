@@ -33,29 +33,29 @@ namespace RouteOptimization.WpfApp.Repository.SQLite
             modelBuilder.Entity<VehicleStatus>().HasKey(u => u.Id);
             modelBuilder.Entity<VehicleType>().HasKey(u => u.Id);
 
-            //modelBuilder.Entity<Location>().HasMany(t => t.Routes)
-            //    .WithOne(g => g.EndLocation)
-            //    .HasForeignKey(g => g.EndLocationId);
-            //
-            //modelBuilder.Entity<Location>().HasMany(t => t.Routes)
-            //    .WithOne(g => g.StartLocation)
-            //    .HasForeignKey(g => g.StartLocationId);
-            //
-            //modelBuilder.Entity<Location>().HasMany(t => t.Shipments)
-            //    .WithOne(g => g.Origin)
-            //    .HasForeignKey(g => g.OriginId);
-            //
-            //modelBuilder.Entity<Location>().HasMany(t => t.Shipments)
-            //    .WithOne(g => g.Destination)
-            //    .HasForeignKey(g => g.DestinationId);
-            //
-            //modelBuilder.Entity<VehicleStatus>().HasMany(t => t.Vehicles)
-            //    .WithOne(g => g.Status)
-            //    .HasForeignKey(g => g.StatusId);
-            //
-            //modelBuilder.Entity<VehicleType>().HasMany(t => t.Vehicles)
-            //    .WithOne(g => g.Type)
-            //    .HasForeignKey(g => g.TypeId);
+            modelBuilder.Entity<Location>().HasMany(t => t.RoutesStart)
+                .WithOne(g => g.StartLocation)
+                .HasForeignKey(g => g.StartLocationId);
+
+            modelBuilder.Entity<Location>().HasMany(t => t.RoutesEnd)
+                .WithOne(g => g.EndLocation)
+                .HasForeignKey(g => g.EndLocationId);
+            
+            modelBuilder.Entity<Location>().HasMany(t => t.ShipmentsOrigin)
+                .WithOne(g => g.Origin)
+                .HasForeignKey(g => g.OriginId);
+            
+            modelBuilder.Entity<Location>().HasMany(t => t.ShipmentsDestination)
+                .WithOne(g => g.Destination)
+                .HasForeignKey(g => g.DestinationId);
+            
+            modelBuilder.Entity<VehicleStatus>().HasMany(t => t.Vehicles)
+                .WithOne(g => g.Status)
+                .HasForeignKey(g => g.StatusId);
+            
+            modelBuilder.Entity<VehicleType>().HasMany(t => t.Vehicles)
+                .WithOne(g => g.Type)
+                .HasForeignKey(g => g.TypeId);
         }
     }
 }

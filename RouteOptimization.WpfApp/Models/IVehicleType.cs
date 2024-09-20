@@ -8,7 +8,7 @@ namespace RouteOptimization.WpfApp.Models
 {
     public interface IVehicleType
     {
-        int Id { get; set; }
+        int Id { get; }
         string? Name { get; set; }
     }
 }

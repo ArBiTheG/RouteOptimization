@@ -30,6 +30,15 @@
                             <ColumnDefinition Width="3*"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Наименование:"/>
+                        <TextBox Grid.Column="1" Text="{Binding Shipment.Name}"/>
+                    </Grid>
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Вес:"/>
                         <TextBox Grid.Column="1" Text="{Binding Shipment.Weight}"/>
                     </Grid>
@@ -49,7 +58,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Место отбытия:"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding Locations}" SelectedItem="{Binding Shipment.Origin}" DisplayMemberPath="Name"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Locations}" SelectedValue="{Binding Shipment.OriginId}" DisplayMemberPath="Name" SelectedValuePath="Id"/>
                     </Grid>
                     <Grid Margin="2">
                         <Grid.ColumnDefinitions>
@@ -58,7 +67,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Место прибытия:"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding Locations}" SelectedItem="{Binding Shipment.Destination}" DisplayMemberPath="Name"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Locations}" SelectedValue="{Binding Shipment.DestinationId}" DisplayMemberPath="Name" SelectedValuePath="Id"/>
                     </Grid>
                 </StackPanel>
             </Border>

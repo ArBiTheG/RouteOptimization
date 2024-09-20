@@ -31,7 +31,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Начало маршрута:"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding Locations}" SelectedItem="{Binding Route.StartLocation}" DisplayMemberPath="Name"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Locations}" SelectedValue="{Binding Route.StartLocationId}" DisplayMemberPath="Name" SelectedValuePath="Id"/>
                     </Grid>
                     <Grid Margin="2">
                         <Grid.ColumnDefinitions>
@@ -40,7 +40,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Конец маршрута:"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding Locations}" SelectedItem="{Binding Route.EndLocation}" DisplayMemberPath="Name"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Locations}" SelectedValue="{Binding Route.EndLocationId}" DisplayMemberPath="Name" SelectedValuePath="Id"/>
                     </Grid>
                     <Grid Margin="2">
                         <Grid.ColumnDefinitions>

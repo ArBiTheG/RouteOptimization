@@ -27,7 +27,8 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <TextBlock Text="{Binding Name}" FontSize="14" />
+                        <TextBlock Text="{Binding StartLocation.Name, StringFormat='Начальный маршрут: {0}'}" FontSize="14" />
+                        <TextBlock Text="{Binding EndLocation.Name, StringFormat='Конечный маршрут: {0}'}" FontSize="12" />
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

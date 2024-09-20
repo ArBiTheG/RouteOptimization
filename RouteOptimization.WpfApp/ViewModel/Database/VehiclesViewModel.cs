@@ -43,9 +43,17 @@ namespace RouteOptimization.WpfApp.ViewModel.Database
             DeleteCommand = new RelayCommand(ExecuteDeleteCommand);
         }
 
-        private void ExecuteDeleteCommand(object? obj)
+        private async void ExecuteDeleteCommand(object? obj)
         {
-            throw new NotImplementedException();
+            var entity = obj as Vehicle;
+            if (entity != null)
+            {
+                if (new DeleteDialogWindow().ShowDialog() == true)
+                {
+                    await _repository.Delete(entity);
+                    List?.Remove(entity);
+                }
+            }
         }
 
         private async void ExecuteEditCommand(object? obj)
@@ -66,6 +74,7 @@ namespace RouteOptimization.WpfApp.ViewModel.Database
             if (ShowDialogEditor(entity) == true)
             {
                 await _repository.Create(entity);
+                List?.Add(entity);
             }
         }
 

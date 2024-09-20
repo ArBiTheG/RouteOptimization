@@ -43,7 +43,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Тип автомобиля:"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding Types}" SelectedItem="{Binding Vehicle.Type}" DisplayMemberPath="Name"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Types}" SelectedValue="{Binding Vehicle.TypeId}" DisplayMemberPath="Name" SelectedValuePath="Id"/>
                     </Grid>
                     <Grid Margin="2">
                         <Grid.ColumnDefinitions>
@@ -52,7 +52,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Статус автомобиля:"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding Statuses}" SelectedItem="{Binding Vehicle.Status}" DisplayMemberPath="Name"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Statuses}" SelectedValue="{Binding Vehicle.StatusId}" DisplayMemberPath="Name" SelectedValuePath="Id"/>
                     </Grid>
                 </StackPanel>
             </Border>

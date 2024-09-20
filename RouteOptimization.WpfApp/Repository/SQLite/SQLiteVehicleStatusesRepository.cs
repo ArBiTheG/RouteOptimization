@@ -36,7 +36,7 @@ namespace RouteOptimization.WpfApp.Repository.SQLite
         {
             using SQLiteContext context = new SQLiteContext();
             await context.VehicleStatuses.LoadAsync();
-            return context.VehicleStatuses.Local.ToArray();
+            return context.VehicleStatuses.ToArray();
         }
 
         public async Task<VehicleStatus?> GetByID(int id)

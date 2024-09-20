@@ -28,6 +28,8 @@
                 <DataTemplate>
                     <StackPanel>
                         <TextBlock Text="{Binding Name}" FontSize="14" />
+                        <TextBlock Text="{Binding Origin.Name, StringFormat='Место отбытия: {0}'}" FontSize="10" />
+                        <TextBlock Text="{Binding Destination.Name, StringFormat='Место прибытия: {0}'}" FontSize="10" />
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

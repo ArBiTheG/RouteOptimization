@@ -17,7 +17,7 @@ namespace RouteOptimization.WpfApp.ViewModel.Dialogs
         ILocationsRepository _locationRepository;
 
         IShipment? _shipment;
-        ObservableCollection<Location?>? _locations;
+        List<Location?>? _locations;
 
         public IShipment? Shipment 
         { 
@@ -29,7 +29,7 @@ namespace RouteOptimization.WpfApp.ViewModel.Dialogs
             } 
         }
 
-        public ObservableCollection<Location?>? Locations 
+        public List<Location?>? Locations 
         { 
             get => _locations;
             set

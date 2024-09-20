@@ -8,7 +8,7 @@ namespace RouteOptimization.WpfApp.Models
 {
     public interface IRoute
     {
-        int Id { get; set; }
+        int Id { get; }
         int StartLocationId { get; set; }
         Location? StartLocation { get; set; }
         int EndLocationId { get; set; }

@@ -36,7 +36,7 @@ namespace RouteOptimization.WpfApp.Repository.SQLite
         {
             using SQLiteContext context = new SQLiteContext();
             await context.Locations.LoadAsync();
-            return context.Locations.Local.ToArray();
+            return context.Locations.ToArray();
         }
 
         public async Task<Location?> GetByID(int id)
