@@ -8,10 +8,10 @@ namespace RouteOptimization.Models
 {
     public interface IVehicle
     {
-        int Id { get; set; }
-        IVehicleType? Type { get; set; }
+        int Id { get; }
+        VehicleType? Type { get; set; }
         double Capacity { get; set; }
         string LicensePlate { get; set; }
-        IVehicleStatus? Status { get; set; }
+        VehicleStatus? Status { get; set; }
     }
 }

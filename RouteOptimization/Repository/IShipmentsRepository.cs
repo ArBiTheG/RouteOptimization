@@ -9,10 +9,10 @@ namespace RouteOptimization.Repository
 {
     public interface IShipmentsRepository
     {
-        Task<IEnumerable<IShipment?>> GetAll();
-        Task<IShipment?> GetByID(int id);
-        Task<IShipment?> Create(IShipment entity);
-        Task Edit(IShipment entity);
-        Task Delete(IShipment entity);
+        Task<IEnumerable<Shipment?>> GetAll();
+        Task<Shipment?> GetByID(int id);
+        Task<Shipment?> Create(Shipment entity);
+        Task Edit(Shipment entity);
+        Task Delete(Shipment entity);
     }
 }

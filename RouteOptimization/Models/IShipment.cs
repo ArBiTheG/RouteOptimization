@@ -8,10 +8,11 @@ namespace RouteOptimization.Models
 {
     public interface IShipment
     {
-        int Id { get; set; }
+        int Id { get; }
+        string Name { get; set; }
         double Weight { get; set; }
         DateTime DateTime { get; set; }
-        ILocation? Origin { get; set; }
-        ILocation? Destination { get; set; }
+        Location? Origin { get; set; }
+        Location? Destination { get; set; }
     }
 }

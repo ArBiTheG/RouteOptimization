@@ -10,7 +10,7 @@ namespace RouteOptimization.Repository.SQLite
 {
     public class SQLiteRoutesRepository : IRoutesRepository
     {
-        public async Task<IRoute?> Create(IRoute entity)
+        public async Task<Route?> Create(Route entity)
         {
             using SQLiteContext context = new SQLiteContext();
             await context.Routes.AddAsync(entity);
@@ -18,28 +18,28 @@ namespace RouteOptimization.Repository.SQLite
             return entity;
         }
 
-        public async Task Delete(IRoute entity)
+        public async Task Delete(Route entity)
         {
             using SQLiteContext context = new SQLiteContext();
             context.Routes.Remove(entity);
             await context.SaveChangesAsync();
         }
 
-        public async Task Edit(IRoute entity)
+        public async Task Edit(Route entity)
         {
             using SQLiteContext context = new SQLiteContext();
             context.Routes.Entry(entity).State = EntityState.Modified;
             await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<IRoute?>> GetAll()
+        public async Task<IEnumerable<Route?>> GetAll()
         {
             using SQLiteContext context = new SQLiteContext();
             await context.Routes.LoadAsync();
             return context.Routes.Local.ToArray();
         }
 
-        public async Task<IRoute?> GetByID(int id)
+        public async Task<Route?> GetByID(int id)
         {
             using SQLiteContext context = new SQLiteContext();
             return await context.Routes.FirstOrDefaultAsync(c => c.Id == id);

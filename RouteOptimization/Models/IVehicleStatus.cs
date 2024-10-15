@@ -8,7 +8,7 @@ namespace RouteOptimization.Models
 {
     public interface IVehicleStatus
     {
-        int Id { get; set; }
+        int Id { get; }
         string Name { get; set; }
     }
 }

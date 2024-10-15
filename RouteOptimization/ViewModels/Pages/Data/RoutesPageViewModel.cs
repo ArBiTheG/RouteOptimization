@@ -2,11 +2,13 @@
 using RouteOptimization.Models;
 using RouteOptimization.Repository;
 using RouteOptimization.Repository.SQLite;
+using RouteOptimization.ViewModels.Pages.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,6 +24,9 @@ namespace RouteOptimization.ViewModels.Pages.Data
             get => _list;
             set => this.RaiseAndSetIfChanged(ref _list, value);
         }
+
+        public Interaction<RoutesDialogViewModel, IRoute?> ShowDialog { get; }
+
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
         public ReactiveCommand<IRoute, Unit> EditCommand { get; }
@@ -30,28 +35,29 @@ namespace RouteOptimization.ViewModels.Pages.Data
         {
             _repository = new SQLiteRoutesRepository();
 
-            LoadCommand = ReactiveCommand.Create(ExecuteLoadCommand);
-            AddCommand = ReactiveCommand.Create(ExecuteAddCommand);
-            EditCommand = ReactiveCommand.Create<IRoute>(ExecuteEditCommand);
-            DeleteCommand = ReactiveCommand.Create<IRoute>(ExecuteDeleteCommand);
+            ShowDialog = new Interaction<RoutesDialogViewModel, IRoute?>();
+
+            LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
+            AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<IRoute>(ExecuteEditCommand);
+            DeleteCommand = ReactiveCommand.CreateFromTask<IRoute>(ExecuteDeleteCommand);
         }
-        private void ExecuteLoadCommand()
+        private async Task ExecuteLoadCommand()
         {
-            Task.Run(async () =>
-            {
-                List = new ObservableCollection<IRoute?>(await _repository.GetAll());
-            });
+            List = new ObservableCollection<IRoute?>(await _repository.GetAll());
         }
 
-        private void ExecuteAddCommand()
+        private async Task ExecuteAddCommand()
+        {
+            var dialog = new RoutesDialogViewModel();
+
+            var result = await ShowDialog.Handle(dialog);
+        }
+        private async Task ExecuteEditCommand(IRoute location)
         {
 
         }
-        private void ExecuteEditCommand(IRoute location)
-        {
-
-        }
-        private void ExecuteDeleteCommand(IRoute location)
+        private async Task ExecuteDeleteCommand(IRoute location)
         {
 
         }

@@ -9,10 +9,10 @@ namespace RouteOptimization.Repository
 {
     public interface IRoutesRepository
     {
-        Task<IEnumerable<IRoute?>> GetAll();
-        Task<IRoute?> GetByID(int id);
-        Task<IRoute?> Create(IRoute entity);
-        Task Edit(IRoute entity);
-        Task Delete(IRoute entity);
+        Task<IEnumerable<Route?>> GetAll();
+        Task<Route?> GetByID(int id);
+        Task<Route?> Create(Route entity);
+        Task Edit(Route entity);
+        Task Delete(Route entity);
     }
 }

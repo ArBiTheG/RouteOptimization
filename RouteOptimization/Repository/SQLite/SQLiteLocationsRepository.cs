@@ -10,7 +10,7 @@ namespace RouteOptimization.Repository.SQLite
 {
     public class SQLiteLocationsRepository : ILocationsRepository
     {
-        public async Task<ILocation?> Create(ILocation entity)
+        public async Task<Location?> Create(Location entity)
         {
             using SQLiteContext context = new SQLiteContext();
             await context.Locations.AddAsync(entity);
@@ -18,28 +18,28 @@ namespace RouteOptimization.Repository.SQLite
             return entity;
         }
 
-        public async Task Delete(ILocation entity)
+        public async Task Delete(Location entity)
         {
             using SQLiteContext context = new SQLiteContext();
             context.Locations.Remove(entity);
             await context.SaveChangesAsync();
         }
 
-        public async Task Edit(ILocation entity)
+        public async Task Edit(Location entity)
         {
             using SQLiteContext context = new SQLiteContext();
             context.Locations.Entry(entity).State = EntityState.Modified;
             await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ILocation?>> GetAll()
+        public async Task<IEnumerable<Location?>> GetAll()
         {
             using SQLiteContext context = new SQLiteContext();
             await context.Locations.LoadAsync();
-            return context.Locations.Local.ToArray();
+            return context.Locations.ToArray();
         }
 
-        public async Task<ILocation?> GetByID(int id)
+        public async Task<Location?> GetByID(int id)
         {
             using SQLiteContext context = new SQLiteContext();
             return await context.Locations.FirstOrDefaultAsync(c => c.Id == id);

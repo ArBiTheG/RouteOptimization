@@ -8,11 +8,11 @@ namespace RouteOptimization.Models
 {
     public interface IRoute
     {
-        int Id { get; set; }
+        int Id { get; }
         int StartLocationId { get; set; }
-        ILocation? StartLocation { get; set; }
+        Location? StartLocation { get; set; }
         int EndLocationId { get; set; }
-        ILocation? EndLocation { get; set; }
+        Location? EndLocation { get; set; }
         double Distance { get; set; }
         double Time { get; set; }
     }

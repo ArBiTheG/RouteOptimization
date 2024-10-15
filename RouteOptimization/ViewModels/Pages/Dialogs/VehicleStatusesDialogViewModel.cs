@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RouteOptimization.Models
+namespace RouteOptimization.ViewModels.Pages.Dialogs
 {
-    public interface IVehicleType
+    public class VehicleStatusesDialogViewModel : ViewModelBase
     {
-        int Id { get; }
-        string? Name { get; set; }
     }
 }

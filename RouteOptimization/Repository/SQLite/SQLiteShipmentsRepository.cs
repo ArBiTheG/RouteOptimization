@@ -10,7 +10,7 @@ namespace RouteOptimization.Repository.SQLite
 {
     public class SQLiteShipmentsRepository : IShipmentsRepository
     {
-        public async Task<IShipment?> Create(IShipment entity)
+        public async Task<Shipment?> Create(Shipment entity)
         {
             using SQLiteContext context = new SQLiteContext();
             await context.Shipments.AddAsync(entity);
@@ -18,28 +18,28 @@ namespace RouteOptimization.Repository.SQLite
             return entity;
         }
 
-        public async Task Delete(IShipment entity)
+        public async Task Delete(Shipment entity)
         {
             using SQLiteContext context = new SQLiteContext();
             context.Shipments.Remove(entity);
             await context.SaveChangesAsync();
         }
 
-        public async Task Edit(IShipment entity)
+        public async Task Edit(Shipment entity)
         {
             using SQLiteContext context = new SQLiteContext();
             context.Shipments.Entry(entity).State = EntityState.Modified;
             await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<IShipment?>> GetAll()
+        public async Task<IEnumerable<Shipment?>> GetAll()
         {
             using SQLiteContext context = new SQLiteContext();
             await context.Shipments.LoadAsync();
             return context.Shipments.Local.ToArray();
         }
 
-        public async Task<IShipment?> GetByID(int id)
+        public async Task<Shipment?> GetByID(int id)
         {
             using SQLiteContext context = new SQLiteContext();
             return await context.Shipments.FirstOrDefaultAsync(c => c.Id == id);
