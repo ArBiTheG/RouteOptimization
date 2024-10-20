@@ -21,29 +21,33 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
-        public ReactiveCommand<Unit, Location> ApplyCommand { get; }
+        public ReactiveCommand<bool, Location?> ApplyCommand { get; }
 
         public LocationsEditorViewModel()
         {
             _selectedLocation = new();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            ApplyCommand = ReactiveCommand.Create(ExecuteApplyCommand);
+            ApplyCommand = ReactiveCommand.Create<bool, Location?>(ExecuteApplyCommand);
         }
+
         public LocationsEditorViewModel(Location location)
         {
             _selectedLocation = location;
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            ApplyCommand = ReactiveCommand.Create(ExecuteApplyCommand);
+            ApplyCommand = ReactiveCommand.Create<bool, Location?>(ExecuteApplyCommand);
         }
 
         private async Task ExecuteLoadCommand()
         {
         }
-        private Location ExecuteApplyCommand()
+
+        private Location? ExecuteApplyCommand(bool arg)
         {
-            return SelectedLocation;
+            if (arg)
+                return SelectedLocation;
+            return null;
         }
     }
 }

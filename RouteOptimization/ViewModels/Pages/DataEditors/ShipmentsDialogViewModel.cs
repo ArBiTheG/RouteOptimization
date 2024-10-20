@@ -30,7 +30,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
-        public ReactiveCommand<Unit, Shipment> ApplyCommand { get; }
+        public ReactiveCommand<bool, Shipment?> ApplyCommand { get; }
 
         public ShipmentsEditorViewModel()
         {
@@ -39,7 +39,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
             _locationRepository = new SQLiteLocationsRepository();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            ApplyCommand = ReactiveCommand.Create(ExecuteApplyCommand);
+            ApplyCommand = ReactiveCommand.Create<bool, Shipment?>(ExecuteApplyCommand);
 
         }
 
@@ -50,16 +50,18 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
             _locationRepository = new SQLiteLocationsRepository();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            ApplyCommand = ReactiveCommand.Create(ExecuteApplyCommand);
+            ApplyCommand = ReactiveCommand.Create<bool, Shipment?>(ExecuteApplyCommand);
         }
 
         private async Task ExecuteLoadCommand()
         {
             Locations = new(await _locationRepository.GetAll());
         }
-        private Shipment ExecuteApplyCommand()
+        private Shipment? ExecuteApplyCommand(bool arg)
         {
-            return SelectedShipment;
+            if (arg)
+                return SelectedShipment;
+            return null;
         }
     }
 }

@@ -74,8 +74,8 @@
       </Border>
       <Border Grid.Row="1">
         <StackPanel Margin="2" HorizontalAlignment="Right" Orientation="Horizontal">
-          <Button Margin="2" Width="96" Content="ОК" IsDefault="True" Command="{Binding ApplyCommand}"/>
-          <Button Margin="2" Width="96" Content="Отмена" IsCancel="True"/>
+          <Button Margin="2" Width="96" Content="ОК" IsDefault="True"  Command="{Binding ApplyCommand}" CommandParameter="{x:True}"/>
+          <Button Margin="2" Width="96" Content="Отмена"  Command="{Binding ApplyCommand}" CommandParameter="{x:False}"/>
         </StackPanel>
       </Border>
     </Grid>

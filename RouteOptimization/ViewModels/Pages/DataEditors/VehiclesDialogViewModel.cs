@@ -37,7 +37,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
-        public ReactiveCommand<Unit, Vehicle> ApplyCommand { get; }
+        public ReactiveCommand<bool, Vehicle?> ApplyCommand { get; }
 
         public VehiclesEditorViewModel()
         {
@@ -47,7 +47,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
             _typesRepository = new SQLiteVehicleTypesRepository();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            ApplyCommand = ReactiveCommand.Create(ExecuteApplyCommand);
+            ApplyCommand = ReactiveCommand.Create<bool, Vehicle?>(ExecuteApplyCommand);
         }
         public VehiclesEditorViewModel(Vehicle vehicle)
         {
@@ -57,7 +57,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
             _typesRepository = new SQLiteVehicleTypesRepository();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            ApplyCommand = ReactiveCommand.Create(ExecuteApplyCommand);
+            ApplyCommand = ReactiveCommand.Create<bool, Vehicle?>(ExecuteApplyCommand);
         }
 
         private async Task ExecuteLoadCommand()
@@ -65,9 +65,11 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
             Types = new(await _typesRepository.GetAll());
             Statuses = new(await _statusesRepository.GetAll());
         }
-        private Vehicle ExecuteApplyCommand()
+        private Vehicle? ExecuteApplyCommand(bool arg)
         {
-            return SelectedVehicle;
+            if (arg)
+                return SelectedVehicle;
+            return null;
         }
     }
 }

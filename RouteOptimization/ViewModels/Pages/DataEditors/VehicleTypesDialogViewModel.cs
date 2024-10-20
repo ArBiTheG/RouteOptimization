@@ -20,29 +20,31 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
-        public ReactiveCommand<Unit, VehicleType> ApplyCommand { get; }
+        public ReactiveCommand<bool, VehicleType?> ApplyCommand { get; }
 
         public VehicleTypesEditorViewModel()
         {
             _selectedVehicleType = new();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            ApplyCommand = ReactiveCommand.Create(ExecuteApplyCommand);
+            ApplyCommand = ReactiveCommand.Create<bool, VehicleType?>(ExecuteApplyCommand);
         }
         public VehicleTypesEditorViewModel(VehicleType vehicleType)
         {
             _selectedVehicleType = vehicleType;
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            ApplyCommand = ReactiveCommand.Create(ExecuteApplyCommand);
+            ApplyCommand = ReactiveCommand.Create<bool, VehicleType?>(ExecuteApplyCommand);
         }
 
         private async Task ExecuteLoadCommand()
         {
         }
-        private VehicleType ExecuteApplyCommand()
+        private VehicleType? ExecuteApplyCommand(bool arg)
         {
-            return SelectedVehicleType;
+            if (arg)
+                return SelectedVehicleType;
+            return null;
         }
     }
 }
