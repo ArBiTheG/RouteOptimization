@@ -59,9 +59,16 @@ namespace RouteOptimization.ViewModels.Pages.Data
                 List?.Add(result);
             }
         }
-        private async Task ExecuteEditCommand(VehicleType location)
+        private async Task ExecuteEditCommand(VehicleType vehicleType)
         {
+            var dialog = new VehicleTypesDialogViewModel(vehicleType);
 
+            var result = await ShowDialog.Handle(dialog);
+            if (result != null)
+            {
+                await _repository.Create(result);
+                List?.Add(result);
+            }
         }
         private async Task ExecuteDeleteCommand(VehicleType location)
         {

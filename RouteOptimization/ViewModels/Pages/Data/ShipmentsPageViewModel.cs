@@ -60,9 +60,16 @@ namespace RouteOptimization.ViewModels.Pages.Data
                 List?.Add(result);
             }
         }
-        private async Task ExecuteEditCommand(Shipment location)
+        private async Task ExecuteEditCommand(Shipment shipment)
         {
+            var dialog = new ShipmentsDialogViewModel(shipment);
 
+            var result = await ShowDialog.Handle(dialog);
+            if (result != null)
+            {
+                await _repository.Create(result);
+                List?.Add(result);
+            }
         }
         private async Task ExecuteDeleteCommand(Shipment location)
         {

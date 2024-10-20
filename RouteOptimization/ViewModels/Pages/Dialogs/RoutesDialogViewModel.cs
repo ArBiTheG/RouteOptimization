@@ -43,6 +43,16 @@ namespace RouteOptimization.ViewModels.Pages.Dialogs
             ApplyCommand = ReactiveCommand.Create(ExecuteApplyCommand);
         }
 
+        public RoutesDialogViewModel(Route route)
+        {
+            _selectedRoute = route;
+
+            _locationRepository = new SQLiteLocationsRepository();
+
+            LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
+            ApplyCommand = ReactiveCommand.Create(ExecuteApplyCommand);
+        }
+
         private async Task ExecuteLoadCommand()
         {
             Locations = new(await _locationRepository.GetAll());

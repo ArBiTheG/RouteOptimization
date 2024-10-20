@@ -60,7 +60,14 @@ namespace RouteOptimization.ViewModels.Pages.Data
         }
         private async Task ExecuteEditCommand(Location location)
         {
+            var dialog = new LocationsDialogViewModel(location);
 
+            var result = await ShowDialog.Handle(dialog);
+            if (result != null)
+            {
+                await _repository.Create(result);
+                List?.Add(result);
+            }
         }
         private async Task ExecuteDeleteCommand(Location location)
         {

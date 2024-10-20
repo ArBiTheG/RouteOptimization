@@ -49,6 +49,16 @@ namespace RouteOptimization.ViewModels.Pages.Dialogs
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             ApplyCommand = ReactiveCommand.Create(ExecuteApplyCommand);
         }
+        public VehiclesDialogViewModel(Vehicle vehicle)
+        {
+            _selectedVehicle = vehicle;
+
+            _statusesRepository = new SQLiteVehicleStatusesRepository();
+            _typesRepository = new SQLiteVehicleTypesRepository();
+
+            LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
+            ApplyCommand = ReactiveCommand.Create(ExecuteApplyCommand);
+        }
 
         private async Task ExecuteLoadCommand()
         {

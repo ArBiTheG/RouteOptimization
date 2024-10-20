@@ -30,6 +30,13 @@ namespace RouteOptimization.ViewModels.Pages.Dialogs
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             ApplyCommand = ReactiveCommand.Create(ExecuteApplyCommand);
         }
+        public LocationsDialogViewModel(Location location)
+        {
+            _selectedLocation = location;
+
+            LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
+            ApplyCommand = ReactiveCommand.Create(ExecuteApplyCommand);
+        }
 
         private async Task ExecuteLoadCommand()
         {
