@@ -17,37 +17,37 @@ namespace RouteOptimization.ViewModels.Pages.Data
     public class VehicleStatusesPageViewModel : ViewModelBase
     {
         IVehicleStatusesRepository _repository;
-        ObservableCollection<IVehicleStatus?>? _list;
+        ObservableCollection<VehicleStatus?>? _list;
 
-        public ObservableCollection<IVehicleStatus?>? List
+        public ObservableCollection<VehicleStatus?>? List
         {
             get => _list;
             set => this.RaiseAndSetIfChanged(ref _list, value);
         }
 
-        public Interaction<VehicleStatusesDialogViewModel, IVehicleStatus?> ShowDialog { get; }
+        public Interaction<VehicleStatusesDialogViewModel, VehicleStatus?> ShowDialog { get; }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
-        public ReactiveCommand<IVehicleStatus, Unit> EditCommand { get; }
-        public ReactiveCommand<IVehicleStatus, Unit> DeleteCommand { get; }
+        public ReactiveCommand<VehicleStatus, Unit> EditCommand { get; }
+        public ReactiveCommand<VehicleStatus, Unit> DeleteCommand { get; }
 
         public VehicleStatusesPageViewModel()
         {
             _repository = new SQLiteVehicleStatusesRepository();
 
-            ShowDialog = new Interaction<VehicleStatusesDialogViewModel, IVehicleStatus?>();
+            ShowDialog = new Interaction<VehicleStatusesDialogViewModel, VehicleStatus?>();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
-            EditCommand = ReactiveCommand.CreateFromTask<IVehicleStatus>(ExecuteEditCommand);
-            DeleteCommand = ReactiveCommand.CreateFromTask<IVehicleStatus>(ExecuteDeleteCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<VehicleStatus>(ExecuteEditCommand);
+            DeleteCommand = ReactiveCommand.CreateFromTask<VehicleStatus>(ExecuteDeleteCommand);
         }
 
 
         private async Task ExecuteLoadCommand()
         {
-            List = new ObservableCollection<IVehicleStatus?>(await _repository.GetAll());
+            List = new ObservableCollection<VehicleStatus?>(await _repository.GetAll());
         }
 
         private async Task ExecuteAddCommand()
@@ -55,12 +55,17 @@ namespace RouteOptimization.ViewModels.Pages.Data
             var dialog = new VehicleStatusesDialogViewModel();
 
             var result = await ShowDialog.Handle(dialog);
+            if (result != null)
+            {
+                await _repository.Create(result);
+                List?.Add(result);
+            }
         }
-        private async Task ExecuteEditCommand(IVehicleStatus location)
+        private async Task ExecuteEditCommand(VehicleStatus location)
         {
 
         }
-        private async Task ExecuteDeleteCommand(IVehicleStatus location)
+        private async Task ExecuteDeleteCommand(VehicleStatus location)
         {
 
         }

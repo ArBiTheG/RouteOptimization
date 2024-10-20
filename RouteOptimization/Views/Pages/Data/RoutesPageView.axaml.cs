@@ -21,12 +21,12 @@ namespace RouteOptimization.Views.Pages.Data
                 action(ViewModel!.ShowDialog.RegisterHandler(DoShowDialogAsync)));
         }
         private async Task DoShowDialogAsync(InteractionContext<RoutesDialogViewModel,
-                                                IRoute?> interaction)
+                                                Route?> interaction)
         {
             var dialog = new RoutesDialogView();
             dialog.DataContext = interaction.Input;
 
-            var result = await dialog.ShowDialog<IRoute?>(GetWindow());
+            var result = await dialog.ShowDialog<Route?>(GetWindow());
             interaction.SetOutput(result);
         }
     }

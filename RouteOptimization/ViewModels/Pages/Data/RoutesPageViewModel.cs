@@ -17,34 +17,34 @@ namespace RouteOptimization.ViewModels.Pages.Data
     public class RoutesPageViewModel : ViewModelBase
     {
         IRoutesRepository _repository;
-        ObservableCollection<IRoute?>? _list;
+        ObservableCollection<Route?>? _list;
 
-        public ObservableCollection<IRoute?>? List
+        public ObservableCollection<Route?>? List
         {
             get => _list;
             set => this.RaiseAndSetIfChanged(ref _list, value);
         }
 
-        public Interaction<RoutesDialogViewModel, IRoute?> ShowDialog { get; }
+        public Interaction<RoutesDialogViewModel, Route?> ShowDialog { get; }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
-        public ReactiveCommand<IRoute, Unit> EditCommand { get; }
-        public ReactiveCommand<IRoute, Unit> DeleteCommand { get; }
+        public ReactiveCommand<Route, Unit> EditCommand { get; }
+        public ReactiveCommand<Route, Unit> DeleteCommand { get; }
         public RoutesPageViewModel()
         {
             _repository = new SQLiteRoutesRepository();
 
-            ShowDialog = new Interaction<RoutesDialogViewModel, IRoute?>();
+            ShowDialog = new Interaction<RoutesDialogViewModel, Route?>();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
-            EditCommand = ReactiveCommand.CreateFromTask<IRoute>(ExecuteEditCommand);
-            DeleteCommand = ReactiveCommand.CreateFromTask<IRoute>(ExecuteDeleteCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<Route>(ExecuteEditCommand);
+            DeleteCommand = ReactiveCommand.CreateFromTask<Route>(ExecuteDeleteCommand);
         }
         private async Task ExecuteLoadCommand()
         {
-            List = new ObservableCollection<IRoute?>(await _repository.GetAll());
+            List = new(await _repository.GetAll());
         }
 
         private async Task ExecuteAddCommand()
@@ -52,12 +52,17 @@ namespace RouteOptimization.ViewModels.Pages.Data
             var dialog = new RoutesDialogViewModel();
 
             var result = await ShowDialog.Handle(dialog);
+            if (result != null)
+            {
+                await _repository.Create(result);
+                List?.Add(result);
+            }
         }
-        private async Task ExecuteEditCommand(IRoute location)
+        private async Task ExecuteEditCommand(Route location)
         {
 
         }
-        private async Task ExecuteDeleteCommand(IRoute location)
+        private async Task ExecuteDeleteCommand(Route location)
         {
 
         }

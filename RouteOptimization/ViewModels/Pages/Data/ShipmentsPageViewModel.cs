@@ -17,36 +17,36 @@ namespace RouteOptimization.ViewModels.Pages.Data
     public class ShipmentsPageViewModel : ViewModelBase
     {
         IShipmentsRepository _repository;
-        ObservableCollection<IShipment?>? _list;
+        ObservableCollection<Shipment?>? _list;
 
-        public ObservableCollection<IShipment?>? List
+        public ObservableCollection<Shipment?>? List
         {
             get => _list;
             set => this.RaiseAndSetIfChanged(ref _list, value);
         }
 
-        public Interaction<ShipmentsDialogViewModel, IShipment?> ShowDialog { get; }
+        public Interaction<ShipmentsDialogViewModel, Shipment?> ShowDialog { get; }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
-        public ReactiveCommand<IShipment, Unit> EditCommand { get; }
-        public ReactiveCommand<IShipment, Unit> DeleteCommand { get; }
+        public ReactiveCommand<Shipment, Unit> EditCommand { get; }
+        public ReactiveCommand<Shipment, Unit> DeleteCommand { get; }
 
         public ShipmentsPageViewModel()
         {
             _repository = new SQLiteShipmentsRepository();
 
-            ShowDialog = new Interaction<ShipmentsDialogViewModel, IShipment?>();
+            ShowDialog = new Interaction<ShipmentsDialogViewModel, Shipment?>();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
-            EditCommand = ReactiveCommand.CreateFromTask<IShipment>(ExecuteEditCommand);
-            DeleteCommand = ReactiveCommand.CreateFromTask<IShipment>(ExecuteDeleteCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<Shipment>(ExecuteEditCommand);
+            DeleteCommand = ReactiveCommand.CreateFromTask<Shipment>(ExecuteDeleteCommand);
         }
 
         private async Task ExecuteLoadCommand()
         {
-            List = new ObservableCollection<IShipment?>(await _repository.GetAll());
+            List = new ObservableCollection<Shipment?>(await _repository.GetAll());
         }
 
         private async Task ExecuteAddCommand()
@@ -54,12 +54,17 @@ namespace RouteOptimization.ViewModels.Pages.Data
             var dialog = new ShipmentsDialogViewModel();
 
             var result = await ShowDialog.Handle(dialog);
+            if (result != null)
+            {
+                await _repository.Create(result);
+                List?.Add(result);
+            }
         }
-        private async Task ExecuteEditCommand(IShipment location)
+        private async Task ExecuteEditCommand(Shipment location)
         {
 
         }
-        private async Task ExecuteDeleteCommand(IShipment location)
+        private async Task ExecuteDeleteCommand(Shipment location)
         {
 
         }

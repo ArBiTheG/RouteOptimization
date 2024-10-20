@@ -1,6 +1,8 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+        xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" 
         xmlns:vm="clr-namespace:RouteOptimization.ViewModels.Pages.Dialogs"
@@ -12,7 +14,38 @@
   <Design.DataContext>
     <!-- This only sets the DataContext for the previewer in an IDE,
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-    <vm:LocationsDialogViewModel />
+    <vm:VehicleTypesDialogViewModel />
   </Design.DataContext>
-  Welcome to Avalonia!
+  <i:Interaction.Behaviors>
+    <ia:EventTriggerBehavior EventName="Loaded">
+      <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
+    </ia:EventTriggerBehavior>
+  </i:Interaction.Behaviors>
+  <Grid Margin="4">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="1*"/>
+        <RowDefinition Height="32"/>
+      </Grid.RowDefinitions>
+      <Border Grid.Row="0">
+        <StackPanel>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition/>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Имя:"/>
+            <TextBox Grid.Column="1" Text="{Binding SelectedVehicleType.Name}"/>
+          </Grid>
+        </StackPanel>
+      </Border>
+      <Border Grid.Row="1">
+        <StackPanel Margin="2" HorizontalAlignment="Right" Orientation="Horizontal">
+          <Button Margin="2" Width="96" Content="ОК" IsDefault="True" Command="{Binding ApplyCommand}"/>
+          <Button Margin="2" Width="96" Content="Отмена" IsCancel="True"/>
+        </StackPanel>
+      </Border>
+    </Grid>
+
+  </Grid>
 </Window>

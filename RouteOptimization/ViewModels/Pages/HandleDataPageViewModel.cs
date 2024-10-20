@@ -26,6 +26,10 @@ namespace RouteOptimization.ViewModels.Pages
         private HistoryRouter<ViewModelBase> _router;
         public ReactiveCommand<string, Unit> OpenPage { get; }
 
+        public HandleDataPageViewModel()
+        {
+
+        }
 
         public HandleDataPageViewModel(HistoryRouter<ViewModelBase> router)
         {

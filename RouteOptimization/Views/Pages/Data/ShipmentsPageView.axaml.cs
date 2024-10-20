@@ -21,12 +21,12 @@ namespace RouteOptimization.Views.Pages.Data
                 action(ViewModel!.ShowDialog.RegisterHandler(DoShowDialogAsync)));
         }
         private async Task DoShowDialogAsync(InteractionContext<ShipmentsDialogViewModel,
-                                                IShipment?> interaction)
+                                                Shipment?> interaction)
         {
             var dialog = new ShipmentsDialogView();
             dialog.DataContext = interaction.Input;
 
-            var result = await dialog.ShowDialog<IShipment?>(GetWindow());
+            var result = await dialog.ShowDialog<Shipment?>(GetWindow());
             interaction.SetOutput(result);
         }
     }

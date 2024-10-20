@@ -21,12 +21,12 @@ namespace RouteOptimization.Views.Pages.Data
                 action(ViewModel!.ShowDialog.RegisterHandler(DoShowDialogAsync)));
         }
         private async Task DoShowDialogAsync(InteractionContext<LocationsDialogViewModel,
-                                                ILocation?> interaction)
+                                                Models.Location?> interaction)
         {
             var dialog = new LocationsDialogView();
             dialog.DataContext = interaction.Input;
 
-            var result = await dialog.ShowDialog<ILocation?>(GetWindow());
+            var result = await dialog.ShowDialog<Models.Location?>(GetWindow());
             interaction.SetOutput(result);
         }
     }
