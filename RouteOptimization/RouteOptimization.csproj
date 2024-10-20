@@ -26,4 +26,34 @@
   <ItemGroup>
     <Folder Include="Assets\Icons\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\Pages\DataViewers\LocationsView.axaml.cs">
+      <DependentUpon>LocationsView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Pages\DataViewers\RoutesView.axaml.cs">
+      <DependentUpon>RoutesView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Pages\DataViewers\ShipmentsView.axaml.cs">
+      <DependentUpon>ShipmentsView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Pages\DataViewers\VehiclesView.axaml.cs">
+      <DependentUpon>VehiclesView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Pages\DataViewers\VehicleTypesView.axaml.cs">
+      <DependentUpon>VehicleTypesView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Pages\DatabaseView.axaml.cs">
+      <DependentUpon>DatabaseView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Pages\HomeView.axaml.cs">
+      <DependentUpon>HomeView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Pages\MapBuilderView.axaml.cs">
+      <DependentUpon>MapBuilderView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Pages\MapRouteView.axaml.cs">
+      <DependentUpon>MapRouteView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

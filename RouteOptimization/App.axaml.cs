@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using RouteOptimization.ViewModels;
 using RouteOptimization.ViewModels.Pages;
-using RouteOptimization.ViewModels.Pages.Data;
+using RouteOptimization.ViewModels.Pages.DataViewers;
 using RouteOptimization.Views;
 using System;
 
@@ -48,17 +48,17 @@ public partial class App : Application
         // Add the ViewModels as a service (Main as singleton, others as transient)
         services.AddSingleton<MainViewModel>();
 
-        services.AddTransient<HomePageViewModel>();
-        services.AddTransient<HandleDataPageViewModel>();
-        services.AddTransient<MapBuilderPageViewModel>();
-        services.AddTransient<MapRoutePageViewModel>();
+        services.AddTransient<HomeViewModel>();
+        services.AddTransient<DatabaseViewModel>();
+        services.AddTransient<MapBuilderViewModel>();
+        services.AddTransient<MapRouteViewModel>();
 
-        services.AddTransient<LocationsPageViewModel>();
-        services.AddTransient<RoutesPageViewModel>();
-        services.AddTransient<ShipmentsPageViewModel>();
-        services.AddTransient<VehiclesPageViewModel>();
-        services.AddTransient<VehicleStatusesPageViewModel>();
-        services.AddTransient<VehicleTypesPageViewModel>();
+        services.AddTransient<LocationsViewModel>();
+        services.AddTransient<RoutesViewModel>();
+        services.AddTransient<ShipmentsViewModel>();
+        services.AddTransient<VehiclesViewModel>();
+        services.AddTransient<VehicleStatusesViewModel>();
+        services.AddTransient<VehicleTypesViewModel>();
 
         return services.BuildServiceProvider();
     }

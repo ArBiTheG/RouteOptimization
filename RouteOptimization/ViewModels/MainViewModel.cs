@@ -14,10 +14,10 @@ public class MainViewModel : ViewModelBase
 {
     private PageItem[] PageItems { get; } =
     {
-            new PageItem("Home", typeof(HomePageViewModel)),
-            new PageItem("Handle", typeof(HandleDataPageViewModel)),
-            new PageItem("Builder", typeof(MapBuilderPageViewModel)),
-            new PageItem("Route", typeof(MapRoutePageViewModel)),
+            new PageItem("Home", typeof(HomeViewModel)),
+            new PageItem("Handle", typeof(DatabaseViewModel)),
+            new PageItem("Builder", typeof(MapBuilderViewModel)),
+            new PageItem("Route", typeof(MapRouteViewModel)),
     };
 
     private bool _isPaneOpen = false;
@@ -46,7 +46,7 @@ public class MainViewModel : ViewModelBase
         _router = router;
         _router.CurrentViewModelChanged += (viewModel) => CurrentPage = viewModel;
 
-        _router.GoTo(typeof(HomePageViewModel));
+        _router.GoTo(typeof(HomeViewModel));
 
         PaneOpenCloseCommand = ReactiveCommand.Create(ExecutePaneOpenCloseCommand);
         OpenPage = ReactiveCommand.Create<string>(ExecuteOpenPage);
