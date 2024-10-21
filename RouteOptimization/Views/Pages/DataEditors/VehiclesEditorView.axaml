@@ -17,59 +17,32 @@
       <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
     </ia:EventTriggerBehavior>
   </i:Interaction.Behaviors>
-  <Grid Margin="4">
-    <Grid>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="1*"/>
-        <RowDefinition Height="32"/>
-      </Grid.RowDefinitions>
-      <Border Grid.Row="0">
-        <StackPanel>
-          <Grid Margin="2">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="2*"/>
-              <ColumnDefinition Width="2*"/>
-              <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="Номер грузовика:"/>
-            <TextBox Grid.Column="1" Text="{Binding SelectedVehicle.LicensePlate}"/>
-          </Grid>
-          <Grid Margin="2">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="2*"/>
-              <ColumnDefinition Width="2*"/>
-              <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="Вместимость:"/>
-            <TextBox Grid.Column="1" Text="{Binding SelectedVehicle.Capacity}"/>
-          </Grid>
-          <Grid Margin="2">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="2*"/>
-              <ColumnDefinition Width="2*"/>
-              <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="Тип автомобиля:"/>
-            <ComboBox Grid.Column="1" ItemsSource="{Binding Types}" SelectedValue="{Binding SelectedVehicle.TypeId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
-          </Grid>
-          <Grid Margin="2">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="2*"/>
-              <ColumnDefinition Width="2*"/>
-              <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="Статус автомобиля:"/>
-            <ComboBox Grid.Column="1" ItemsSource="{Binding Statuses}" SelectedValue="{Binding SelectedVehicle.StatusId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
-          </Grid>
-        </StackPanel>
-      </Border>
-      <Border Grid.Row="1">
-        <StackPanel Margin="2" HorizontalAlignment="Right" Orientation="Horizontal">
-          <Button Margin="2" Width="96" Content="ОК" IsDefault="True"  Command="{Binding ApplyCommand}" CommandParameter="{x:True}"/>
-          <Button Margin="2" Width="96" Content="Отмена" Command="{Binding ApplyCommand}" CommandParameter="{x:False}"/>
-        </StackPanel>
-      </Border>
-    </Grid>
-
+  <Grid Grid.RowDefinitions="1*,36">
+    <Border Grid.Row="0">
+      <StackPanel>
+        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Номер грузовика:"/>
+          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedVehicle.LicensePlate}"/>
+        </Grid>
+        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Вместимость:"/>
+          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedVehicle.Capacity}"/>
+        </Grid>
+        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Тип автомобиля:"/>
+          <ComboBox Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Types}" SelectedValue="{Binding SelectedVehicle.TypeId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+        </Grid>
+        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Статус автомобиля:"/>
+          <ComboBox Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Statuses}" SelectedValue="{Binding SelectedVehicle.StatusId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+        </Grid>
+      </StackPanel>
+    </Border>
+    <Border Grid.Row="1">
+      <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+        <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="ОК" IsDefault="True"  Command="{Binding ApplyCommand}" CommandParameter="{x:True}"/>
+        <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="Отмена" Command="{Binding ApplyCommand}" CommandParameter="{x:False}"/>
+      </StackPanel>
+    </Border>
   </Grid>
 </UserControl>

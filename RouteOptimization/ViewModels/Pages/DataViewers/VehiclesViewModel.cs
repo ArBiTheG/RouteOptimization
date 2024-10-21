@@ -26,6 +26,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         }
 
         public Interaction<VehiclesEditorViewModel, Vehicle?> ShowDialog { get; }
+        public Interaction<DeleteViewModel, bool> ShowDeleteDialog { get; }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
@@ -37,6 +38,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             _repository = new SQLiteVehiclesRepository();
 
             ShowDialog = new Interaction<VehiclesEditorViewModel, Vehicle?>();
+            ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
@@ -67,13 +69,20 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
             {
-                await _repository.Create(result);
-                List?.Add(result);
+                await _repository.Edit(result);
             }
         }
-        private async Task ExecuteDeleteCommand(Vehicle location)
+        private async Task ExecuteDeleteCommand(Vehicle vehicle)
         {
 
+            var dialog = new DeleteViewModel();
+
+            var result = await ShowDeleteDialog.Handle(dialog);
+            if (result != false)
+            {
+                await _repository.Delete(vehicle);
+                List?.Remove(vehicle);
+            }
         }
     }
 }

@@ -19,14 +19,24 @@ namespace RouteOptimization.Views.Pages.DataViewers
             InitializeComponent();
             this.WhenActivated(action =>
                 action(ViewModel!.ShowDialog.RegisterHandler(DoShowDialogAsync)));
+            this.WhenActivated(action =>
+                action(ViewModel!.ShowDeleteDialog.RegisterHandler(DoShowDeleteDialogAsync)));
         }
-        private async Task DoShowDialogAsync(InteractionContext<RoutesEditorViewModel,
-                                                Route?> interaction)
+        private async Task DoShowDialogAsync(InteractionContext<RoutesEditorViewModel, Route?> interaction)
         {
             var dialog = new RoutesEditorWindow();
             dialog.DataContext = interaction.Input;
 
             var result = await dialog.ShowDialog<Route?>(GetWindow());
+            interaction.SetOutput(result);
+        }
+
+        private async Task DoShowDeleteDialogAsync(InteractionContext<DeleteViewModel, bool> interaction)
+        {
+            var dialog = new DeleteWindow();
+            dialog.DataContext = interaction.Input;
+
+            var result = await dialog.ShowDialog<bool>(GetWindow());
             interaction.SetOutput(result);
         }
     }
