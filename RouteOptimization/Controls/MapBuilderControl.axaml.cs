@@ -194,13 +194,9 @@ namespace RouteOptimization.Controls
             if (e.Pointer.Type == PointerType.Mouse)
             {
                 var properties = e.GetCurrentPoint(this).Properties;
-                if (properties.IsMiddleButtonPressed)
+                if (properties.IsLeftButtonPressed)
                 {
-                    _scene.PerformPress();
-                }
-                else if (properties.IsLeftButtonPressed)
-                {
-                    bool oneSelected = false;
+                    bool oneVertexSelected = false;
 
                     foreach (Vertex vertex in _vertices.Reverse())
                     {
@@ -208,9 +204,9 @@ namespace RouteOptimization.Controls
                         double cursorX = (pointerPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
                         double cursorY = (pointerPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
 
-                        if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size) && oneSelected == false)
+                        if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size) && oneVertexSelected == false)
                         {
-                            oneSelected = true;
+                            oneVertexSelected = true;
                             vertex.PerformPress();
                         }
                         else
@@ -224,9 +220,9 @@ namespace RouteOptimization.Controls
                         double cursorX = (pointerPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
                         double cursorY = (pointerPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
 
-                        if (RouteMath.CursorInLine(edge.VertexFrom.X, edge.VertexFrom.Y, edge.VertexTo.X, edge.VertexTo.Y, cursorX, cursorY, 4) && oneSelected == false)
+                        if (RouteMath.CursorInLine(edge.VertexFrom.X, edge.VertexFrom.Y, edge.VertexTo.X, edge.VertexTo.Y, cursorX, cursorY, 4) && oneVertexSelected == false)
                         {
-                            oneSelected = true;
+                            oneVertexSelected = true;
                             edge.PerformPress();
                         }
                         else
@@ -234,6 +230,11 @@ namespace RouteOptimization.Controls
                             edge.PerformRelease();
                         }
                     }
+                    if (!oneVertexSelected)
+                    {
+                        _scene.PerformPress();
+                    }
+
                 }
             }
             InvalidateVisual();
@@ -244,7 +245,7 @@ namespace RouteOptimization.Controls
             if (e.Pointer.Type == PointerType.Mouse)
             {
                 var properties = e.GetCurrentPoint(this).Properties;
-                if (!properties.IsMiddleButtonPressed)
+                if (!properties.IsLeftButtonPressed)
                 {
                     _scene.PerformRelease();
                 }
@@ -255,63 +256,68 @@ namespace RouteOptimization.Controls
             var pointerPosition = e.GetPosition(this);
             if (e.Pointer.Type == PointerType.Mouse)
             {
+                bool oneVertexSelected = false;
+
                 var properties = e.GetCurrentPoint(this).Properties;
-                if (properties.IsMiddleButtonPressed)
-                {
-                    _scene.PerformMove(new Point(
-                                (_pointerLastPressX - pointerPosition.X) / _scene.Zoom,
-                                (_pointerLastPressY - pointerPosition.Y) / _scene.Zoom
-                                ));
-                }
-                else if (properties.IsLeftButtonPressed)
+                if (properties.IsLeftButtonPressed)
                 {
                     foreach (Vertex vertex in _vertices)
                     {
                         if (vertex.Selected)
                         {
+                            oneVertexSelected = true;
                             vertex.PerformMove(new Point(
                                 (pointerPosition.X - _pointerLastPressX) / _scene.Zoom,
                                 (pointerPosition.Y - _pointerLastPressY) / _scene.Zoom
                                 ));
                         }
                     }
+                    if (!oneVertexSelected)
+                    {
+                        _scene.PerformMove(new Point(
+                                (_pointerLastPressX - pointerPosition.X) / _scene.Zoom,
+                                (_pointerLastPressY - pointerPosition.Y) / _scene.Zoom
+                                ));
+                    }
+                }
+
+                if (!oneVertexSelected)
+                {
+                    bool oneFocused = false;
+                    foreach (Vertex vertex in _vertices.Reverse())
+                    {
+                        var renderSize = Bounds.Size;
+                        double cursorX = (pointerPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
+                        double cursorY = (pointerPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
+
+                        if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size) && oneFocused == false)
+                        {
+                            oneFocused = true;
+                            vertex.PerformEnter();
+                        }
+                        else
+                        {
+                            vertex.PerformExit();
+                        }
+                    }
+                    foreach (Edge edge in _edges.Reverse())
+                    {
+                        var renderSize = Bounds.Size;
+                        double cursorX = (pointerPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
+                        double cursorY = (pointerPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
+
+                        if (RouteMath.CursorInLine(edge.VertexFrom.X, edge.VertexFrom.Y, edge.VertexTo.X, edge.VertexTo.Y, cursorX, cursorY, 4) && oneFocused == false)
+                        {
+                            oneFocused = true;
+                            edge.PerformEnter();
+                        }
+                        else
+                        {
+                            edge.PerformExit();
+                        }
+                    }
                 }
             }
-
-            bool oneFocused = false;
-            foreach (Vertex vertex in _vertices.Reverse())
-            {
-                var renderSize = Bounds.Size;
-                double cursorX = (pointerPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
-                double cursorY = (pointerPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
-
-                if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size) && oneFocused == false)
-                {
-                    oneFocused = true;
-                    vertex.PerformEnter();
-                }
-                else
-                {
-                    vertex.PerformExit();
-                }
-            }
-            foreach (Edge edge in _edges.Reverse())
-            {
-                var renderSize = Bounds.Size;
-                double cursorX = (pointerPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
-                double cursorY = (pointerPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
-
-                if (RouteMath.CursorInLine(edge.VertexFrom.X, edge.VertexFrom.Y, edge.VertexTo.X, edge.VertexTo.Y, cursorX, cursorY, 4) && oneFocused == false)
-                {
-                    oneFocused = true;
-                    edge.PerformEnter();
-                }
-                else
-                {
-                    edge.PerformExit();
-                }
-            }
-
             InvalidateVisual();
         }
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
