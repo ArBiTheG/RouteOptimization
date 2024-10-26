@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using Avalonia.Metadata;
+using ReactiveUI;
 using RouteOptimization.Controls.MapBuilder;
 using RouteOptimization.Models;
 using RouteOptimization.Repository;
@@ -7,6 +8,7 @@ using RouteOptimization.ViewModels.Pages.DataEditors;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Text;
@@ -17,19 +19,17 @@ namespace RouteOptimization.ViewModels.Pages
     public class MapBuilderViewModel: ViewModelBase
     {
         private static Scene _scene = new Scene(0, 0);
+
+        ObservableCollection<Location?>? _vertices;
         ILocationsRepository _repository;
 
         public Scene Scene { get => _scene; }
-
-
-        ObservableCollection<Location?>? _vertices;
 
         public ObservableCollection<Location?>? Vertices
         {
             get => _vertices;
             set => this.RaiseAndSetIfChanged(ref _vertices, value);
         }
-
         public ObservableCollection<Edge> Edges
         {
             get;
@@ -38,6 +38,8 @@ namespace RouteOptimization.ViewModels.Pages
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
+        public ReactiveCommand<Location, Unit> EditCommand { get; }
+        public ReactiveCommand<Location, Unit> DeleteCommand { get; }
 
         public MapBuilderViewModel()
         {
@@ -49,6 +51,8 @@ namespace RouteOptimization.ViewModels.Pages
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<Location>(ExecuteEditCommand);
+            DeleteCommand = ReactiveCommand.CreateFromTask<Location>(ExecuteDeleteCommand);
         }
 
         private async Task ExecuteLoadCommand()
@@ -66,6 +70,16 @@ namespace RouteOptimization.ViewModels.Pages
             };
             await _repository.Create(location);
             Vertices?.Add(location);
+        }
+
+        private async Task ExecuteEditCommand(Location location)
+        {
+
+        }
+        private async Task ExecuteDeleteCommand(Location location)
+        {
+            await _repository.Delete(location);
+            Vertices?.Remove(location);
         }
     }
 }

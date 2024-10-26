@@ -24,7 +24,10 @@
       <ColumnDefinition Width="256"/>
     </Grid.ColumnDefinitions>
     <Border Margin="2" Grid.Column="0" CornerRadius="4" BorderThickness="1" BorderBrush="Black" ClipToBounds="True">
-      <local:MapBuilderControl SceneSource="{Binding Scene}" VerticesSource="{Binding Vertices}" EdgesSource="{Binding Edges}"/>
+      <local:MapBuilderControl x:Name="map"
+                               Scene="{Binding Scene}" 
+                               Vertices="{Binding Vertices}" 
+                               Edges="{Binding Edges}"/>
     </Border>
 
     <Border Grid.Column="1">
@@ -33,6 +36,8 @@
           <StackPanel>
             <TextBlock Margin="0,0,0,8">Управление точками:</TextBlock>
             <Button Command="{Binding AddCommand}">Добавить точку</Button>
+            <Button Command="{Binding EditCommand}" CommandParameter="{Binding SelectedVertex, ElementName=map}">Рудактировать точку</Button>
+            <Button Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedVertex, ElementName=map}">Удалить точку</Button>
           </StackPanel>
         </Border>
 

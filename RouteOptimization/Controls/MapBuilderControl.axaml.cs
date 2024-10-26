@@ -20,134 +20,155 @@ namespace RouteOptimization.Controls
 {
     public partial class MapBuilderControl : Control
     {
-        //Цвета
-        private IBrush _brushBackground;
-        private IBrush _brushVertex;
-        private IBrush _brushVertexSelected;
-        private IBrush _brushVertexFocused;
-
         private IPen _penEdge;
         private IPen _penEdgeSelected;
         private IPen _penEdgeFocused;
-
         private IPen _penGridScene;
 
         private double _pointerLastPressX;
         private double _pointerLastPressY;
 
-        private Scene _scene = new Scene(0, 0);
-        private IEnumerable<Vertex> _vertices = new List<Vertex>();
-        private IEnumerable<Edge> _edges = new List<Edge>();
+        public static readonly StyledProperty<IBrush?> BackgroundProperty =
+            AvaloniaProperty.Register<MapBuilderControl, IBrush?>(nameof(Background), new SolidColorBrush(Color.FromArgb(127, 25, 25, 50)));
+        public IBrush? Background
+        {
+            get { return GetValue(BackgroundProperty); }
+            set { SetValue(BackgroundProperty, value); }
+        }
 
-        #region SceneSource property
-        public Scene SceneSource
+
+        public static readonly StyledProperty<IBrush?> VertexBrushProperty =
+            AvaloniaProperty.Register<MapBuilderControl, IBrush?>(nameof(VertexBrush), new SolidColorBrush(Color.FromArgb(255, 95, 95, 207)));
+        public IBrush? VertexBrush
+        {
+            get { return GetValue(VertexBrushProperty); }
+            set { SetValue(VertexBrushProperty, value); }
+        }
+
+
+        public static readonly StyledProperty<IBrush?> SelectedVertexBrushProperty =
+            AvaloniaProperty.Register<MapBuilderControl, IBrush?>(nameof(SelectedVertexBrush), new SolidColorBrush(Color.FromArgb(255, 191, 191, 255)));
+        public IBrush? SelectedVertexBrush
+        {
+            get { return GetValue(SelectedVertexBrushProperty); }
+            set { SetValue(SelectedVertexBrushProperty, value); }
+        }
+
+
+        public static readonly StyledProperty<IBrush?> FocusedVertexBrushProperty =
+            AvaloniaProperty.Register<MapBuilderControl, IBrush?>(nameof(FocusedVertexBrush), new SolidColorBrush(Color.FromArgb(255, 127, 127, 239)));
+        public IBrush? FocusedVertexBrush
+        {
+            get { return GetValue(FocusedVertexBrushProperty); }
+            set { SetValue(FocusedVertexBrushProperty, value); }
+        }
+
+
+        public static readonly StyledProperty<IBrush?> EdgeBrushProperty =
+            AvaloniaProperty.Register<MapBuilderControl, IBrush?>(nameof(EdgeBrush), new SolidColorBrush(Color.FromArgb(255, 64, 0, 159)));
+        public IBrush? EdgeBrush
+        {
+            get { return GetValue(EdgeBrushProperty); }
+            set { SetValue(EdgeBrushProperty, value); }
+        }
+
+
+        public static readonly StyledProperty<IBrush?> SelectedEdgeBrushProperty =
+            AvaloniaProperty.Register<MapBuilderControl, IBrush?>(nameof(SelectedEdgeBrush), new SolidColorBrush(Color.FromArgb(255, 112, 0, 255)));
+        public IBrush? SelectedEdgeBrush
+        {
+            get { return GetValue(SelectedEdgeBrushProperty); }
+            set { SetValue(SelectedEdgeBrushProperty, value); }
+        }
+
+
+        public static readonly StyledProperty<IBrush?> FocusedEdgeBrushProperty =
+            AvaloniaProperty.Register<MapBuilderControl, IBrush?>(nameof(FocusedEdgeBrush), new SolidColorBrush(Color.FromArgb(255, 80, 0, 191)));
+        public IBrush? FocusedEdgeBrush
+        {
+            get { return GetValue(FocusedEdgeBrushProperty); }
+            set { SetValue(FocusedEdgeBrushProperty, value); }
+        }
+
+
+        public static readonly StyledProperty<IBrush?> GridBrushProperty =
+            AvaloniaProperty.Register<MapBuilderControl, IBrush?>(nameof(GridBrush), new SolidColorBrush(Color.FromArgb(255, 25, 25, 50)));
+        public IBrush? GridBrush
+        {
+            get { return GetValue(GridBrushProperty); }
+            set { SetValue(GridBrushProperty, value); }
+        }
+
+
+        public static readonly DirectProperty<MapBuilderControl, Scene> SceneProperty =
+            AvaloniaProperty.RegisterDirect<MapBuilderControl, Scene>(
+                nameof(Scene),
+                o => o._scene,
+                (o, v) => o._scene = v);
+        private Scene _scene = new Scene(0, 0);
+        public Scene Scene
         {
             get { return _scene; }
-            set { SetAndRaise(SceneSourceProperty, ref _scene, value); }
+            set { SetAndRaise(SceneProperty, ref _scene, value); }
         }
-        public static readonly DirectProperty<MapBuilderControl, Scene> SceneSourceProperty = AvaloniaProperty.RegisterDirect<MapBuilderControl, Scene>("SceneSource", o => o._scene, (o, v) => o._scene = v);
-        private static void OnSceneSourcePropertyChanged(MapBuilderControl sender, AvaloniaPropertyChangedEventArgs e)
-        {
-            sender.OnScenePropertyChanged((Scene?)e.OldValue, (Scene?)e.NewValue);
-        }
-        private void OnScenePropertyChanged(Scene? oldValue, Scene? newValue)
-        {
-            var oldValueINotifyCollectionChanged = oldValue as INotifyCollectionChanged;
-            if (oldValueINotifyCollectionChanged != null)
-                oldValueINotifyCollectionChanged.CollectionChanged -= new NotifyCollectionChangedEventHandler(OnEdgesPropertyHandler);
-            var newValueINotifyCollectionChanged = newValue as INotifyCollectionChanged;
-            if (newValueINotifyCollectionChanged != null)
-                newValueINotifyCollectionChanged.CollectionChanged += new NotifyCollectionChangedEventHandler(OnEdgesPropertyHandler);
-        }
-        private void OnSceneSourcePropertyHandler(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            InvalidateVisual();
-        }
-        #endregion
 
-        #region EdgesSource property
-        public IEnumerable<Edge> EdgesSource
+        public static readonly DirectProperty<MapBuilderControl, Vertex?> SelectedVertexProperty =
+            AvaloniaProperty.RegisterDirect<MapBuilderControl, Vertex?>(
+                nameof(SelectedVertex),
+                o => o._selectedVertex,
+                (o, v) => o._selectedVertex = v);
+        private Vertex? _selectedVertex;
+        public Vertex? SelectedVertex
+        {
+            get { return _selectedVertex; }
+            set { SetAndRaise(SelectedVertexProperty, ref _selectedVertex, value); }
+        }
+
+
+        public static readonly DirectProperty<MapBuilderControl, IEnumerable<Edge>> EdgesProperty =
+            AvaloniaProperty.RegisterDirect<MapBuilderControl, IEnumerable<Edge>>(
+                nameof(Edges),
+                o => o._edges,
+                (o, v) => o._edges = v);
+        private IEnumerable<Edge> _edges = new List<Edge>();
+        public IEnumerable<Edge> Edges
         {
             get { return _edges; }
-            set { SetAndRaise(EdgesSourceProperty, ref _edges, value); }
+            set { SetAndRaise(EdgesProperty, ref _edges, value); }
         }
-        public static readonly DirectProperty<MapBuilderControl, IEnumerable<Edge>> EdgesSourceProperty = AvaloniaProperty.RegisterDirect<MapBuilderControl, IEnumerable<Edge>>("EdgesSource", o => o._edges, (o, v) => o._edges = v);
-        private static void OnEdgesSourcePropertyChanged(MapBuilderControl sender, AvaloniaPropertyChangedEventArgs e)
-        {
-            sender.OnEdgesPropertyChanged((IEnumerable?)e.OldValue, (IEnumerable?)e.NewValue);
-        }
-        private void OnEdgesPropertyChanged(IEnumerable? oldValue, IEnumerable? newValue)
-        {
-            var oldValueINotifyCollectionChanged = oldValue as INotifyCollectionChanged;
-            if (oldValueINotifyCollectionChanged != null)
-                oldValueINotifyCollectionChanged.CollectionChanged -= new NotifyCollectionChangedEventHandler(OnEdgesPropertyHandler);
-            var newValueINotifyCollectionChanged = newValue as INotifyCollectionChanged;
-            if (newValueINotifyCollectionChanged != null)
-                newValueINotifyCollectionChanged.CollectionChanged += new NotifyCollectionChangedEventHandler(OnEdgesPropertyHandler);
-        }
-        private void OnEdgesPropertyHandler(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            InvalidateVisual();
-        }
-        #endregion
-
-        #region VerticesSource property
-        public IEnumerable<Vertex> VerticesSource
+        
+        
+        public static readonly DirectProperty<MapBuilderControl, IEnumerable<Vertex>> VerticesProperty = 
+            AvaloniaProperty.RegisterDirect<MapBuilderControl, IEnumerable<Vertex>>(
+                nameof(Vertices), 
+                o => o._vertices, 
+                (o, v) => o._vertices = v);
+        private IEnumerable<Vertex> _vertices = new List<Vertex>();
+        public IEnumerable<Vertex> Vertices
         {
             get { return _vertices; }
-            set { SetAndRaise(VerticesSourceProperty, ref _vertices, value); }
+            set { SetAndRaise(VerticesProperty, ref _vertices, value); }
         }
-        public static readonly DirectProperty<MapBuilderControl, IEnumerable<Vertex>> VerticesSourceProperty = AvaloniaProperty.RegisterDirect<MapBuilderControl, IEnumerable<Vertex>>("VerticesSource", o => o._vertices, (o, v) => o._vertices = v);
-        private static void OnVerticesSourcePropertyChanged(MapBuilderControl sender, AvaloniaPropertyChangedEventArgs e)
-        {
-            sender.OnVerticesPropertyChanged((IEnumerable?)e.OldValue, (IEnumerable?)e.NewValue);
-        }
-        private void OnVerticesPropertyChanged(IEnumerable? oldValue, IEnumerable? newValue)
-        {
-            var oldValueINotifyCollectionChanged = oldValue as INotifyCollectionChanged;
-            if (oldValueINotifyCollectionChanged != null)
-                oldValueINotifyCollectionChanged.CollectionChanged -= new NotifyCollectionChangedEventHandler(OnVerticesPropertyHandler);
-            var newValueINotifyCollectionChanged = newValue as INotifyCollectionChanged;
-            if (newValueINotifyCollectionChanged != null)
-                newValueINotifyCollectionChanged.CollectionChanged += new NotifyCollectionChangedEventHandler(OnVerticesPropertyHandler);
-        }
-        private void OnVerticesPropertyHandler(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            InvalidateVisual();
-        }
-        #endregion
+
 
         public MapBuilderControl()
         {
-            SceneSourceProperty.Changed.AddClassHandler<MapBuilderControl>(OnSceneSourcePropertyChanged);
-            VerticesSourceProperty.Changed.AddClassHandler<MapBuilderControl>(OnVerticesSourcePropertyChanged);
-            EdgesSourceProperty.Changed.AddClassHandler<MapBuilderControl>(OnEdgesSourcePropertyChanged);
-
-            _brushBackground = new SolidColorBrush(Color.FromArgb(127, 25, 25, 50));
-
-            _brushVertex = new SolidColorBrush(Color.FromArgb(255,95,95,207));
-            _brushVertexFocused = new SolidColorBrush(Color.FromArgb(255, 127, 127, 239));
-            _brushVertexSelected = new SolidColorBrush(Color.FromArgb(255, 191, 191, 255));
-
-            _penEdge = new Pen(new SolidColorBrush(Color.FromArgb(255, 64,0,159)));
-            _penEdgeFocused = new Pen(new SolidColorBrush(Color.FromArgb(255, 80, 0, 191)));
-            _penEdgeSelected = new Pen(new SolidColorBrush(Color.FromArgb(255, 112, 0, 255)));
-
-            _penGridScene = new Pen(new SolidColorBrush(Color.FromArgb(255, 25, 25, 50)));
+            _penEdge = new Pen(EdgeBrush);
+            _penEdgeFocused = new Pen(FocusedEdgeBrush);
+            _penEdgeSelected = new Pen(SelectedEdgeBrush);
+            _penGridScene = new Pen(GridBrush);
 
             InitializeComponent();
         }
 
         #region Override control methods
-        public override void Render(DrawingContext context)
+        public sealed override void Render(DrawingContext context)
         {
-            base.Render(context);
-
-            if (_brushBackground != null)
+            if (Background != null)
             {
                 var renderSize = Bounds.Size;
-                context.FillRectangle(_brushBackground, new Rect(renderSize));
-            };
+                context.FillRectangle(Background, new Rect(renderSize));
+            }
 
             if (_scene.Zoom < 0.01)
             {
@@ -184,29 +205,33 @@ namespace RouteOptimization.Controls
                 DrawVertex(context, vertex);
             }
 
+            base.Render(context);
         }
+
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
-            var pointerPosition = e.GetPosition(this);
-            _pointerLastPressX = pointerPosition.X;
-            _pointerLastPressY = pointerPosition.Y;
+            var cursorPosition = e.GetPosition(this);
+            _pointerLastPressX = cursorPosition.X;
+            _pointerLastPressY = cursorPosition.Y;
 
             if (e.Pointer.Type == PointerType.Mouse)
             {
-                var properties = e.GetCurrentPoint(this).Properties;
-                if (properties.IsLeftButtonPressed)
+                var cursorProperties = e.GetCurrentPoint(this).Properties;
+                if (cursorProperties.IsLeftButtonPressed)
                 {
-                    bool oneVertexSelected = false;
+                    bool isSelectedVertex = false;
+                    SelectedVertex = null;
 
                     foreach (Vertex vertex in _vertices.Reverse())
                     {
                         var renderSize = Bounds.Size;
-                        double cursorX = (pointerPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
-                        double cursorY = (pointerPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
+                        double cursorX = (cursorPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
+                        double cursorY = (cursorPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
 
-                        if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size) && oneVertexSelected == false)
+                        if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size) && isSelectedVertex == false)
                         {
-                            oneVertexSelected = true;
+                            isSelectedVertex = true;
+                            SelectedVertex = vertex;
                             vertex.PerformPress();
                         }
                         else
@@ -217,12 +242,12 @@ namespace RouteOptimization.Controls
                     foreach (Edge edge in _edges.Reverse())
                     {
                         var renderSize = Bounds.Size;
-                        double cursorX = (pointerPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
-                        double cursorY = (pointerPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
+                        double cursorX = (cursorPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
+                        double cursorY = (cursorPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
 
-                        if (RouteMath.CursorInLine(edge.VertexFrom.X, edge.VertexFrom.Y, edge.VertexTo.X, edge.VertexTo.Y, cursorX, cursorY, 4) && oneVertexSelected == false)
+                        if (RouteMath.CursorInLine(edge.VertexFrom.X, edge.VertexFrom.Y, edge.VertexTo.X, edge.VertexTo.Y, cursorX, cursorY, 4) && isSelectedVertex == false)
                         {
-                            oneVertexSelected = true;
+                            isSelectedVertex = true;
                             edge.PerformPress();
                         }
                         else
@@ -230,7 +255,7 @@ namespace RouteOptimization.Controls
                             edge.PerformRelease();
                         }
                     }
-                    if (!oneVertexSelected)
+                    if (!isSelectedVertex)
                     {
                         _scene.PerformPress();
                     }
@@ -241,11 +266,11 @@ namespace RouteOptimization.Controls
         }
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
-            var pointerPosition = e.GetPosition(this);
+            var cursorPosition = e.GetPosition(this);
             if (e.Pointer.Type == PointerType.Mouse)
             {
-                var properties = e.GetCurrentPoint(this).Properties;
-                if (!properties.IsLeftButtonPressed)
+                var cursorProperties = e.GetCurrentPoint(this).Properties;
+                if (!cursorProperties.IsLeftButtonPressed)
                 {
                     _scene.PerformRelease();
                 }
@@ -253,42 +278,39 @@ namespace RouteOptimization.Controls
         }
         protected override void OnPointerMoved(PointerEventArgs e)
         {
-            var pointerPosition = e.GetPosition(this);
+            var cursorPosition = e.GetPosition(this);
             if (e.Pointer.Type == PointerType.Mouse)
             {
-                bool oneVertexSelected = false;
+                bool isSelectedVertex = false;
 
-                var properties = e.GetCurrentPoint(this).Properties;
-                if (properties.IsLeftButtonPressed)
+                var cursorProperties = e.GetCurrentPoint(this).Properties;
+                if (cursorProperties.IsLeftButtonPressed)
                 {
-                    foreach (Vertex vertex in _vertices)
+                    if (_selectedVertex != null)
                     {
-                        if (vertex.Selected)
-                        {
-                            oneVertexSelected = true;
-                            vertex.PerformMove(new Point(
-                                (pointerPosition.X - _pointerLastPressX) / _scene.Zoom,
-                                (pointerPosition.Y - _pointerLastPressY) / _scene.Zoom
-                                ));
-                        }
+                        isSelectedVertex = true;
+                        _selectedVertex.PerformMove(new Point(
+                            (cursorPosition.X - _pointerLastPressX) / _scene.Zoom,
+                            (cursorPosition.Y - _pointerLastPressY) / _scene.Zoom
+                            ));
                     }
-                    if (!oneVertexSelected)
+                    if (!isSelectedVertex)
                     {
                         _scene.PerformMove(new Point(
-                                (_pointerLastPressX - pointerPosition.X) / _scene.Zoom,
-                                (_pointerLastPressY - pointerPosition.Y) / _scene.Zoom
+                                (_pointerLastPressX - cursorPosition.X) / _scene.Zoom,
+                                (_pointerLastPressY - cursorPosition.Y) / _scene.Zoom
                                 ));
                     }
                 }
 
-                if (!oneVertexSelected)
+                if (!isSelectedVertex)
                 {
                     bool oneFocused = false;
                     foreach (Vertex vertex in _vertices.Reverse())
                     {
                         var renderSize = Bounds.Size;
-                        double cursorX = (pointerPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
-                        double cursorY = (pointerPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
+                        double cursorX = (cursorPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
+                        double cursorY = (cursorPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
 
                         if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size) && oneFocused == false)
                         {
@@ -303,8 +325,8 @@ namespace RouteOptimization.Controls
                     foreach (Edge edge in _edges.Reverse())
                     {
                         var renderSize = Bounds.Size;
-                        double cursorX = (pointerPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
-                        double cursorY = (pointerPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
+                        double cursorX = (cursorPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
+                        double cursorY = (cursorPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
 
                         if (RouteMath.CursorInLine(edge.VertexFrom.X, edge.VertexFrom.Y, edge.VertexTo.X, edge.VertexTo.Y, cursorX, cursorY, 4) && oneFocused == false)
                         {
@@ -354,15 +376,15 @@ namespace RouteOptimization.Controls
         {
             if (vertex.Selected)
             {
-                context.DrawEllipse(_brushVertexSelected, null, GetDrawPosition(vertex.X, vertex.Y), vertex.Size * _scene.Zoom, vertex.Size * _scene.Zoom);
+                context.DrawEllipse(SelectedVertexBrush, null, GetDrawPosition(vertex.X, vertex.Y), vertex.Size * _scene.Zoom, vertex.Size * _scene.Zoom);
             }
             else if (vertex.Focused)
             {
-                context.DrawEllipse(_brushVertexFocused, null, GetDrawPosition(vertex.X, vertex.Y), vertex.Size * _scene.Zoom, vertex.Size * _scene.Zoom);
+                context.DrawEllipse(FocusedVertexBrush, null, GetDrawPosition(vertex.X, vertex.Y), vertex.Size * _scene.Zoom, vertex.Size * _scene.Zoom);
             }
             else
             {
-                context.DrawEllipse(_brushVertex, null, GetDrawPosition(vertex.X, vertex.Y), vertex.Size * _scene.Zoom, vertex.Size * _scene.Zoom);
+                context.DrawEllipse(VertexBrush, null, GetDrawPosition(vertex.X, vertex.Y), vertex.Size * _scene.Zoom, vertex.Size * _scene.Zoom);
             }
         }
         private void DrawGrid(DrawingContext context, double gridSize)
