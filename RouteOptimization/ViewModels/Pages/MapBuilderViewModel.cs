@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,6 +37,8 @@ namespace RouteOptimization.ViewModels.Pages
             set;
         }
 
+        public Interaction<DeleteViewModel, bool> ShowDeleteDialog { get; }
+
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
         public ReactiveCommand<Location, Unit> EditCommand { get; }
@@ -45,9 +48,10 @@ namespace RouteOptimization.ViewModels.Pages
         {
             _repository = new SQLiteLocationsRepository();
 
-
             Vertices = new();
             Edges = new();
+
+            ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
@@ -74,12 +78,17 @@ namespace RouteOptimization.ViewModels.Pages
 
         private async Task ExecuteEditCommand(Location location)
         {
-
         }
         private async Task ExecuteDeleteCommand(Location location)
         {
-            await _repository.Delete(location);
-            Vertices?.Remove(location);
+            var dialog = new DeleteViewModel();
+
+            var result = await ShowDeleteDialog.Handle(dialog);
+            if (result != false)
+            {
+                await _repository.Delete(location);
+                Vertices?.Remove(location);
+            }
         }
     }
 }
