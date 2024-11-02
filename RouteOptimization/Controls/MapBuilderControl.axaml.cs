@@ -26,7 +26,6 @@ namespace RouteOptimization.Controls
     public partial class MapBuilderControl : Control
     {
         private IPen _penEdge;
-        private IPen _penEdgeSelected;
         private IPen _penEdgeFocused;
         private IPen _penGridScene;
 
@@ -37,8 +36,8 @@ namespace RouteOptimization.Controls
         private Vertex? _selectedVertex;
         private Vertex? _focusedVertex;
         private Edge? _focusedEdge;
-        private IEnumerable<Vertex> _vertices = new List<Vertex>();
-        private IEnumerable<Edge> _edges = new List<Edge>();
+        private IEnumerable<Vertex> _vertices;
+        private IEnumerable<Edge> _edges;
 
 
         #region Background Property
@@ -168,18 +167,32 @@ namespace RouteOptimization.Controls
         public IEnumerable<Vertex> Vertices
         {
             get { return _vertices; }
-            set { SetAndRaise(VerticesProperty, ref _vertices, value); }
+            set { 
+                SetAndRaise(VerticesProperty, ref _vertices, value); 
+            }
         }
         #endregion
 
         public MapBuilderControl()
         {
+
             _penEdge = new Pen(EdgeBrush);
             _penEdgeFocused = new Pen(FocusedEdgeBrush);
             _penGridScene = new Pen(GridBrush);
 
+            _vertices = new List<Vertex>();
+            _edges = new List<Edge>();
+
             InitializeComponent();
         }
+
+
+        private void OnVerticesPropertyChanged(AvaloniaPropertyChangedEventArgs e)
+        {
+            InvalidateVisual();
+        }
+
+
 
         #region Override control methods
         public sealed override void Render(DrawingContext context)
@@ -228,6 +241,11 @@ namespace RouteOptimization.Controls
             base.Render(context);
         }
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            InvalidateVisual();
+        }
+
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
             var cursorPosition = e.GetPosition(this);
@@ -250,8 +268,9 @@ namespace RouteOptimization.Controls
                         if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size))
                         {
                             SelectedVertex = vertex;
-                            vertex.PerformPress();
-                            return;
+                            Vertex.PerformPress(vertex);
+
+                            goto draw;
                         }
                     }
                     //if (!isSelectedVertex)
@@ -260,6 +279,7 @@ namespace RouteOptimization.Controls
                     //}
                 }
             }
+            draw: InvalidateVisual();
         }
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
@@ -277,11 +297,11 @@ namespace RouteOptimization.Controls
                             MoveCommand.Execute(SelectedVertex);
                         }
                     }
-                    _scene.PerformRelease();
+                    Scene.PerformRelease(_scene);
 
                 }
             }
-
+            InvalidateVisual();
         }
         protected override void OnPointerMoved(PointerEventArgs e)
         {
@@ -293,27 +313,25 @@ namespace RouteOptimization.Controls
                 {
                     if (_selectedVertex != null)
                     {
-                        //isSelectedVertex = true;
-                        _selectedVertex.PerformMove(new Point(
+                        Vertex.PerformMove(_selectedVertex, new Point(
                             (cursorPosition.X - _pointerLastPressX) / _scene.Zoom,
                             (cursorPosition.Y - _pointerLastPressY) / _scene.Zoom
                             ));
 
-                        InvalidateVisual();
-                        return;
+                        goto draw;
                     }
                     else
                     {
-                        _scene.PerformMove(new Point(
+                        Scene.PerformMove(_scene, new Point(
                                 (_pointerLastPressX - cursorPosition.X) / _scene.Zoom,
                                 (_pointerLastPressY - cursorPosition.Y) / _scene.Zoom
                                 ));
 
-                        InvalidateVisual();
-                        return;
+                        goto draw;
                     }
                 }
 
+                // Фокусирование
                 _focusedEdge = null;
                 _focusedVertex = null;
                 foreach (Vertex vertex in _vertices.Reverse())
@@ -325,10 +343,8 @@ namespace RouteOptimization.Controls
                     if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size))
                     {
                         _focusedVertex = vertex;
-                        vertex.PerformEnter();
 
-                        InvalidateVisual();
-                        return;
+                        goto draw;
                     }
                 }
                 foreach (Edge edge in _edges.Reverse())
@@ -340,16 +356,16 @@ namespace RouteOptimization.Controls
                     if (RouteMath.CursorInLine(edge.VertexFrom.X, edge.VertexFrom.Y, edge.VertexTo.X, edge.VertexTo.Y, cursorX, cursorY, 4))
                     {
                         _focusedEdge = edge;
-                        edge.PerformEnter();
 
-                        InvalidateVisual();
+                        goto draw;
                     }
                 }
             }
+            draw: InvalidateVisual();
         }
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
-            _scene.PerformWheelChanged(e.Delta);
+            Scene.PerformWheelChanged(_scene, e.Delta);
             InvalidateVisual();
         }
         #endregion

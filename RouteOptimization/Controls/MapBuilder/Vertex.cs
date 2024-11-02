@@ -10,8 +10,6 @@ namespace RouteOptimization.Controls.MapBuilder
 {
     public class Vertex: IVertex
     {
-        bool _selected;
-        bool _focused;
         double _lastX;
         double _lastY;
 
@@ -20,8 +18,6 @@ namespace RouteOptimization.Controls.MapBuilder
             Size = 10;
         }
 
-        public bool Selected { get => _selected; }
-        public bool Focused { get => _focused; }
         public double Size { get; set; }
         public double X { get; set; }
         public double Y { get; set; }
@@ -31,39 +27,27 @@ namespace RouteOptimization.Controls.MapBuilder
         public event EventHandler<EntityPointerEventArgs>? Moved;
         public event EventHandler? Pressed;
         public event EventHandler? Released;
-        public event EventHandler? Entered;
-        public event EventHandler? Exited;
 
-        public void PerformMove(Point position)
+        public static void PerformMove(Vertex vertex, Point position)
         {
-            pointerEventArgs.Position = position;
-            OnMoved(pointerEventArgs);
-            Moved?.Invoke(this, pointerEventArgs);
+            vertex.pointerEventArgs.Position = position;
+            vertex.OnMoved(vertex.pointerEventArgs);
+            vertex.Moved?.Invoke(vertex, vertex.pointerEventArgs);
         }
-        public void PerformPress()
+        public static void PerformPress(Vertex vertex)
         {
-            OnPressed(EventArgs.Empty);
-            Pressed?.Invoke(this, EventArgs.Empty);
+            vertex.OnPressed(EventArgs.Empty);
+            vertex.Pressed?.Invoke(vertex, EventArgs.Empty);
         }
-        public void PerformRelease()
+        public static void PerformRelease(Vertex vertex)
         {
-            OnReleased(EventArgs.Empty);
-            Released?.Invoke(this, EventArgs.Empty);
+            vertex.OnReleased(EventArgs.Empty);
+            vertex.Released?.Invoke(vertex, EventArgs.Empty);
         }
-        public void PerformEnter()
+        public static void ClearLastPositions(Vertex vertex)
         {
-            OnEntered(EventArgs.Empty);
-            Entered?.Invoke(this, EventArgs.Empty);
-        }
-        public void PerformExit()
-        {
-            OnExited(EventArgs.Empty);
-            Exited?.Invoke(this, EventArgs.Empty);
-        }
-        public void ClearLastPositions()
-        {
-            _lastX = X;
-            _lastY = Y;
+            vertex._lastX = vertex.X;
+            vertex._lastY = vertex.Y;
         }
 
         protected virtual void OnMoved(EntityPointerEventArgs e) 
@@ -76,22 +60,10 @@ namespace RouteOptimization.Controls.MapBuilder
         {
             _lastX = X;
             _lastY = Y;
-            _selected = true;
         }
 
         protected virtual void OnReleased(EventArgs e)
         {
-            _selected = false;
-        }
-
-        protected virtual void OnEntered(EventArgs e)
-        {
-            _focused = true;
-        }
-
-        protected virtual void OnExited(EventArgs e)
-        {
-            _focused = false;
         }
     }
 }

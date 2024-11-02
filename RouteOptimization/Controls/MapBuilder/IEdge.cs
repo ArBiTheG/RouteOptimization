@@ -10,7 +10,5 @@ namespace RouteOptimization.Controls.MapBuilder
     {
         IVertex VertexFrom { get; set; }
         IVertex VertexTo { get; set; }
-        bool Selected { get; }
-        bool Focused { get; }
     }
 }

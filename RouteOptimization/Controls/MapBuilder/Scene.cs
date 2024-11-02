@@ -56,30 +56,31 @@ namespace RouteOptimization.Controls.MapBuilder
         public event EventHandler? Released;
         public event EventHandler<EntityPointerWheelEventArgs>? WheelChanged;
 
-        public void PerformMove(Point position)
+        public static void PerformMove(Scene scene, Point position)
         {
-            pointerEventArgs.Position = position;
+            scene.pointerEventArgs.Position = position;
 
-            OnMoved(pointerEventArgs);
-            Moved?.Invoke(this, pointerEventArgs);
+            scene.OnMoved(scene.pointerEventArgs);
+            scene.Moved?.Invoke(scene, scene.pointerEventArgs);
         }
-        public void PerformPress()
+        public static void PerformPress(Scene scene)
         {
-            OnPressed(EventArgs.Empty);
-            Pressed?.Invoke(this, EventArgs.Empty);
+            scene.OnPressed(EventArgs.Empty);
+            scene.Pressed?.Invoke(scene, EventArgs.Empty);
         }
-        public void PerformRelease()
+        public static void PerformRelease(Scene scene)
         {
-            OnReleased(EventArgs.Empty);
-            Released?.Invoke(this, EventArgs.Empty);
+            scene.OnReleased(EventArgs.Empty);
+            scene.Released?.Invoke(scene, EventArgs.Empty);
         }
-        public void PerformWheelChanged(Vector delta)
+        public static void PerformWheelChanged(Scene scene, Vector delta)
         {
-            pointerWheelEventArgs.Delta = delta;
+            scene.pointerWheelEventArgs.Delta = delta;
 
-            OnWheelChanged(pointerWheelEventArgs);
-            WheelChanged?.Invoke(this, pointerWheelEventArgs);
+            scene.OnWheelChanged(scene.pointerWheelEventArgs);
+            scene.WheelChanged?.Invoke(scene, scene.pointerWheelEventArgs);
         }
+        
         protected virtual void OnMoved(EntityPointerEventArgs e)
         {
             X = _lastX + e.Position.X;

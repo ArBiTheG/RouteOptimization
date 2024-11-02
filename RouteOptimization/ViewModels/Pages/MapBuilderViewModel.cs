@@ -81,6 +81,8 @@ namespace RouteOptimization.ViewModels.Pages
         }
         private async Task ExecuteDeleteCommand(Location location)
         {
+            if (location == null) return;
+
             var dialog = new DeleteViewModel();
 
             var result = await ShowDeleteDialog.Handle(dialog);
