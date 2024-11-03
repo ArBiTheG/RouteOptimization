@@ -10,12 +10,12 @@ namespace RouteOptimization.Controls.MapBuilder
 {
     public abstract class VertexUI
     {
-        private double _lastX;
-        private double _lastY;
+        private float _lastX;
+        private float _lastY;
         private EntityPointerEventArgs _pointerEventArgs = new EntityPointerEventArgs();
 
-        public abstract double X { get; set; }
-        public abstract double Y { get; set; }
+        public abstract float X { get; set; }
+        public abstract float Y { get; set; }
 
 
         public event EventHandler<EntityPointerEventArgs>? Moved;
@@ -46,8 +46,8 @@ namespace RouteOptimization.Controls.MapBuilder
 
         protected virtual void OnMoved(EntityPointerEventArgs e) 
         {
-            X = _lastX + e.Position.X;
-            Y = _lastY + e.Position.Y;
+            X = _lastX + (float)e.Position.X;
+            Y = _lastY + (float)e.Position.Y;
         }
 
         protected virtual void OnPressed(EventArgs e)

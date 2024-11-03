@@ -13,7 +13,7 @@ namespace RouteOptimization.Models
         Location? StartLocation { get; set; }
         int FinishLocationId { get; set; }
         Location? FinishLocation { get; set; }
-        double Distance { get; set; }
-        double Time { get; set; }
+        float Distance { get; set; }
+        float Time { get; set; }
     }
 }

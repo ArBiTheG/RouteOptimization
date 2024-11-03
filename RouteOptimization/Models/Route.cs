@@ -17,8 +17,8 @@ namespace RouteOptimization.Models
         Location _startLocation;
         int _endLocationId;
         Location _finishLocation;
-        double _distance;
-        double _time;
+        float _distance;
+        float _time;
 
         public int Id
         {
@@ -64,7 +64,7 @@ namespace RouteOptimization.Models
                 OnPropertyChanged(nameof(FinishLocation));
             }
         }
-        public double Distance
+        public float Distance
         {
             get => _distance;
             set
@@ -73,7 +73,7 @@ namespace RouteOptimization.Models
                 OnPropertyChanged(nameof(Distance));
             }
         }
-        public double Time
+        public float Time
         {
             get => _time;
             set
@@ -84,16 +84,16 @@ namespace RouteOptimization.Models
         }
 
         [NotMapped]
-        public override double StartX { get => StartLocation.X; set => StartLocation.X = value; }
+        public override float StartX { get => StartLocation.X; set => StartLocation.X = value; }
 
         [NotMapped]
-        public override double StartY { get => StartLocation.Y; set => StartLocation.Y = value; }
+        public override float StartY { get => StartLocation.Y; set => StartLocation.Y = value; }
 
         [NotMapped]
-        public override double FinishX { get => FinishLocation.X; set => FinishLocation.X = value; }
+        public override float FinishX { get => FinishLocation.X; set => FinishLocation.X = value; }
 
         [NotMapped]
-        public override double FinishY { get => FinishLocation.Y; set => FinishLocation.Y = value; }
+        public override float FinishY { get => FinishLocation.Y; set => FinishLocation.Y = value; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

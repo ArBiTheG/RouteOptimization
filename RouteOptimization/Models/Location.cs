@@ -16,9 +16,9 @@ namespace RouteOptimization.Models
         private int _id;
         private string? _name;
         private string? _description;
-        private double _x;
-        private double _y;
-        private double _size = 20;
+        private float _x;
+        private float _y;
+        private float _size = 20;
 
         public int Id
         {
@@ -42,7 +42,7 @@ namespace RouteOptimization.Models
                 OnPropertyChanged(nameof(Description));
             }
         }
-        public override double X
+        public override float X
         {
             get => _x;
             set
@@ -51,7 +51,7 @@ namespace RouteOptimization.Models
                 OnPropertyChanged(nameof(X));
             }
         }
-        public override double Y
+        public override float Y
         {
             get => _y;
             set
@@ -60,7 +60,7 @@ namespace RouteOptimization.Models
                 OnPropertyChanged(nameof(Y));
             }
         }
-        public double Size
+        public float Size
         {
             get => _size;
             set

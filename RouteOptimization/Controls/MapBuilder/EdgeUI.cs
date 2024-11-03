@@ -8,10 +8,10 @@ namespace RouteOptimization.Controls.MapBuilder
 {
     public abstract class EdgeUI
     {
-        public abstract double StartX { get; set; }
-        public abstract double StartY { get; set; }
-        public abstract double FinishX { get; set; }
-        public abstract double FinishY { get; set; }
+        public abstract float StartX { get; set; }
+        public abstract float StartY { get; set; }
+        public abstract float FinishX { get; set; }
+        public abstract float FinishY { get; set; }
 
         public event EventHandler? Pressed;
         public event EventHandler? Released;

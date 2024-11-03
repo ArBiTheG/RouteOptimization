@@ -12,35 +12,39 @@ namespace RouteOptimization.Controls.MapBuilder
 {
     public class Scene: ReactiveObject
     {
-        const double DEFAULT_GRID_SIZE = 50;
+        const float DEFAULT_GRID_SIZE = 50;
 
-        private double _x;
-        private double _y;
-        private double _zoom;
-        private double _gridSize;
+        private float _x;
+        private float _y;
+
+        private float _lastX;
+        private float _lastY;
+
+        private float _zoom;
+        private float _gridSize;
 
         private int _zoomIndex = 3;
-        private double[] _zooms         = { 0.125, 0.25, 0.5, 1.0, 2.0, 4.0,  8.0 };
+        private float[] _zooms = { 0.125f, 0.25f, 0.5f, 1.0f, 2.0f, 4.0f,  8.0f };
 
-        public double X { 
+        public float X { 
             get => _x; 
             set => this.RaiseAndSetIfChanged(ref _x, value); 
         }
-        public double Y { 
+        public float Y { 
             get => _y;
             set => this.RaiseAndSetIfChanged(ref _y, value);
         }
-        public double Zoom
+        public float Zoom
         {
             get => _zoom;
             set => this.RaiseAndSetIfChanged(ref _zoom, value);
         }
-        public double GridSize
+        public float GridSize
         {
             get => _gridSize;
             set => this.RaiseAndSetIfChanged(ref _gridSize, value);
         }
-        public Scene(double x, double y)
+        public Scene(float x, float y)
         {
             X = x;
             Y = y;
@@ -50,8 +54,6 @@ namespace RouteOptimization.Controls.MapBuilder
 
         private EntityPointerEventArgs pointerEventArgs = new EntityPointerEventArgs();
         private EntityPointerWheelEventArgs pointerWheelEventArgs = new EntityPointerWheelEventArgs();
-        private double _lastX;
-        private double _lastY;
 
         public event EventHandler<EntityPointerEventArgs>? Moved;
         public event EventHandler? Pressed;
@@ -85,8 +87,8 @@ namespace RouteOptimization.Controls.MapBuilder
         
         protected virtual void OnMoved(EntityPointerEventArgs e)
         {
-            X = _lastX + e.Position.X;
-            Y = _lastY + e.Position.Y;
+            X = _lastX + (float)e.Position.X;
+            Y = _lastY + (float)e.Position.Y;
         }
 
         protected virtual void OnPressed(EventArgs e)

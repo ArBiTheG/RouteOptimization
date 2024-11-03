@@ -11,7 +11,7 @@ namespace RouteOptimization.Models
         int Id { get; }
         string? Name { get; set; }
         string? Description { get; set; }
-        double X { get; set; }
-        double Y { get; set; }
+        float X { get; set; }
+        float Y { get; set; }
     }
 }

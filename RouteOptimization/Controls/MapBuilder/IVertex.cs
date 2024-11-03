@@ -9,8 +9,8 @@ namespace RouteOptimization.Controls.MapBuilder
 {
     public interface IVertex
     {
-        double X { get; set; }
-        double Y { get; set; }
-        double Size { get; set; }
+        float X { get; set; }
+        float Y { get; set; }
+        float Size { get; set; }
     }
 }
