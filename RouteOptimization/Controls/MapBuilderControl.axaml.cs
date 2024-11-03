@@ -16,6 +16,9 @@ namespace RouteOptimization.Controls
 {
     public partial class MapBuilderControl : Control
     {
+        private float _cursorScenePositionX;
+        private float _cursorScenePositionY;
+
         private float _pointerLastPressX;
         private float _pointerLastPressY;
 
@@ -142,6 +145,8 @@ namespace RouteOptimization.Controls
         }
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
+            _pointerLastPressX = 0;
+            _pointerLastPressY = 0;
 
             var cursorPosition = e.GetPosition(this);
             if (e.Pointer.Type == PointerType.Mouse)
@@ -165,6 +170,9 @@ namespace RouteOptimization.Controls
         protected override void OnPointerMoved(PointerEventArgs e)
         {
             var cursorPosition = e.GetPosition(this);
+            _cursorScenePositionX = (float)cursorPosition.X;
+            _cursorScenePositionY = (float)cursorPosition.Y;
+
             if (e.Pointer.Type == PointerType.Mouse)
             {
                 var cursorProperties = e.GetCurrentPoint(this).Properties;
@@ -228,5 +236,61 @@ namespace RouteOptimization.Controls
             InvalidateVisual();
         }
         #endregion
+
+
+        private Point GetRealPointRelativeToCenter(double x, double y, double renderWidth, double renderHeight) => 
+            new(x - renderWidth / 2, y - renderHeight / 2);
+
+        /// <summary>
+        /// Преобразовать реальную позицию в позицию сцены
+        /// </summary>
+        /// <param name="x">Реальная позиция точки по X</param>
+        /// <param name="y">Реальная позиция точки по Y</param>
+        /// <param name="scene">Объект сцены</param>
+        /// <param name="renderWidth">Отрисовываемая ширина</param>
+        /// <param name="renderHeight">Отрисовываемая высота</param>
+        /// <returns>Возращает позицию точки на сцене</returns>
+        private Point ConvertToScenePosition(double x, double y, Scene scene, double renderWidth, double renderHeight) => 
+            new((x - renderWidth / 2) / scene.Zoom + scene.X, (y - renderHeight / 2) / scene.Zoom + scene.Y);
+
+        /// <summary>
+        /// Преобразовать центр сцены в реальную позицию
+        /// </summary>
+        /// <param name="scene">Объект сцены</param>
+        /// <param name="renderWidth">Отрисовываемая ширина</param>
+        /// <param name="renderHeight">Отрисовываемая высота</param>
+        /// <returns>Возращает реальную позицию на холсте</returns>
+        private Point ConvertCenterSceneToRealPosition(Scene scene, double renderWidth, double renderHeight) =>
+            new(renderWidth / 2 - scene.X * scene.Zoom, renderHeight / 2 - scene.Y * scene.Zoom);
+
+        /// <summary>
+        /// Преобразовать точку сцены находящийся относительно сцены в реальную позицию
+        /// </summary>
+        /// <param name="x">Позиция X точки на сцене</param>
+        /// <param name="y">Позиция Y точки на сцене</param>
+        /// <param name="scene">Объект сцены</param>
+        /// <param name="renderWidth">Отрисовываемая ширина</param>
+        /// <param name="renderHeight">Отрисовываемая высота</param>
+        /// <returns>Возращает реальную позицию точки на холсте</returns>
+        private Point ConvertPointSceneRelativeCenterToRealPosition(double x, double y, Scene scene, double renderWidth, double renderHeight) =>
+            new(x * scene.Zoom - scene.X * scene.Zoom + renderWidth / 2,  y * scene.Zoom - scene.Y * scene.Zoom + renderHeight / 2);
+
+        /// <summary>
+        /// Получить разницу между двумя точками
+        /// </summary>
+        /// <param name="x1">Позиция X первой точки</param>
+        /// <param name="y1">Позиция Y первой точки</param>
+        /// <param name="x2">Позиция X второй точки</param>
+        /// <param name="y2">Позиция Y второй точки</param>
+        /// <returns>Возращает полицию описывающую разницу</returns>
+        private Point GetPointOffset(double x1, double y1, double x2, double y2) => 
+            new(x1 - x2, y1 - y2);
+
+        private Point GetPointOffsetRelativeToCenter(double x1, double y1, double x2, double y2, double renderWidth, double renderHeight) =>
+            new(x1 - x2 - renderWidth / 2, y1 - y2 - renderHeight / 2);
+
+        private Point GetPointOffsetRelativeToScene(double x1, double y1, double x2, double y2, double renderWidth, double renderHeight, Scene scene) =>
+            new((x1 - x2) / scene.Zoom + scene.X, (y1 - y2) / scene.Zoom + scene.Y);
+
     }
 }
