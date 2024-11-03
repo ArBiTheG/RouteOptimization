@@ -1,6 +1,8 @@
-﻿using System;
+﻿using RouteOptimization.Controls.MapBuilder;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -8,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Models
 {
-    public class Route : IRoute, INotifyPropertyChanged
+    public class Route : EdgeUI, IEdge, IRoute, INotifyPropertyChanged
     {
         int _id;
         int _startLocationId;
-        Location? _startLocation;
+        Location _startLocation;
         int _endLocationId;
-        Location? _endLocation;
+        Location _finishLocation;
         double _distance;
         double _time;
 
@@ -33,7 +35,7 @@ namespace RouteOptimization.Models
             }
         }
 
-        public virtual Location? StartLocation
+        public virtual Location StartLocation
         {
             get => _startLocation;
             set
@@ -43,23 +45,23 @@ namespace RouteOptimization.Models
             }
         }
 
-        public int EndLocationId
+        public int FinishLocationId
         {
             get => _endLocationId;
             set
             {
                 _endLocationId = value;
-                OnPropertyChanged(nameof(EndLocationId));
+                OnPropertyChanged(nameof(FinishLocationId));
             }
         }
 
-        public virtual Location? EndLocation
+        public virtual Location FinishLocation
         {
-            get => _endLocation;
+            get => _finishLocation;
             set
             {
-                _endLocation = value;
-                OnPropertyChanged(nameof(EndLocation));
+                _finishLocation = value;
+                OnPropertyChanged(nameof(FinishLocation));
             }
         }
         public double Distance
@@ -80,6 +82,18 @@ namespace RouteOptimization.Models
                 OnPropertyChanged(nameof(Time));
             }
         }
+
+        [NotMapped]
+        public override double StartX { get => StartLocation.X; set => StartLocation.X = value; }
+
+        [NotMapped]
+        public override double StartY { get => StartLocation.Y; set => StartLocation.Y = value; }
+
+        [NotMapped]
+        public override double FinishX { get => FinishLocation.X; set => FinishLocation.X = value; }
+
+        [NotMapped]
+        public override double FinishY { get => FinishLocation.Y; set => FinishLocation.Y = value; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

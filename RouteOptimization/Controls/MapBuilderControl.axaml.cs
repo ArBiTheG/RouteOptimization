@@ -19,7 +19,8 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Input;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using RouteOptimization.Models;
+using Location = RouteOptimization.Models.Location;
 
 namespace RouteOptimization.Controls
 {
@@ -33,12 +34,11 @@ namespace RouteOptimization.Controls
         private double _pointerLastPressY;
 
         private Scene _scene = new Scene(0, 0);
-        private Vertex? _selectedVertex;
-        private Vertex? _focusedVertex;
-        private Edge? _focusedEdge;
-        private IEnumerable<Vertex> _vertices;
-        private IEnumerable<Edge> _edges;
-
+        private Location? _selectedVertex;
+        private Location? _focusedVertex;
+        private Route? _focusedEdge;
+        private IEnumerable<Location> _vertices;
+        private IEnumerable<Route> _edges;
 
         #region Background Property
         public static readonly StyledProperty<IBrush?> BackgroundProperty =
@@ -110,6 +110,7 @@ namespace RouteOptimization.Controls
         }
         #endregion
 
+        #region Command Property
         public static readonly StyledProperty<ICommand?> MoveCommandProperty =
             AvaloniaProperty.Register<MapBuilderControl, ICommand?>(nameof(MoveCommand), default);
         public ICommand? MoveCommand
@@ -117,7 +118,7 @@ namespace RouteOptimization.Controls
             get { return GetValue(MoveCommandProperty); }
             set { SetValue(MoveCommandProperty, value); }
         }
-
+        #endregion
 
         #region Scene Property
         public static readonly DirectProperty<MapBuilderControl, Scene> SceneProperty =
@@ -133,12 +134,12 @@ namespace RouteOptimization.Controls
         #endregion
 
         #region Selected Vertex Property
-        public static readonly DirectProperty<MapBuilderControl, Vertex?> SelectedVertexProperty =
-            AvaloniaProperty.RegisterDirect<MapBuilderControl, Vertex?>(
+        public static readonly DirectProperty<MapBuilderControl, Location?> SelectedVertexProperty =
+            AvaloniaProperty.RegisterDirect<MapBuilderControl, Location?>(
                 nameof(SelectedVertex),
                 o => o._selectedVertex,
                 (o, v) => o._selectedVertex = v);
-        public Vertex? SelectedVertex
+        public Location? SelectedVertex
         {
             get { return _selectedVertex; }
             set { SetAndRaise(SelectedVertexProperty, ref _selectedVertex, value); }
@@ -146,12 +147,12 @@ namespace RouteOptimization.Controls
         #endregion
 
         #region Edges Property
-        public static readonly DirectProperty<MapBuilderControl, IEnumerable<Edge>> EdgesProperty =
-            AvaloniaProperty.RegisterDirect<MapBuilderControl, IEnumerable<Edge>>(
+        public static readonly DirectProperty<MapBuilderControl, IEnumerable<Route>> EdgesProperty =
+            AvaloniaProperty.RegisterDirect<MapBuilderControl, IEnumerable<Route>>(
                 nameof(Edges),
                 o => o._edges,
                 (o, v) => o._edges = v);
-        public IEnumerable<Edge> Edges
+        public IEnumerable<Route> Edges
         {
             get { return _edges; }
             set { SetAndRaise(EdgesProperty, ref _edges, value); }
@@ -159,12 +160,12 @@ namespace RouteOptimization.Controls
         #endregion
 
         #region Vertices Property
-        public static readonly DirectProperty<MapBuilderControl, IEnumerable<Vertex>> VerticesProperty = 
-            AvaloniaProperty.RegisterDirect<MapBuilderControl, IEnumerable<Vertex>>(
+        public static readonly DirectProperty<MapBuilderControl, IEnumerable<Location>> VerticesProperty = 
+            AvaloniaProperty.RegisterDirect<MapBuilderControl, IEnumerable<Location>>(
                 nameof(Vertices), 
                 o => o._vertices, 
                 (o, v) => o._vertices = v);
-        public IEnumerable<Vertex> Vertices
+        public IEnumerable<Location> Vertices
         {
             get { return _vertices; }
             set { 
@@ -180,19 +181,11 @@ namespace RouteOptimization.Controls
             _penEdgeFocused = new Pen(FocusedEdgeBrush);
             _penGridScene = new Pen(GridBrush);
 
-            _vertices = new List<Vertex>();
-            _edges = new List<Edge>();
+            _vertices = new List<Location>();
+            _edges = new List<Route>();
 
             InitializeComponent();
         }
-
-
-        private void OnVerticesPropertyChanged(AvaloniaPropertyChangedEventArgs e)
-        {
-            InvalidateVisual();
-        }
-
-
 
         #region Override control methods
         public sealed override void Render(DrawingContext context)
@@ -203,49 +196,24 @@ namespace RouteOptimization.Controls
                 context.FillRectangle(Background, new Rect(renderSize));
             }
 
-            if (_scene.Zoom < 0.01)
-            {
-                DrawGrid(context, 5000);
-            }
-            else if (_scene.Zoom <= 0.10)
-            {
-                DrawGrid(context, 500);
-            }
-            else if (_scene.Zoom <= 0.25)
-            {
-                DrawGrid(context, 200);
-            }
-            else if (_scene.Zoom <= 0.50)
-            {
-                DrawGrid(context, 100);
-            }
-            else if (_scene.Zoom <= 5.0)
-            {
-                DrawGrid(context, 50);
-            }
-            else if (_scene.Zoom > 5.00)
-            {
-                DrawGrid(context, 5);
-            }
+            DrawGrid(context, _scene.GridSize);
 
-            foreach (Edge edge in _edges)
+            foreach (IEdge edge in _edges)
             {
                 DrawEdge(context, edge);
             }
 
-            foreach (Vertex vertex in _vertices)
+            foreach (IVertex vertex in _vertices)
             {
                 DrawVertex(context, vertex);
             }
 
             base.Render(context);
         }
-
         protected override void OnLoaded(RoutedEventArgs e)
         {
             InvalidateVisual();
         }
-
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
             var cursorPosition = e.GetPosition(this);
@@ -259,7 +227,7 @@ namespace RouteOptimization.Controls
                 {
                     SelectedVertex = null;
 
-                    foreach (Vertex vertex in _vertices.Reverse())
+                    foreach (Location vertex in _vertices.Reverse())
                     {
                         var renderSize = Bounds.Size;
                         double cursorX = (cursorPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
@@ -268,7 +236,7 @@ namespace RouteOptimization.Controls
                         if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size))
                         {
                             SelectedVertex = vertex;
-                            Vertex.PerformPress(vertex);
+                            VertexUI.PerformPress(vertex);
 
                             goto draw;
                         }
@@ -313,7 +281,7 @@ namespace RouteOptimization.Controls
                 {
                     if (_selectedVertex != null)
                     {
-                        Vertex.PerformMove(_selectedVertex, new Point(
+                        VertexUI.PerformMove(_selectedVertex, new Point(
                             (cursorPosition.X - _pointerLastPressX) / _scene.Zoom,
                             (cursorPosition.Y - _pointerLastPressY) / _scene.Zoom
                             ));
@@ -334,7 +302,7 @@ namespace RouteOptimization.Controls
                 // Фокусирование
                 _focusedEdge = null;
                 _focusedVertex = null;
-                foreach (Vertex vertex in _vertices.Reverse())
+                foreach (Location vertex in _vertices.Reverse())
                 {
                     var renderSize = Bounds.Size;
                     double cursorX = (cursorPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
@@ -347,13 +315,13 @@ namespace RouteOptimization.Controls
                         goto draw;
                     }
                 }
-                foreach (Edge edge in _edges.Reverse())
+                foreach (Route edge in _edges.Reverse())
                 {
                     var renderSize = Bounds.Size;
                     double cursorX = (cursorPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
                     double cursorY = (cursorPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
                 
-                    if (RouteMath.CursorInLine(edge.VertexFrom.X, edge.VertexFrom.Y, edge.VertexTo.X, edge.VertexTo.Y, cursorX, cursorY, 4))
+                    if (RouteMath.CursorInLine(edge.StartX, edge.StartY, edge.FinishX, edge.FinishY, cursorX, cursorY, 4))
                     {
                         _focusedEdge = edge;
 
@@ -370,7 +338,13 @@ namespace RouteOptimization.Controls
         }
         #endregion
 
-        private Point GetDrawPosition(double x, double y)
+        /// <summary>
+        /// Получить положение точки в ввиде структуры Avalonia.Point
+        /// </summary>
+        /// <param name="x">Координаты по X</param>
+        /// <param name="y">Координаты по Y</param>
+        /// <returns>Возвращает Avalonia.Point</returns>
+        private Point GetPointPosition(double x, double y)
         {
             var window = Bounds.Size;
             return new Point(
@@ -378,32 +352,50 @@ namespace RouteOptimization.Controls
                 y * _scene.Zoom - _scene.Y * _scene.Zoom + (window.Height / 2));
         }
 
-        private void DrawEdge(DrawingContext context, Edge edge)
+        /// <summary>
+        /// Отрисовать ребро между первой и второй точкой
+        /// </summary>
+        /// <param name="context">Контекст отрисовки</param>
+        /// <param name="edge">Объект ребра</param>
+        private void DrawEdge(DrawingContext context, IEdge edge)
         {
+            Point startPoint = GetPointPosition(edge.StartX, edge.StartY);
+            Point finishPoint = GetPointPosition(edge.FinishX, edge.FinishY);
             if (_focusedEdge == edge)
             {
-                context.DrawLine(_penEdgeFocused, GetDrawPosition(edge.VertexFrom.X, edge.VertexFrom.Y), GetDrawPosition(edge.VertexTo.X, edge.VertexTo.Y));
+                context.DrawLine(_penEdgeFocused, startPoint, finishPoint);
             }
             else
             {
-                context.DrawLine(_penEdge, GetDrawPosition(edge.VertexFrom.X, edge.VertexFrom.Y), GetDrawPosition(edge.VertexTo.X, edge.VertexTo.Y));
+                context.DrawLine(_penEdge, startPoint, finishPoint);
             }
         }
-        private void DrawVertex(DrawingContext context, Vertex vertex)
+        /// <summary>
+        /// Отрисовать точку
+        /// </summary>
+        /// <param name="context">Контекст отрисовки</param>
+        /// <param name="vertex">Объект точки</param>
+        private void DrawVertex(DrawingContext context, IVertex vertex)
         {
+            Point point = GetPointPosition(vertex.X, vertex.Y);
             if (_selectedVertex == vertex)
             {
-                context.DrawEllipse(SelectedVertexBrush, null, GetDrawPosition(vertex.X, vertex.Y), vertex.Size * _scene.Zoom, vertex.Size * _scene.Zoom);
+                context.DrawEllipse(SelectedVertexBrush, null, point, vertex.Size * _scene.Zoom, vertex.Size * _scene.Zoom);
             }
             else if (_focusedVertex == vertex)
             {
-                context.DrawEllipse(FocusedVertexBrush, null, GetDrawPosition(vertex.X, vertex.Y), vertex.Size * _scene.Zoom, vertex.Size * _scene.Zoom);
+                context.DrawEllipse(FocusedVertexBrush, null, point, vertex.Size * _scene.Zoom, vertex.Size * _scene.Zoom);
             }
             else
             {
-                context.DrawEllipse(VertexBrush, null, GetDrawPosition(vertex.X, vertex.Y), vertex.Size * _scene.Zoom, vertex.Size * _scene.Zoom);
+                context.DrawEllipse(VertexBrush, null, point, vertex.Size * _scene.Zoom, vertex.Size * _scene.Zoom);
             }
         }
+        /// <summary>
+        /// Отрисовать сетку
+        /// </summary>
+        /// <param name="context">Контекст отрисовки</param>
+        /// <param name="gridSize">Размер сетки</param>
         private void DrawGrid(DrawingContext context, double gridSize)
         {
             var window = Bounds.Size;

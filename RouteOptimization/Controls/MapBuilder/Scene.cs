@@ -12,9 +12,15 @@ namespace RouteOptimization.Controls.MapBuilder
 {
     public class Scene: ReactiveObject
     {
+        const double DEFAULT_GRID_SIZE = 50;
+
         private double _x;
         private double _y;
         private double _zoom;
+        private double _gridSize;
+
+        private int _zoomIndex = 3;
+        private double[] _zooms         = { 0.125, 0.25, 0.5, 1.0, 2.0, 4.0,  8.0 };
 
         public double X { 
             get => _x; 
@@ -27,23 +33,19 @@ namespace RouteOptimization.Controls.MapBuilder
         public double Zoom
         {
             get => _zoom;
-            set => this.RaiseAndSetIfChanged(ref _zoom, ValidateZoomValue(value));
+            set => this.RaiseAndSetIfChanged(ref _zoom, value);
         }
-        public Scene(double x, double y, double zoom = 1)
+        public double GridSize
+        {
+            get => _gridSize;
+            set => this.RaiseAndSetIfChanged(ref _gridSize, value);
+        }
+        public Scene(double x, double y)
         {
             X = x;
             Y = y;
-            Zoom = zoom;
-        }
-
-
-        private double ValidateZoomValue(double value)
-        {
-            if (value < 0.01)
-                return 0.01;
-            if (value > 100)
-                return 100;
-            return value;
+            Zoom        = _zooms[_zoomIndex];
+            GridSize    = DEFAULT_GRID_SIZE;
         }
 
         private EntityPointerEventArgs pointerEventArgs = new EntityPointerEventArgs();
@@ -103,14 +105,15 @@ namespace RouteOptimization.Controls.MapBuilder
         {
             if (e.Delta.Y > 0)
             {
-                if (Zoom <= 100)
-                    Zoom *= 1.10;
+                if (_zoomIndex > 0)
+                    _zoomIndex--;
             }
             else
             {
-                if (Zoom >= 0.05)
-                    Zoom /= 1.10;
+                if (_zoomIndex < _zooms.Length - 1)
+                    _zoomIndex++;
             }
+            Zoom = _zooms[_zoomIndex];
         }
 
     }

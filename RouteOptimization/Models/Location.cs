@@ -7,16 +7,18 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace RouteOptimization.Models
 {
-    public class Location : Vertex, ILocation, INotifyPropertyChanged
+    public class Location : VertexUI, IVertex, ILocation, INotifyPropertyChanged
     {
-        int _id;
-        string? _name;
-        string? _description;
-        double _x;
-        double _y;
+        private int _id;
+        private string? _name;
+        private string? _description;
+        private double _x;
+        private double _y;
+        private double _size = 20;
 
         public int Id
         {
@@ -40,7 +42,7 @@ namespace RouteOptimization.Models
                 OnPropertyChanged(nameof(Description));
             }
         }
-        public double X
+        public override double X
         {
             get => _x;
             set
@@ -49,12 +51,21 @@ namespace RouteOptimization.Models
                 OnPropertyChanged(nameof(X));
             }
         }
-        public double Y
+        public override double Y
         {
             get => _y;
             set
             {
                 _y = value;
+                OnPropertyChanged(nameof(Y));
+            }
+        }
+        public double Size
+        {
+            get => _size;
+            set
+            {
+                _size = value;
                 OnPropertyChanged(nameof(Y));
             }
         }
@@ -70,6 +81,7 @@ namespace RouteOptimization.Models
         public List<Shipment>? ShipmentsDestination { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             if (PropertyChanged != null)

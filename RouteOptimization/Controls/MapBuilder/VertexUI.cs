@@ -8,43 +8,37 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Controls.MapBuilder
 {
-    public class Vertex: IVertex
+    public abstract class VertexUI
     {
-        double _lastX;
-        double _lastY;
+        private double _lastX;
+        private double _lastY;
+        private EntityPointerEventArgs _pointerEventArgs = new EntityPointerEventArgs();
 
-        public Vertex()
-        {
-            Size = 10;
-        }
+        public abstract double X { get; set; }
+        public abstract double Y { get; set; }
 
-        public double Size { get; set; }
-        public double X { get; set; }
-        public double Y { get; set; }
-
-        private EntityPointerEventArgs pointerEventArgs = new EntityPointerEventArgs();
 
         public event EventHandler<EntityPointerEventArgs>? Moved;
         public event EventHandler? Pressed;
         public event EventHandler? Released;
 
-        public static void PerformMove(Vertex vertex, Point position)
+        public static void PerformMove(VertexUI vertex, Point position)
         {
-            vertex.pointerEventArgs.Position = position;
-            vertex.OnMoved(vertex.pointerEventArgs);
-            vertex.Moved?.Invoke(vertex, vertex.pointerEventArgs);
+            vertex._pointerEventArgs.Position = position;
+            vertex.OnMoved(vertex._pointerEventArgs);
+            vertex.Moved?.Invoke(vertex, vertex._pointerEventArgs);
         }
-        public static void PerformPress(Vertex vertex)
+        public static void PerformPress(VertexUI vertex)
         {
             vertex.OnPressed(EventArgs.Empty);
             vertex.Pressed?.Invoke(vertex, EventArgs.Empty);
         }
-        public static void PerformRelease(Vertex vertex)
+        public static void PerformRelease(VertexUI vertex)
         {
             vertex.OnReleased(EventArgs.Empty);
             vertex.Released?.Invoke(vertex, EventArgs.Empty);
         }
-        public static void ClearLastPositions(Vertex vertex)
+        public static void ClearLastPositions(VertexUI vertex)
         {
             vertex._lastX = vertex.X;
             vertex._lastY = vertex.Y;

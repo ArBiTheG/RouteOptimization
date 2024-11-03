@@ -31,7 +31,7 @@ namespace RouteOptimization.ViewModels.Pages
             get => _vertices;
             set => this.RaiseAndSetIfChanged(ref _vertices, value);
         }
-        public ObservableCollection<Edge> Edges
+        public ObservableCollection<Route> Edges
         {
             get;
             set;

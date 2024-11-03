@@ -6,26 +6,22 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Controls.MapBuilder
 {
-    public class Edge: IEdge
+    public abstract class EdgeUI
     {
-        public IVertex VertexFrom { get; set; }
-        public IVertex VertexTo { get; set; }
-
-        public Edge(IVertex vertexTo, IVertex vertexFrom)
-        {
-            VertexTo = vertexTo;
-            VertexFrom = vertexFrom;
-        }
+        public abstract double StartX { get; set; }
+        public abstract double StartY { get; set; }
+        public abstract double FinishX { get; set; }
+        public abstract double FinishY { get; set; }
 
         public event EventHandler? Pressed;
         public event EventHandler? Released;
 
-        public static void PerformPress(Edge edge)
+        public static void PerformPress(EdgeUI edge)
         {
             edge.OnPressed(EventArgs.Empty);
             edge.Pressed?.Invoke(edge, EventArgs.Empty);
         }
-        public static void PerformRelease(Edge edge)
+        public static void PerformRelease(EdgeUI edge)
         {
             edge.OnReleased(EventArgs.Empty);
             edge.Released?.Invoke(edge, EventArgs.Empty);

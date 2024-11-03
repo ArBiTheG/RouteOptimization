@@ -11,8 +11,8 @@ namespace RouteOptimization.Models
         int Id { get; }
         int StartLocationId { get; set; }
         Location? StartLocation { get; set; }
-        int EndLocationId { get; set; }
-        Location? EndLocation { get; set; }
+        int FinishLocationId { get; set; }
+        Location? FinishLocation { get; set; }
         double Distance { get; set; }
         double Time { get; set; }
     }
