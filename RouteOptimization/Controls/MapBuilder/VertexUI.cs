@@ -22,7 +22,7 @@ namespace RouteOptimization.Controls.MapBuilder
         public event EventHandler? Pressed;
         public event EventHandler? Released;
 
-        public static void PerformMove(VertexUI vertex, Point position)
+        public static void PerformMove(VertexUI vertex, ScenePoint position)
         {
             vertex._pointerEventArgs.Position = position;
             vertex.OnMoved(vertex._pointerEventArgs);

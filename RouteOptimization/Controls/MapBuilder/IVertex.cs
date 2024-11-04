@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Controls.MapBuilder
 {
-    public interface IVertex
+    public interface IVertex: IScenePoint
     {
         float X { get; set; }
         float Y { get; set; }

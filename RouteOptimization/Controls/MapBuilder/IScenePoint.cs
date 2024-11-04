@@ -1,6 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Input;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Controls.MapBuilder
 {
-    public class EntityPointerEventArgs
+    public interface IScenePoint
     {
-        public ScenePoint Position;
+        float X { get; set; }
+        float Y { get; set; }
     }
 }

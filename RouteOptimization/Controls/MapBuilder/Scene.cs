@@ -60,7 +60,7 @@ namespace RouteOptimization.Controls.MapBuilder
         public event EventHandler? Released;
         public event EventHandler<EntityPointerWheelEventArgs>? WheelChanged;
 
-        public static void PerformMove(Scene scene, Point position)
+        public static void PerformMove(Scene scene, ScenePoint position)
         {
             scene.pointerEventArgs.Position = position;
 
@@ -105,7 +105,7 @@ namespace RouteOptimization.Controls.MapBuilder
 
         protected virtual void OnWheelChanged(EntityPointerWheelEventArgs e)
         {
-            if (e.Delta.Y > 0)
+            if (e.Delta.Y < 0)
             {
                 if (_zoomIndex > 0)
                     _zoomIndex--;

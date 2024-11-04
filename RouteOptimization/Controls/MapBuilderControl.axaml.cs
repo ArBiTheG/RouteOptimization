@@ -16,11 +16,8 @@ namespace RouteOptimization.Controls
 {
     public partial class MapBuilderControl : Control
     {
-        private float _cursorScenePositionX;
-        private float _cursorScenePositionY;
-
-        private float _pointerLastPressX;
-        private float _pointerLastPressY;
+        private Point _cursorDisplayCurrentPosition = new Point(0, 0);
+        private Point _cursorDisplayPreviousPressPosition = new Point(0,0);
 
         private Scene _scene = new Scene(0, 0);
         private Location? _selectedVertex;
@@ -110,9 +107,10 @@ namespace RouteOptimization.Controls
         }
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
+            var displaySize = Bounds.Size;
             var cursorPosition = e.GetPosition(this);
-            _pointerLastPressX = (float)cursorPosition.X;
-            _pointerLastPressY = (float)cursorPosition.Y;
+            _cursorDisplayCurrentPosition = cursorPosition;
+            _cursorDisplayPreviousPressPosition = cursorPosition;
 
             if (e.Pointer.Type == PointerType.Mouse)
             {
@@ -120,14 +118,11 @@ namespace RouteOptimization.Controls
                 if (cursorProperties.IsLeftButtonPressed)
                 {
                     SelectedVertex = null;
+                    var cursorScenePosition = GetScenePosition(cursorPosition, _scene, displaySize.Width, displaySize.Height);
 
                     foreach (Location vertex in _vertices.Reverse())
                     {
-                        var renderSize = Bounds.Size;
-                        double cursorX = (cursorPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
-                        double cursorY = (cursorPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
-
-                        if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size))
+                        if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorScenePosition.X, cursorScenePosition.Y, vertex.Size))
                         {
                             SelectedVertex = vertex;
                             VertexUI.PerformPress(vertex);
@@ -145,10 +140,10 @@ namespace RouteOptimization.Controls
         }
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
-            _pointerLastPressX = 0;
-            _pointerLastPressY = 0;
-
             var cursorPosition = e.GetPosition(this);
+            _cursorDisplayCurrentPosition = cursorPosition;
+            _cursorDisplayPreviousPressPosition = new Point(0,0);
+
             if (e.Pointer.Type == PointerType.Mouse)
             {
                 var cursorProperties = e.GetCurrentPoint(this).Properties;
@@ -169,9 +164,10 @@ namespace RouteOptimization.Controls
         }
         protected override void OnPointerMoved(PointerEventArgs e)
         {
+            var displaySize = Bounds.Size;
+
             var cursorPosition = e.GetPosition(this);
-            _cursorScenePositionX = (float)cursorPosition.X;
-            _cursorScenePositionY = (float)cursorPosition.Y;
+            _cursorDisplayCurrentPosition = cursorPosition;
 
             if (e.Pointer.Type == PointerType.Mouse)
             {
@@ -180,19 +176,13 @@ namespace RouteOptimization.Controls
                 {
                     if (_selectedVertex != null)
                     {
-                        VertexUI.PerformMove(_selectedVertex, new Point(
-                            (cursorPosition.X - _pointerLastPressX) / _scene.Zoom,
-                            (cursorPosition.Y - _pointerLastPressY) / _scene.Zoom
-                            ));
+                        VertexUI.PerformMove(_selectedVertex, GetPointOffsetOnScene(cursorPosition, _cursorDisplayPreviousPressPosition, _scene));
 
                         goto draw;
                     }
                     else
                     {
-                        Scene.PerformMove(_scene, new Point(
-                                (_pointerLastPressX - cursorPosition.X) / _scene.Zoom,
-                                (_pointerLastPressY - cursorPosition.Y) / _scene.Zoom
-                                ));
+                        Scene.PerformMove(_scene, GetPointOffsetOnScene(_cursorDisplayPreviousPressPosition, cursorPosition, _scene));
 
                         goto draw;
                     }
@@ -201,13 +191,11 @@ namespace RouteOptimization.Controls
                 // Фокусирование
                 _focusedEdge = null;
                 _focusedVertex = null;
+                var cursorScenePosition = GetScenePosition(cursorPosition, _scene, displaySize.Width, displaySize.Height);
+
                 foreach (Location vertex in _vertices.Reverse())
                 {
-                    var renderSize = Bounds.Size;
-                    double cursorX = (cursorPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
-                    double cursorY = (cursorPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
-                
-                    if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorX, cursorY, vertex.Size))
+                    if (RouteMath.CursorInPoint(vertex.X, vertex.Y, cursorScenePosition.X, cursorScenePosition.Y, vertex.Size))
                     {
                         _focusedVertex = vertex;
 
@@ -216,11 +204,7 @@ namespace RouteOptimization.Controls
                 }
                 foreach (Route edge in _edges.Reverse())
                 {
-                    var renderSize = Bounds.Size;
-                    double cursorX = (cursorPosition.X - renderSize.Width / 2) / _scene.Zoom + _scene.X;
-                    double cursorY = (cursorPosition.Y - renderSize.Height / 2) / _scene.Zoom + _scene.Y;
-                
-                    if (RouteMath.CursorInLine(edge.StartX, edge.StartY, edge.FinishX, edge.FinishY, cursorX, cursorY, 4))
+                    if (RouteMath.CursorInLine(edge.StartX, edge.StartY, edge.FinishX, edge.FinishY, cursorScenePosition.X, cursorScenePosition.Y, 4))
                     {
                         _focusedEdge = edge;
 
@@ -237,54 +221,78 @@ namespace RouteOptimization.Controls
         }
         #endregion
 
-
-        private Point GetRealPointRelativeToCenter(double x, double y, double renderWidth, double renderHeight) => 
-            new(x - renderWidth / 2, y - renderHeight / 2);
+        private Point GetCenterDisplay(double displayWidth, double displayHeight) =>
+            new(displayWidth / 2, displayHeight / 2);
 
         /// <summary>
-        /// Преобразовать реальную позицию в позицию сцены
+        /// Получить положение точки относительно центра дисплея
         /// </summary>
-        /// <param name="x">Реальная позиция точки по X</param>
-        /// <param name="y">Реальная позиция точки по Y</param>
+        /// <param name="displayPoint">Точка на дисплее</param>
+        /// <param name="displayWidth">Отрисовываемая ширина</param>
+        /// <param name="displayHeight">Отрисовываемая высота</param>
+        /// <returns></returns>
+        private Point GetPointPositionRelativeToCenterDisplay(Point displayPoint, double displayWidth, double displayHeight) => 
+            new(displayPoint.X - displayWidth / 2, displayPoint.Y - displayHeight / 2);
+
+        /// <summary>
+        /// Получить позицию сцены
+        /// </summary>
+        /// <param name="displayPoint">Точка на дисплее</param>
         /// <param name="scene">Объект сцены</param>
-        /// <param name="renderWidth">Отрисовываемая ширина</param>
-        /// <param name="renderHeight">Отрисовываемая высота</param>
+        /// <param name="displayWidth">Отрисовываемая ширина</param>
+        /// <param name="displayHeight">Отрисовываемая высота</param>
         /// <returns>Возращает позицию точки на сцене</returns>
-        private Point ConvertToScenePosition(double x, double y, Scene scene, double renderWidth, double renderHeight) => 
-            new((x - renderWidth / 2) / scene.Zoom + scene.X, (y - renderHeight / 2) / scene.Zoom + scene.Y);
+        private ScenePoint GetScenePosition(Point displayPoint, Scene scene, double displayWidth, double displayHeight) => 
+            new((displayPoint.X - displayWidth / 2) / scene.Zoom + scene.X, (displayPoint.Y - displayHeight / 2) / scene.Zoom + scene.Y);
 
         /// <summary>
-        /// Преобразовать центр сцены в реальную позицию
+        /// Получить положение центра сцены на дисплее
         /// </summary>
         /// <param name="scene">Объект сцены</param>
-        /// <param name="renderWidth">Отрисовываемая ширина</param>
-        /// <param name="renderHeight">Отрисовываемая высота</param>
+        /// <param name="displayWidth">Отрисовываемая ширина</param>
+        /// <param name="displayHeight">Отрисовываемая высота</param>
         /// <returns>Возращает реальную позицию на холсте</returns>
-        private Point ConvertCenterSceneToRealPosition(Scene scene, double renderWidth, double renderHeight) =>
-            new(renderWidth / 2 - scene.X * scene.Zoom, renderHeight / 2 - scene.Y * scene.Zoom);
+        private Point GetCenterScenePositionOnDisplay(Scene scene, double displayWidth, double displayHeight) =>
+            new(displayWidth / 2 - scene.X * scene.Zoom, displayHeight / 2 - scene.Y * scene.Zoom);
 
         /// <summary>
-        /// Преобразовать точку сцены находящийся относительно сцены в реальную позицию
+        /// Получить положение точки относительно центра сцены на дисплее
         /// </summary>
-        /// <param name="x">Позиция X точки на сцене</param>
-        /// <param name="y">Позиция Y точки на сцене</param>
+        /// <param name="scenePoint">Точка на сцене</param>
         /// <param name="scene">Объект сцены</param>
         /// <param name="renderWidth">Отрисовываемая ширина</param>
         /// <param name="renderHeight">Отрисовываемая высота</param>
         /// <returns>Возращает реальную позицию точки на холсте</returns>
-        private Point ConvertPointSceneRelativeCenterToRealPosition(double x, double y, Scene scene, double renderWidth, double renderHeight) =>
-            new(x * scene.Zoom - scene.X * scene.Zoom + renderWidth / 2,  y * scene.Zoom - scene.Y * scene.Zoom + renderHeight / 2);
+        private Point GetPointPositionOnSceneRelativeCenterOnDisplay(IScenePoint scenePoint, Scene scene, double renderWidth, double renderHeight) =>
+            new(scenePoint.X * scene.Zoom - scene.X * scene.Zoom + renderWidth / 2, scenePoint.Y * scene.Zoom - scene.Y * scene.Zoom + renderHeight / 2);
 
         /// <summary>
         /// Получить разницу между двумя точками
         /// </summary>
-        /// <param name="x1">Позиция X первой точки</param>
-        /// <param name="y1">Позиция Y первой точки</param>
-        /// <param name="x2">Позиция X второй точки</param>
-        /// <param name="y2">Позиция Y второй точки</param>
+        /// <param name="displayPoint1">Первая точка</param>
+        /// <param name="displayPoint2">Вторая точка</param>
         /// <returns>Возращает полицию описывающую разницу</returns>
-        private Point GetPointOffset(double x1, double y1, double x2, double y2) => 
-            new(x1 - x2, y1 - y2);
+        private Point GetPointOffset(Point displayPoint1, Point displayPoint2) => 
+            new(displayPoint1.X - displayPoint2.X, displayPoint1.Y - displayPoint2.Y);
+
+        /// <summary>
+        /// Получить разницу между двумя точками на сцене
+        /// </summary>
+        /// <param name="displayPoint1">Первая точка</param>
+        /// <param name="displayPoint2">Вторая точка</param>
+        /// <param name="scene">Объект сцены</param>
+        /// <returns>Возращает полицию описывающую разницу</returns>
+        private ScenePoint GetPointOffsetOnScene(Point displayPoint1, Point displayPoint2, Scene scene) =>
+            new((displayPoint1.X - displayPoint2.X) / scene.Zoom, (displayPoint1.Y - displayPoint2.Y) / scene.Zoom);
+
+        /// <summary>
+        /// Получить разницу между двумя точками
+        /// </summary>
+        /// <param name="scenePoint1">Первая точка</param>
+        /// <param name="scenePoint2">Вторая точка</param>
+        /// <returns>Возращает полицию описывающую разницу</returns>
+        private ScenePoint GetPointOffset(ScenePoint scenePoint1, ScenePoint scenePoint2) =>
+            new(scenePoint1.X - scenePoint2.X, scenePoint1.Y - scenePoint2.Y);
 
         private Point GetPointOffsetRelativeToCenter(double x1, double y1, double x2, double y2, double renderWidth, double renderHeight) =>
             new(x1 - x2 - renderWidth / 2, y1 - y2 - renderHeight / 2);
