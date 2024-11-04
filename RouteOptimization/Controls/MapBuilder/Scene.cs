@@ -23,8 +23,9 @@ namespace RouteOptimization.Controls.MapBuilder
         private float _zoom;
         private float _gridSize;
 
-        private int _zoomIndex = 3;
-        private float[] _zooms = { 0.125f, 0.25f, 0.5f, 1.0f, 2.0f, 4.0f,  8.0f };
+        private int _zoomIndex = 9;
+        private float[] _zooms = { 0.10f, 0.20f, 0.30f, 0.40f, 0.50f, 0.60f, 0.70f, 0.80f, 0.90f, 1.0f, 
+            1.1f, 1.2f, 1.3f, 1.4f, 1.5f, 1.75f, 2.0f, 2.5f, 3.0f, 4.0f, 5.0f};
 
         public float X { 
             get => _x; 

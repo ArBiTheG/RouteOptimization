@@ -190,8 +190,8 @@ namespace RouteOptimization.Controls
             float width = canvas.LocalClipBounds.Width;
             float height = canvas.LocalClipBounds.Height;
 
-            var startEdgeDisplay = GetPointPositionOnSceneRelativeCenterOnDisplay(new ScenePoint(edge.StartX, edge.StartY), scene, width, height);
-            var finishEdgeDisplay = GetPointPositionOnSceneRelativeCenterOnDisplay(new ScenePoint(edge.FinishX, edge.FinishY), scene, width, height);
+            var startEdgeDisplay = GetPositionOnDisplay(new ScenePoint(edge.StartX, edge.StartY), scene, width, height);
+            var finishEdgeDisplay = GetPositionOnDisplay(new ScenePoint(edge.FinishX, edge.FinishY), scene, width, height);
 
             if (_focusedEdge == edge)
             {
@@ -216,14 +216,14 @@ namespace RouteOptimization.Controls
             float width = canvas.LocalClipBounds.Width;
             float height = canvas.LocalClipBounds.Height;
 
-            var vertexDisplay = GetPointPositionOnSceneRelativeCenterOnDisplay(vertex, scene, width, height);
+            var vertexDisplay = GetPositionOnDisplay(vertex, scene, width, height);
 
             if (_selectedVertex == vertex)
             {
                 var paint = new SKPaint() { Color = new SKColor(0, 0, 128) };
                 canvas.DrawCircle(vertexDisplay.ToSKPoint(), vertex.Size * scene.Zoom, new SKPaint() { Color = new SKColor(0, 0, 128) });
 #if DEBUG
-                var test1 = GetPointPositionOnSceneRelativeCenterOnDisplay(_selectedVertex, scene, width, height);
+                var test1 = GetPositionOnDisplay(_selectedVertex, scene, width, height);
                 canvas.DrawLine((float)_cursorDisplayCurrentPosition.X, (float)_cursorDisplayCurrentPosition.Y, (float)test1.X, (float)test1.Y, paint);
 #endif
             }
@@ -291,25 +291,25 @@ namespace RouteOptimization.Controls
             canvas.DrawText(SKTextBlob.Create("Позиция курсора в интерфейсе: ", new SKFont(SKTypeface.Default, 12)), 0, 15 * line++, textPaint);
             canvas.DrawText(SKTextBlob.Create($"X={_cursorDisplayCurrentPosition.X} | Y={_cursorDisplayCurrentPosition.Y}", new SKFont(SKTypeface.Default, 12)), 30, 15 * line++, textPaint);
 
-            Point pointRelativeToCenter = GetPointPositionRelativeToCenterDisplay(_cursorDisplayCurrentPosition, width, height);
+            Point pointRelativeToCenter = GetPointRelativeToCenter(_cursorDisplayCurrentPosition, width, height);
             canvas.DrawText(SKTextBlob.Create("Позиция курсора относительно центра в интерфейсе: ", new SKFont(SKTypeface.Default, 12)), 0, 15 * line++, textPaint);
             canvas.DrawText(SKTextBlob.Create($"X={pointRelativeToCenter.X} | Y={pointRelativeToCenter.Y}", new SKFont(SKTypeface.Default, 12)), 30, 15 * line++, textPaint);
 
             canvas.DrawLine((float)_cursorDisplayCurrentPosition.X, (float)_cursorDisplayCurrentPosition.Y, (float)_cursorDisplayCurrentPosition.X - (float)pointRelativeToCenter.X, (float)_cursorDisplayCurrentPosition.Y - (float)pointRelativeToCenter.Y, textPaint);
 
 
-            ScenePoint pointRelativeToCenterScene = GetScenePosition(_cursorDisplayCurrentPosition, scene, width, height);
+            ScenePoint pointRelativeToCenterScene = GetPositionOnScene(_cursorDisplayCurrentPosition, scene, width, height);
             canvas.DrawText(SKTextBlob.Create("Позиция курсора относительно центра на сцене: ", new SKFont(SKTypeface.Default, 12)), 00, 15 * line++, textPaint);
             canvas.DrawText(SKTextBlob.Create($"X={pointRelativeToCenterScene.X} | Y={pointRelativeToCenterScene.Y}", new SKFont(SKTypeface.Default, 12)), 30, 15 * line++, textPaint);
 
-            var test2 = GetCenterScenePositionOnDisplay(scene, width, height);
+            var test2 = GetSceneCenterPosition(scene, width, height);
             canvas.DrawLine((float)_cursorDisplayCurrentPosition.X, (float)_cursorDisplayCurrentPosition.Y, (float)test2.X, (float)test2.Y, textPaint);
             line++;
 
             canvas.DrawText(SKTextBlob.Create("Место последнего нажатия курсора в интерфейсе: ", new SKFont(SKTypeface.Default, 12)), 00, 15 * line++, textPaint);
             canvas.DrawText(SKTextBlob.Create($"X={_cursorDisplayPreviousPressPosition.X} | Y={_cursorDisplayPreviousPressPosition.Y}", new SKFont(SKTypeface.Default, 12)), 30, 15 * line++, textPaint);
 
-            Point pointOffset = GetPointOffset(_cursorDisplayCurrentPosition, _cursorDisplayPreviousPressPosition);
+            Point pointOffset = GetOffsetPosition(_cursorDisplayCurrentPosition, _cursorDisplayPreviousPressPosition);
             canvas.DrawText(SKTextBlob.Create("Позиция смещения курсора с места последнего нажатия в интерфейсе: ", new SKFont(SKTypeface.Default, 12)), 00, 15 * line++, textPaint);
             canvas.DrawText(SKTextBlob.Create($"X={pointOffset.X} | Y={pointOffset.Y}", new SKFont(SKTypeface.Default, 12)), 30, 15 * line++, textPaint);
 
@@ -333,11 +333,11 @@ namespace RouteOptimization.Controls
                 canvas.DrawText(SKTextBlob.Create("Позиция точки на сцене", new SKFont(SKTypeface.Default, 12)), 0, 15 * line++, textPaint);
                 canvas.DrawText(SKTextBlob.Create($"X={_selectedVertex.X}, Y={_selectedVertex.Y}", new SKFont(SKTypeface.Default, 12)), 30, 15 * line++, textPaint);
 
-                var test1 = GetPointPositionOnSceneRelativeCenterOnDisplay(_selectedVertex, scene, width, height);
+                var test1 = GetPositionOnDisplay(_selectedVertex, scene, width, height);
                 canvas.DrawText(SKTextBlob.Create("Позиция точки в интерфейсе", new SKFont(SKTypeface.Default, 12)), 0, 15 * line++, textPaint);
                 canvas.DrawText(SKTextBlob.Create($"X={test1.X}, Y={test1.Y}", new SKFont(SKTypeface.Default, 12)), 30, 15 * line++, textPaint);
 
-                var test5 = GetPointPositionRelativeToCenterDisplay(_cursorDisplayCurrentPosition, width, height);
+                var test5 = GetPointRelativeToCenter(_cursorDisplayCurrentPosition, width, height);
                 var dist = RouteMath.Distance(_cursorDisplayCurrentPosition.X, _cursorDisplayCurrentPosition.Y, test1.X, test1.Y);
                 canvas.DrawText(SKTextBlob.Create($"Расстояние до точки: {dist}", new SKFont(SKTypeface.Default, 12)), 0, 15 * line++, textPaint);
             }
@@ -349,6 +349,27 @@ namespace RouteOptimization.Controls
                 canvas.DrawText(SKTextBlob.Create("Точка на фокусе", new SKFont(SKTypeface.Default, 12)), 0, 15 * line++, textPaint);
                 canvas.DrawText(SKTextBlob.Create($"Id={_focusedVertex.Id}, X={_focusedVertex.X}, X={_focusedVertex.Y}, Hash={_focusedVertex.GetHashCode()}", new SKFont(SKTypeface.Default, 12)), 30, 15 * line++, textPaint);
             }
+
+            line++;
+
+            canvas.DrawText(SKTextBlob.Create("Нажатые кнопки", new SKFont(SKTypeface.Default, 12)), 0, 15 * line++, textPaint);
+            if (_keyUpPressModifier == 1)
+            {
+                canvas.DrawText(SKTextBlob.Create("Вверх", new SKFont(SKTypeface.Default, 12)), 0, 15 * line++, textPaint);
+            }
+            if (_keyDownPressModifier == 1)
+            {
+                canvas.DrawText(SKTextBlob.Create("Вниз", new SKFont(SKTypeface.Default, 12)), 0, 15 * line++, textPaint);
+            }
+            if (_keyLeftPressModifier == 1)
+            {
+                canvas.DrawText(SKTextBlob.Create("Налево", new SKFont(SKTypeface.Default, 12)), 0, 15 * line++, textPaint);
+            }
+            if (_keyRightPressModifier == 1)
+            {
+                canvas.DrawText(SKTextBlob.Create("Направо", new SKFont(SKTypeface.Default, 12)), 0, 15 * line++, textPaint);
+            }
+
         }
 #endif
     }
