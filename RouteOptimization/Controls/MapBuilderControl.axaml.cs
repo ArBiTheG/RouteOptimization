@@ -11,6 +11,10 @@ using System.Linq;
 using System.Windows.Input;
 using RouteOptimization.Models;
 using Location = RouteOptimization.Models.Location;
+using System.Collections.Specialized;
+using System.Collections;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace RouteOptimization.Controls
 {
@@ -52,9 +56,11 @@ namespace RouteOptimization.Controls
             get { return _scene; }
             set { SetAndRaise(SceneProperty, ref _scene, value); }
         }
+
         #endregion
 
         #region Selected Vertex Property
+        
         public static readonly DirectProperty<MapBuilderControl, Location?> SelectedVertexProperty =
             AvaloniaProperty.RegisterDirect<MapBuilderControl, Location?>(
                 nameof(SelectedVertex),
@@ -65,9 +71,11 @@ namespace RouteOptimization.Controls
             get { return _selectedVertex; }
             set { SetAndRaise(SelectedVertexProperty, ref _selectedVertex, value); }
         }
+        
         #endregion
 
         #region Edges Property
+
         public static readonly DirectProperty<MapBuilderControl, IEnumerable<Route>> EdgesProperty =
             AvaloniaProperty.RegisterDirect<MapBuilderControl, IEnumerable<Route>>(
                 nameof(Edges),
@@ -78,9 +86,11 @@ namespace RouteOptimization.Controls
             get { return _edges; }
             set { SetAndRaise(EdgesProperty, ref _edges, value); }
         }
+
         #endregion
 
         #region Vertices Property
+
         public static readonly DirectProperty<MapBuilderControl, IEnumerable<Location>> VerticesProperty = 
             AvaloniaProperty.RegisterDirect<MapBuilderControl, IEnumerable<Location>>(
                 nameof(Vertices), 
@@ -93,12 +103,14 @@ namespace RouteOptimization.Controls
                 SetAndRaise(VerticesProperty, ref _vertices, value); 
             }
         }
+
         #endregion
 
         public MapBuilderControl()
         {
-            _vertices = new List<Location>();
-            _edges = new List<Route>();
+
+            _vertices = new ObservableCollection<Location>();
+            _edges = new ObservableCollection<Route>();
 
 
             Focusable = true;
@@ -107,7 +119,6 @@ namespace RouteOptimization.Controls
         }
 
         #region Override control methods
-
         protected override void OnLoaded(RoutedEventArgs e)
         {
             InvalidateVisual();
@@ -116,6 +127,7 @@ namespace RouteOptimization.Controls
         {
             var displaySize = Bounds.Size;
             var cursorPosition = e.GetPosition(this);
+
             _cursorDisplayCurrentPosition = cursorPosition;
             _cursorDisplayPreviousPressPosition = cursorPosition;
 
@@ -147,7 +159,9 @@ namespace RouteOptimization.Controls
         }
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
+            var displaySize = Bounds.Size;
             var cursorPosition = e.GetPosition(this);
+
             _cursorDisplayCurrentPosition = cursorPosition;
             _cursorDisplayPreviousPressPosition = new Point(0,0);
 
@@ -172,8 +186,8 @@ namespace RouteOptimization.Controls
         protected override void OnPointerMoved(PointerEventArgs e)
         {
             var displaySize = Bounds.Size;
-
             var cursorPosition = e.GetPosition(this);
+
             _cursorDisplayCurrentPosition = cursorPosition;
 
             if (e.Pointer.Type == PointerType.Mouse)
@@ -224,6 +238,7 @@ namespace RouteOptimization.Controls
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
             var displaySize = Bounds.Size;
+            var cursorPosition = e.GetPosition(this);
 
             if (e.Pointer.Type == PointerType.Mouse)
             {
@@ -234,22 +249,27 @@ namespace RouteOptimization.Controls
 
             InvalidateVisual();
         }
-
         protected override void OnGotFocus(GotFocusEventArgs e)
         {
+            var displaySize = Bounds.Size;
+
             InvalidateVisual();
         }
         protected override void OnLostFocus(RoutedEventArgs e)
         {
+            var displaySize = Bounds.Size;
+
             _cursorDisplayPreviousPressPosition = new Point(0, 0);
             _keyUpPressModifier = 0;
             _keyDownPressModifier = 0;
             _keyLeftPressModifier = 0;
             _keyRightPressModifier = 0;
+            InvalidateVisual();
         }
-
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            var displaySize = Bounds.Size;
+
             if (e.KeyDeviceType == KeyDeviceType.Keyboard)
             {
                 double speed = 1;
@@ -295,6 +315,8 @@ namespace RouteOptimization.Controls
         }
         protected override void OnKeyUp(KeyEventArgs e)
         {
+            var displaySize = Bounds.Size;
+
             switch (e.Key)
             {
                 case Key.Up:
@@ -312,7 +334,6 @@ namespace RouteOptimization.Controls
             }
             InvalidateVisual();
         }
-
         #endregion
 
         public static Point GetCenterDisplay(double displayWidth, double displayHeight) =>
