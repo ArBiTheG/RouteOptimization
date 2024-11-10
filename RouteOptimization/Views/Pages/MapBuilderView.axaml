@@ -24,11 +24,7 @@
       <ColumnDefinition Width="256"/>
     </Grid.ColumnDefinitions>
     <Border Margin="2" Grid.Column="0" CornerRadius="4" BorderThickness="1" BorderBrush="Black" ClipToBounds="True">
-      <local:MapBuilderControl x:Name="map"
-                               MoveCommand="{Binding EditCommand}"
-                               Scene="{Binding Scene}" 
-                               Vertices="{Binding Vertices}" 
-                               Edges="{Binding Edges}"/>
+      <local:MapBuilderControl x:Name="map"/>
     </Border>
 
     <Border Grid.Column="1">
