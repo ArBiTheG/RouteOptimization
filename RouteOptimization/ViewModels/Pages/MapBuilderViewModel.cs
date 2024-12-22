@@ -1,6 +1,7 @@
 ﻿using Avalonia.Metadata;
+using Mapsui;
 using ReactiveUI;
-using RouteOptimization.Controls.MapBuilder;
+using RouteOptimization.Controls;
 using RouteOptimization.Models;
 using RouteOptimization.Repository;
 using RouteOptimization.Repository.SQLite;
@@ -19,12 +20,10 @@ namespace RouteOptimization.ViewModels.Pages
 {
     public class MapBuilderViewModel: ViewModelBase
     {
-        private static Scene _scene = new Scene(0, 0);
+        Map _map;
 
         ObservableCollection<Location?>? _vertices;
         ILocationsRepository _repository;
-
-        public Scene Scene { get => _scene; }
 
         public ObservableCollection<Location?>? Vertices
         {

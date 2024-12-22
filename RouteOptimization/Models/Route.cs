@@ -1,5 +1,4 @@
-﻿using RouteOptimization.Controls.MapBuilder;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Models
 {
-    public class Route : EdgeUI, IEdge, IRoute, INotifyPropertyChanged
+    public class Route : IRoute, INotifyPropertyChanged
     {
         int _id;
         int _startLocationId;
@@ -84,16 +83,16 @@ namespace RouteOptimization.Models
         }
 
         [NotMapped]
-        public override float StartX { get => StartLocation.X; set => StartLocation.X = value; }
+        public float StartX { get => StartLocation.X; set => StartLocation.X = value; }
 
         [NotMapped]
-        public override float StartY { get => StartLocation.Y; set => StartLocation.Y = value; }
+        public float StartY { get => StartLocation.Y; set => StartLocation.Y = value; }
 
         [NotMapped]
-        public override float FinishX { get => FinishLocation.X; set => FinishLocation.X = value; }
+        public float FinishX { get => FinishLocation.X; set => FinishLocation.X = value; }
 
         [NotMapped]
-        public override float FinishY { get => FinishLocation.Y; set => FinishLocation.Y = value; }
+        public float FinishY { get => FinishLocation.Y; set => FinishLocation.Y = value; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

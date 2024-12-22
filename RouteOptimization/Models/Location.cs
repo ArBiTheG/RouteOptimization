@@ -1,5 +1,4 @@
-﻿using RouteOptimization.Controls.MapBuilder;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
@@ -11,7 +10,7 @@ using System.Drawing;
 
 namespace RouteOptimization.Models
 {
-    public class Location : VertexUI, IVertex, ILocation, INotifyPropertyChanged
+    public class Location : ILocation, INotifyPropertyChanged
     {
         private int _id;
         private string? _name;
@@ -42,7 +41,7 @@ namespace RouteOptimization.Models
                 OnPropertyChanged(nameof(Description));
             }
         }
-        public override float X
+        public float X
         {
             get => _x;
             set
@@ -51,7 +50,7 @@ namespace RouteOptimization.Models
                 OnPropertyChanged(nameof(X));
             }
         }
-        public override float Y
+        public float Y
         {
             get => _y;
             set
