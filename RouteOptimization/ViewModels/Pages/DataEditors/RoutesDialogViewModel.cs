@@ -1,5 +1,5 @@
 ﻿using ReactiveUI;
-using RouteOptimization.Models;
+using RouteOptimization.Models.Entities;
 using RouteOptimization.Repository;
 using RouteOptimization.Repository.SQLite;
 using System;

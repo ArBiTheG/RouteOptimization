@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-namespace RouteOptimization.Models
+namespace RouteOptimization.Models.Entities
 {
     public class Location : ILocation, INotifyPropertyChanged
     {

@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
-using RouteOptimization.Models;
+using RouteOptimization.Models.Entities;
 using RouteOptimization.ViewModels.Pages.DataEditors;
 using RouteOptimization.ViewModels.Pages.DataViewers;
 using RouteOptimization.Views.DialogWindows;

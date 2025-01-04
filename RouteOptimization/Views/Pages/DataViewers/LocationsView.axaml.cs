@@ -1,13 +1,12 @@
 using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
-using RouteOptimization.Models;
 using RouteOptimization.ViewModels.Pages.DataEditors;
 using RouteOptimization.ViewModels.Pages.DataViewers;
 using RouteOptimization.Views.DialogWindows;
 using System;
 using System.Threading.Tasks;
-using Location = RouteOptimization.Models.Location;
+using Location = RouteOptimization.Models.Entities.Location;
 
 namespace RouteOptimization.Views.Pages.DataViewers
 {

@@ -2,7 +2,7 @@
 using Mapsui;
 using ReactiveUI;
 using RouteOptimization.Controls;
-using RouteOptimization.Models;
+using RouteOptimization.Models.Entities;
 using RouteOptimization.Repository;
 using RouteOptimization.Repository.SQLite;
 using RouteOptimization.ViewModels.Pages.DataEditors;

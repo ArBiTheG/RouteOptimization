@@ -1,5 +1,5 @@
 ﻿using ReactiveUI;
-using RouteOptimization.Models;
+using RouteOptimization.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

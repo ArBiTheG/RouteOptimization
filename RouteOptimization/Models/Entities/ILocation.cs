@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RouteOptimization.Models
+namespace RouteOptimization.Models.Entities
 {
-    public interface IVehicleType
+    public interface ILocation
     {
         int Id { get; }
         string? Name { get; set; }
+        string? Description { get; set; }
+        float X { get; set; }
+        float Y { get; set; }
     }
 }
