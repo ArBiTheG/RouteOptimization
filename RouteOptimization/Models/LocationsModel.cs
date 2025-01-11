@@ -1,5 +1,7 @@
-﻿using RouteOptimization.Models.Entities;
+﻿using ReactiveUI;
+using RouteOptimization.Models.Entities;
 using RouteOptimization.Repository;
+using RouteOptimization.Repository.SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +10,14 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Models
 {
-    public class LocationsModel
+    public class LocationsModel: ReactiveObject
     {
         ILocationsRepository _repository;
 
+        public LocationsModel()
+        {
+            _repository = new SQLiteLocationsRepository();
+        }
         public async Task<IEnumerable<Location?>> GetAll()
         {
             return await _repository.GetAll(); 

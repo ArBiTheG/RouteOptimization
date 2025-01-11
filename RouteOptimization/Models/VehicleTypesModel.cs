@@ -1,5 +1,6 @@
 ﻿using RouteOptimization.Models.Entities;
 using RouteOptimization.Repository;
+using RouteOptimization.Repository.SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,10 @@ namespace RouteOptimization.Models
     {
         IVehicleTypesRepository _repository;
 
+        public VehicleTypesModel()
+        {
+            _repository = new SQLiteVehicleTypesRepository();
+        }
         public async Task<IEnumerable<VehicleType?>> GetAll()
         {
             return await _repository.GetAll();
