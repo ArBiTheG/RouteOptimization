@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using RouteOptimization.Models;
 using RouteOptimization.Models.Entities;
 using RouteOptimization.Repository;
 using RouteOptimization.Repository.SQLite;
@@ -15,7 +16,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
     public class ShipmentsEditorViewModel : ViewModelBase
     {
         Shipment _selectedShipment;
-        ILocationsRepository _locationRepository;
+        LocationsModel _locationModel;
         ObservableCollection<Location?>? _locations;
 
         public Shipment SelectedShipment
@@ -36,7 +37,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         {
             _selectedShipment = new();
 
-            _locationRepository = new SQLiteLocationsRepository();
+            _locationModel = new LocationsModel();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             ApplyCommand = ReactiveCommand.Create<bool, Shipment?>(ExecuteApplyCommand);
@@ -47,7 +48,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         {
             _selectedShipment = shipment;
 
-            _locationRepository = new SQLiteLocationsRepository();
+            _locationModel = new LocationsModel();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             ApplyCommand = ReactiveCommand.Create<bool, Shipment?>(ExecuteApplyCommand);
@@ -55,7 +56,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
 
         private async Task ExecuteLoadCommand()
         {
-            Locations = new(await _locationRepository.GetAll());
+            Locations = new(await _locationModel.GetAll());
         }
         private Shipment? ExecuteApplyCommand(bool arg)
         {

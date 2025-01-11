@@ -6,6 +6,7 @@ using Mapsui.Styles;
 using Mapsui.UI;
 using Mapsui.UI.Avalonia;
 using Mapsui;
+using Avalonia;
 
 namespace RouteOptimization.Controls
 {
@@ -13,19 +14,30 @@ namespace RouteOptimization.Controls
     {
         MapControl _mapControl;
 
-        MapConstructorManager _mapManager;
-
         public MapConstructorControl()
         {
             Focusable = true;
-            InitializeComponent();
 
-            _mapControl = new MapControl();
+            _mapControl = new MapControl(); 
 
             Content = _mapControl;
+        }
 
-            _mapManager = new MapConstructorManager(_mapControl);
+        public static readonly DirectProperty<MapConstructorControl, Map?> MapSourceProperty =
+            AvaloniaProperty.RegisterDirect<MapConstructorControl, Map?>(
+                nameof(MapSource),
+                o => o._mapControl.Map,
+                (o, v) => o._mapControl.Map = v ?? new Map());
 
+        public Map? MapSource
+        {
+            get
+            {
+                return GetValue(MapSourceProperty);
+            }
+            set { 
+                SetValue(MapSourceProperty, value);
+            }
         }
 
     }

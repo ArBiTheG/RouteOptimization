@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using RouteOptimization.Models;
 using RouteOptimization.Models.Entities;
 using RouteOptimization.Repository;
 using RouteOptimization.Repository.SQLite;
@@ -16,7 +17,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 {
     public class ShipmentsViewModel : ViewModelBase
     {
-        IShipmentsRepository _repository;
+        ShipmentsModel _model;
         ObservableCollection<Shipment?>? _list;
 
         public ObservableCollection<Shipment?>? List
@@ -35,7 +36,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 
         public ShipmentsViewModel()
         {
-            _repository = new SQLiteShipmentsRepository();
+            _model = new ShipmentsModel();
 
             ShowDialog = new Interaction<ShipmentsEditorViewModel, Shipment?>();
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
@@ -48,7 +49,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 
         private async Task ExecuteLoadCommand()
         {
-            List = new ObservableCollection<Shipment?>(await _repository.GetAll());
+            List = new ObservableCollection<Shipment?>(await _model.GetAll());
         }
 
         private async Task ExecuteAddCommand()
@@ -58,7 +59,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
             {
-                await _repository.Create(result);
+                await _model.Create(result);
                 List?.Add(result);
             }
         }
@@ -69,7 +70,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
             {
-                await _repository.Edit(result);
+                await _model.Edit(result);
             }
         }
         private async Task ExecuteDeleteCommand(Shipment shipment)
@@ -79,7 +80,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             var result = await ShowDeleteDialog.Handle(dialog);
             if (result != false)
             {
-                await _repository.Delete(shipment);
+                await _model.Delete(shipment);
                 List?.Remove(shipment);
             }
         }

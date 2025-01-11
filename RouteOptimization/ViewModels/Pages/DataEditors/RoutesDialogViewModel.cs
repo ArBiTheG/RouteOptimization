@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using RouteOptimization.Models;
 using RouteOptimization.Models.Entities;
 using RouteOptimization.Repository;
 using RouteOptimization.Repository.SQLite;
@@ -16,7 +17,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
     public class RoutesEditorViewModel : ViewModelBase
     {
         Route _selectedRoute;
-        ILocationsRepository _locationRepository;
+        LocationsModel _locationModel;
         ObservableCollection<Location?>? _locations;
 
         public Route SelectedRoute
@@ -37,7 +38,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         {
             _selectedRoute = new();
 
-            _locationRepository = new SQLiteLocationsRepository();
+            _locationModel = new LocationsModel();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             ApplyCommand = ReactiveCommand.Create<bool, Route?>(ExecuteApplyCommand);
@@ -47,7 +48,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         {
             _selectedRoute = route;
 
-            _locationRepository = new SQLiteLocationsRepository();
+            _locationModel = new LocationsModel();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             ApplyCommand = ReactiveCommand.Create<bool, Route?>(ExecuteApplyCommand);
@@ -55,7 +56,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
 
         private async Task ExecuteLoadCommand()
         {
-            Locations = new(await _locationRepository.GetAll());
+            Locations = new(await _locationModel.GetAll());
         }
         private Route? ExecuteApplyCommand(bool arg)
         {

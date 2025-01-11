@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using RouteOptimization.Models;
 using RouteOptimization.Models.Entities;
 using RouteOptimization.Repository;
 using RouteOptimization.Repository.SQLite;
@@ -15,8 +16,8 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
     public class VehiclesEditorViewModel : ViewModelBase
     {
         Vehicle _selectedVehicle;
-        IVehicleStatusesRepository _statusesRepository;
-        IVehicleTypesRepository _typesRepository;
+        VehicleStatusesModel _statusesModel;
+        VehicleTypesModel _typesModel;
         ObservableCollection<VehicleStatus?>? _statuses;
         ObservableCollection<VehicleType?>? _types;
 
@@ -43,8 +44,8 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         {
             _selectedVehicle = new();
 
-            _statusesRepository = new SQLiteVehicleStatusesRepository();
-            _typesRepository = new SQLiteVehicleTypesRepository();
+            _statusesModel = new VehicleStatusesModel();
+            _typesModel = new VehicleTypesModel();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             ApplyCommand = ReactiveCommand.Create<bool, Vehicle?>(ExecuteApplyCommand);
@@ -53,8 +54,8 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         {
             _selectedVehicle = vehicle;
 
-            _statusesRepository = new SQLiteVehicleStatusesRepository();
-            _typesRepository = new SQLiteVehicleTypesRepository();
+            _statusesModel = new VehicleStatusesModel();
+            _typesModel = new VehicleTypesModel();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             ApplyCommand = ReactiveCommand.Create<bool, Vehicle?>(ExecuteApplyCommand);
@@ -62,8 +63,8 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
 
         private async Task ExecuteLoadCommand()
         {
-            Types = new(await _typesRepository.GetAll());
-            Statuses = new(await _statusesRepository.GetAll());
+            Types = new(await _typesModel.GetAll());
+            Statuses = new(await _statusesModel.GetAll());
         }
         private Vehicle? ExecuteApplyCommand(bool arg)
         {

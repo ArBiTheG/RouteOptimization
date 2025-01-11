@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using RouteOptimization.Models;
 using RouteOptimization.Models.Entities;
 using RouteOptimization.Repository;
 using RouteOptimization.Repository.SQLite;
@@ -16,7 +17,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 {
     public class VehicleTypesViewModel : ViewModelBase
     {
-        IVehicleTypesRepository _repository;
+        VehicleTypesModel _model;
         ObservableCollection<VehicleType?>? _list;
 
         public ObservableCollection<VehicleType?>? List
@@ -35,7 +36,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 
         public VehicleTypesViewModel()
         {
-            _repository = new SQLiteVehicleTypesRepository();
+            _model = new VehicleTypesModel();
 
             ShowDialog = new Interaction<VehicleTypesEditorViewModel, VehicleType?>();
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
@@ -48,7 +49,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 
         private async Task ExecuteLoadCommand()
         {
-            List = new ObservableCollection<VehicleType?>(await _repository.GetAll());
+            List = new ObservableCollection<VehicleType?>(await _model.GetAll());
         }
         private async Task ExecuteAddCommand()
         {
@@ -57,7 +58,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
             {
-                await _repository.Create(result);
+                await _model.Create(result);
                 List?.Add(result);
             }
         }
@@ -68,7 +69,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
             {
-                await _repository.Edit(result);
+                await _model.Edit(result);
             }
         }
         private async Task ExecuteDeleteCommand(VehicleType vehicleType)
@@ -79,7 +80,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             var result = await ShowDeleteDialog.Handle(dialog);
             if (result != false)
             {
-                await _repository.Delete(vehicleType);
+                await _model.Delete(vehicleType);
                 List?.Remove(vehicleType);
             }
         }

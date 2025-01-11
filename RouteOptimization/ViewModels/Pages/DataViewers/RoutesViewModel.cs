@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using RouteOptimization.Models;
 using RouteOptimization.Models.Entities;
 using RouteOptimization.Repository;
 using RouteOptimization.Repository.SQLite;
@@ -16,7 +17,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 {
     public class RoutesViewModel : ViewModelBase
     {
-        IRoutesRepository _repository;
+        RoutesModel _model;
         ObservableCollection<Route?>? _list;
 
         public ObservableCollection<Route?>? List
@@ -34,7 +35,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         public ReactiveCommand<Route, Unit> DeleteCommand { get; }
         public RoutesViewModel()
         {
-            _repository = new SQLiteRoutesRepository();
+            _model = new RoutesModel();
 
             ShowDialog = new Interaction<RoutesEditorViewModel, Route?>();
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
@@ -46,7 +47,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         }
         private async Task ExecuteLoadCommand()
         {
-            List = new(await _repository.GetAll());
+            List = new(await _model.GetAll());
         }
 
         private async Task ExecuteAddCommand()
@@ -56,7 +57,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
             {
-                await _repository.Create(result);
+                await _model.Create(result);
                 List?.Add(result);
             }
         }
@@ -67,7 +68,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
             {
-                await _repository.Edit(result);
+                await _model.Edit(result);
             }
         }
         private async Task ExecuteDeleteCommand(Route route)
@@ -77,7 +78,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             var result = await ShowDeleteDialog.Handle(dialog);
             if (result != false)
             {
-                await _repository.Delete(route);
+                await _model.Delete(route);
                 List?.Remove(route);
             }
         }
