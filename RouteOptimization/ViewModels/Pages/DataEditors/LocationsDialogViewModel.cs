@@ -23,14 +23,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<bool, Location?> ApplyCommand { get; }
 
-        public LocationsEditorViewModel()
-        {
-            _selectedLocation = new();
-
-            LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            ApplyCommand = ReactiveCommand.Create<bool, Location?>(ExecuteApplyCommand);
-        }
-
+        public LocationsEditorViewModel() : this(new()) { }
         public LocationsEditorViewModel(Location location)
         {
             _selectedLocation = location;

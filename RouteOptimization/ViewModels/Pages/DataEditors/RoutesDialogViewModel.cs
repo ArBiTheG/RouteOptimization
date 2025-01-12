@@ -17,7 +17,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
     public class RoutesEditorViewModel : ViewModelBase
     {
         Route _selectedRoute;
-        LocationsModel _locationModel;
+        RoutesModel _routesModel;
         ObservableCollection<Location?>? _locations;
 
         public Route SelectedRoute
@@ -34,21 +34,12 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<bool, Route?> ApplyCommand { get; }
 
-        public RoutesEditorViewModel()
-        {
-            _selectedRoute = new();
-
-            _locationModel = new LocationsModel();
-
-            LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            ApplyCommand = ReactiveCommand.Create<bool, Route?>(ExecuteApplyCommand);
-        }
-
+        public RoutesEditorViewModel(): this(new()) { }
         public RoutesEditorViewModel(Route route)
         {
             _selectedRoute = route;
 
-            _locationModel = new LocationsModel();
+            _routesModel = new RoutesModel();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             ApplyCommand = ReactiveCommand.Create<bool, Route?>(ExecuteApplyCommand);
@@ -56,7 +47,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
 
         private async Task ExecuteLoadCommand()
         {
-            Locations = new(await _locationModel.GetAll());
+            Locations = new(await _routesModel.GetLocations());
         }
         private Route? ExecuteApplyCommand(bool arg)
         {

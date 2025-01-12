@@ -16,8 +16,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
     public class VehiclesEditorViewModel : ViewModelBase
     {
         Vehicle _selectedVehicle;
-        VehicleStatusesModel _statusesModel;
-        VehicleTypesModel _typesModel;
+        VehiclesModel _vehiclesModel;
         ObservableCollection<VehicleStatus?>? _statuses;
         ObservableCollection<VehicleType?>? _types;
 
@@ -40,22 +39,12 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<bool, Vehicle?> ApplyCommand { get; }
 
-        public VehiclesEditorViewModel()
-        {
-            _selectedVehicle = new();
-
-            _statusesModel = new VehicleStatusesModel();
-            _typesModel = new VehicleTypesModel();
-
-            LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            ApplyCommand = ReactiveCommand.Create<bool, Vehicle?>(ExecuteApplyCommand);
-        }
+        public VehiclesEditorViewModel() : this(new()) { }
         public VehiclesEditorViewModel(Vehicle vehicle)
         {
             _selectedVehicle = vehicle;
 
-            _statusesModel = new VehicleStatusesModel();
-            _typesModel = new VehicleTypesModel();
+            _vehiclesModel = new VehiclesModel();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             ApplyCommand = ReactiveCommand.Create<bool, Vehicle?>(ExecuteApplyCommand);
@@ -63,8 +52,8 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
 
         private async Task ExecuteLoadCommand()
         {
-            Types = new(await _typesModel.GetAll());
-            Statuses = new(await _statusesModel.GetAll());
+            Types = new(await _vehiclesModel.GetTypes());
+            Statuses = new(await _vehiclesModel.GetStatuses());
         }
         private Vehicle? ExecuteApplyCommand(bool arg)
         {

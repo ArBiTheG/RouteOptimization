@@ -1,8 +1,6 @@
 ﻿using ReactiveUI;
 using RouteOptimization.Models;
 using RouteOptimization.Models.Entities;
-using RouteOptimization.Repository;
-using RouteOptimization.Repository.SQLite;
 using RouteOptimization.ViewModels.Pages.DataEditors;
 using System;
 using System.Collections.Generic;

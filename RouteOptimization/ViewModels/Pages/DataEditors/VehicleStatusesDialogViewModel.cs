@@ -22,13 +22,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<bool, VehicleStatus?> ApplyCommand { get; }
 
-        public VehicleStatusesEditorViewModel()
-        {
-            _selectedVehicleStatus = new();
-
-            LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            ApplyCommand = ReactiveCommand.Create<bool, VehicleStatus?>(ExecuteApplyCommand);
-        }
+        public VehicleStatusesEditorViewModel() : this(new()) { }
         public VehicleStatusesEditorViewModel(VehicleStatus vehicleStatus)
         {
             _selectedVehicleStatus = vehicleStatus;

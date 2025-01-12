@@ -11,31 +11,31 @@ namespace RouteOptimization.Models
 {
     public class VehicleStatusesModel
     {
-        IVehicleStatusesRepository _repository;
+        IVehicleStatusesRepository _vehicleStatusesRepository;
 
         public VehicleStatusesModel()
         {
-            _repository = new SQLiteVehicleStatusesRepository();
+            _vehicleStatusesRepository = new SQLiteVehicleStatusesRepository();
         }
         public async Task<IEnumerable<VehicleStatus?>> GetAll()
         {
-            return await _repository.GetAll();
+            return await _vehicleStatusesRepository.GetAll();
         }
         public async Task<VehicleStatus?> GetByID(int id)
         {
-            return await _repository.GetByID(id);
+            return await _vehicleStatusesRepository.GetByID(id);
         }
         public async Task<VehicleStatus?> Create(VehicleStatus entity)
         {
-            return await _repository.Create(entity);
+            return await _vehicleStatusesRepository.Create(entity);
         }
         public async Task Edit(VehicleStatus entity)
         {
-            await _repository.Edit(entity);
+            await _vehicleStatusesRepository.Edit(entity);
         }
         public async Task Delete(VehicleStatus entity)
         {
-            await _repository.Delete(entity);
+            await _vehicleStatusesRepository.Delete(entity);
         }
     }
 }

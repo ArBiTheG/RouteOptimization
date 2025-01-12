@@ -35,14 +35,14 @@ namespace RouteOptimization.Repository.SQLite
         public async Task<IEnumerable<Route?>> GetAll()
         {
             using SQLiteContext context = new SQLiteContext();
-            await context.Routes.LoadAsync();
+            await context.Routes.Include(l => l.StartLocation).Include(l => l.FinishLocation).LoadAsync();
             return context.Routes.Local.ToArray();
         }
 
         public async Task<Route?> GetByID(int id)
         {
             using SQLiteContext context = new SQLiteContext();
-            return await context.Routes.FirstOrDefaultAsync(c => c.Id == id);
+            return await context.Routes.Include(l => l.StartLocation).Include(l => l.FinishLocation).FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

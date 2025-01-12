@@ -16,7 +16,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
     public class ShipmentsEditorViewModel : ViewModelBase
     {
         Shipment _selectedShipment;
-        LocationsModel _locationModel;
+        ShipmentsModel _shipmentsModel;
         ObservableCollection<Location?>? _locations;
 
         public Shipment SelectedShipment
@@ -33,22 +33,12 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<bool, Shipment?> ApplyCommand { get; }
 
-        public ShipmentsEditorViewModel()
-        {
-            _selectedShipment = new();
-
-            _locationModel = new LocationsModel();
-
-            LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            ApplyCommand = ReactiveCommand.Create<bool, Shipment?>(ExecuteApplyCommand);
-
-        }
-
+        public ShipmentsEditorViewModel() : this(new()) { }
         public ShipmentsEditorViewModel(Shipment shipment)
         {
             _selectedShipment = shipment;
 
-            _locationModel = new LocationsModel();
+            _shipmentsModel = new ShipmentsModel();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             ApplyCommand = ReactiveCommand.Create<bool, Shipment?>(ExecuteApplyCommand);
@@ -56,7 +46,7 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
 
         private async Task ExecuteLoadCommand()
         {
-            Locations = new(await _locationModel.GetAll());
+            Locations = new(await _shipmentsModel.GetLocations());
         }
         private Shipment? ExecuteApplyCommand(bool arg)
         {

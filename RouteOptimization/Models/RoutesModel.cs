@@ -11,31 +11,43 @@ namespace RouteOptimization.Models
 {
     public class RoutesModel
     {
-        IRoutesRepository _repository;
+        IRoutesRepository _routesRepository;
+        ILocationsRepository _locationsRepository;
 
         public RoutesModel()
         {
-            _repository = new SQLiteRoutesRepository();
+            _routesRepository = new SQLiteRoutesRepository();
+            _locationsRepository = new SQLiteLocationsRepository();
         }
         public async Task<IEnumerable<Route?>> GetAll()
         {
-            return await _repository.GetAll();
+            return await _routesRepository.GetAll();
         }
+
         public async Task<Route?> GetByID(int id)
         {
-            return await _repository.GetByID(id);
+            return await _routesRepository.GetByID(id);
         }
         public async Task<Route?> Create(Route entity)
         {
-            return await _repository.Create(entity);
+            return await _routesRepository.Create(entity);
         }
         public async Task Edit(Route entity)
         {
-            await _repository.Edit(entity);
+            await _routesRepository.Edit(entity);
         }
         public async Task Delete(Route entity)
         {
-            await _repository.Delete(entity);
+            await _routesRepository.Delete(entity);
+        }
+
+        public async Task<IEnumerable<Location?>> GetLocations()
+        {
+            return await _locationsRepository.GetAll();
+        }
+        public async Task<Location?> GetLocationByID(int id)
+        {
+            return await _locationsRepository.GetByID(id);
         }
     }
 }

@@ -11,31 +11,53 @@ namespace RouteOptimization.Models
 {
     public class VehiclesModel
     {
-        IVehiclesRepository _repository;
+        IVehiclesRepository _vehiclesRepository;
+        IVehicleTypesRepository _vehicleTypesRepository;
+        IVehicleStatusesRepository _vehicleStatusesRepository;
 
         public VehiclesModel()
         {
-            _repository = new SQLiteVehiclesRepository();
+            _vehiclesRepository = new SQLiteVehiclesRepository();
+            _vehicleTypesRepository = new SQLiteVehicleTypesRepository();
+            _vehicleStatusesRepository = new SQLiteVehicleStatusesRepository();
         }
         public async Task<IEnumerable<Vehicle?>> GetAll()
         {
-            return await _repository.GetAll();
+            return await _vehiclesRepository.GetAll();
         }
         public async Task<Vehicle?> GetByID(int id)
         {
-            return await _repository.GetByID(id);
+            return await _vehiclesRepository.GetByID(id);
         }
         public async Task<Vehicle?> Create(Vehicle entity)
         {
-            return await _repository.Create(entity);
+            return await _vehiclesRepository.Create(entity);
         }
         public async Task Edit(Vehicle entity)
         {
-            await _repository.Edit(entity);
+            await _vehiclesRepository.Edit(entity);
         }
         public async Task Delete(Vehicle entity)
         {
-            await _repository.Delete(entity);
+            await _vehiclesRepository.Delete(entity);
+        }
+
+        public async Task<IEnumerable<VehicleType?>> GetTypes()
+        {
+            return await _vehicleTypesRepository.GetAll();
+        }
+        public async Task<VehicleType?> GetTypeByID(int id)
+        {
+            return await _vehicleTypesRepository.GetByID(id);
+        }
+
+        public async Task<IEnumerable<VehicleStatus?>> GetStatuses()
+        {
+            return await _vehicleStatusesRepository.GetAll();
+        }
+        public async Task<VehicleStatus?> GetStatusByID(int id)
+        {
+            return await _vehicleStatusesRepository.GetByID(id);
         }
     }
 }

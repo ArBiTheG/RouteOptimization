@@ -12,31 +12,31 @@ namespace RouteOptimization.Models
 {
     public class LocationsModel: ReactiveObject
     {
-        ILocationsRepository _repository;
+        ILocationsRepository _locationsRepository;
 
         public LocationsModel()
         {
-            _repository = new SQLiteLocationsRepository();
+            _locationsRepository = new SQLiteLocationsRepository();
         }
         public async Task<IEnumerable<Location?>> GetAll()
         {
-            return await _repository.GetAll(); 
+            return await _locationsRepository.GetAll(); 
         }
         public async Task<Location?> GetByID(int id)
         {
-            return await _repository.GetByID(id);
+            return await _locationsRepository.GetByID(id);
         }
         public async Task<Location?> Create(Location entity)
         {
-            return await _repository.Create(entity);
+            return await _locationsRepository.Create(entity);
         }
         public async Task Edit(Location entity) 
         {
-            await _repository.Edit(entity);
+            await _locationsRepository.Edit(entity);
         }
         public async Task Delete(Location entity)
         {
-            await _repository.Delete(entity);
+            await _locationsRepository.Delete(entity);
         }
     }
 }
