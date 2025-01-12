@@ -11,8 +11,8 @@ namespace RouteOptimization.Models
 {
     public class RoutesModel
     {
-        IRoutesRepository _routesRepository;
-        ILocationsRepository _locationsRepository;
+        private IRepository<Route> _routesRepository;
+        private IRepository<Location> _locationsRepository;
 
         public RoutesModel()
         {
@@ -34,7 +34,7 @@ namespace RouteOptimization.Models
         }
         public async Task Edit(Route entity)
         {
-            await _routesRepository.Edit(entity);
+            await _routesRepository.Update(entity);
         }
         public async Task Delete(Route entity)
         {

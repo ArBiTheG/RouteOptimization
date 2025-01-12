@@ -17,7 +17,7 @@ namespace RouteOptimization.Models
 {
     public class MapBuilderModel
     {
-        ILocationsRepository _locationsRepository;
+        private IRepository<Location> _locationsRepository;
 
         public MapBuilderModel()
         {

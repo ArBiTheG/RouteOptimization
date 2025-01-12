@@ -12,7 +12,7 @@ namespace RouteOptimization.Models
 {
     public class LocationsModel: ReactiveObject
     {
-        ILocationsRepository _locationsRepository;
+        private IRepository<Location> _locationsRepository;
 
         public LocationsModel()
         {
@@ -20,7 +20,7 @@ namespace RouteOptimization.Models
         }
         public async Task<IEnumerable<Location?>> GetAll()
         {
-            return await _locationsRepository.GetAll(); 
+            return await _locationsRepository.GetAll();
         }
         public async Task<Location?> GetByID(int id)
         {
@@ -32,7 +32,7 @@ namespace RouteOptimization.Models
         }
         public async Task Edit(Location entity) 
         {
-            await _locationsRepository.Edit(entity);
+            await _locationsRepository.Update(entity);
         }
         public async Task Delete(Location entity)
         {

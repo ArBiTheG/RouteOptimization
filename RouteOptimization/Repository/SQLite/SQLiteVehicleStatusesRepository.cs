@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Repository.SQLite
 {
-    public class SQLiteVehicleStatusesRepository : IVehicleStatusesRepository
+    public class SQLiteVehicleStatusesRepository : IRepository<VehicleStatus>
     {
         public async Task<VehicleStatus?> Create(VehicleStatus entity)
         {
@@ -25,7 +25,7 @@ namespace RouteOptimization.Repository.SQLite
             await context.SaveChangesAsync();
         }
 
-        public async Task Edit(VehicleStatus entity)
+        public async Task Update(VehicleStatus entity)
         {
             using SQLiteContext context = new SQLiteContext();
             context.VehicleStatuses.Entry(entity).State = EntityState.Modified;
@@ -39,10 +39,23 @@ namespace RouteOptimization.Repository.SQLite
             return context.VehicleStatuses.Local.ToArray();
         }
 
+        public async Task<IEnumerable<VehicleStatus?>> GetAll(int page, int pageSize = 10, string filter = "")
+        {
+            using SQLiteContext context = new SQLiteContext();
+            await context.VehicleStatuses.Skip((page - 1) * pageSize).Take(pageSize).LoadAsync();
+            return context.VehicleStatuses.ToArray();
+        }
+
         public async Task<VehicleStatus?> GetByID(int id)
         {
             using SQLiteContext context = new SQLiteContext();
             return await context.VehicleStatuses.FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<int?> Count()
+        {
+            using SQLiteContext context = new SQLiteContext();
+            return await context.VehicleStatuses.CountAsync();
         }
     }
 }

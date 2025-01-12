@@ -11,9 +11,9 @@ namespace RouteOptimization.Models
 {
     public class VehiclesModel
     {
-        IVehiclesRepository _vehiclesRepository;
-        IVehicleTypesRepository _vehicleTypesRepository;
-        IVehicleStatusesRepository _vehicleStatusesRepository;
+        private IRepository<Vehicle> _vehiclesRepository;
+        private IRepository<VehicleType> _vehicleTypesRepository;
+        private IRepository<VehicleStatus> _vehicleStatusesRepository;
 
         public VehiclesModel()
         {
@@ -35,7 +35,7 @@ namespace RouteOptimization.Models
         }
         public async Task Edit(Vehicle entity)
         {
-            await _vehiclesRepository.Edit(entity);
+            await _vehiclesRepository.Update(entity);
         }
         public async Task Delete(Vehicle entity)
         {
