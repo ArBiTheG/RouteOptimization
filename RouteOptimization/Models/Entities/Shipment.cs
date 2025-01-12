@@ -63,5 +63,10 @@ namespace RouteOptimization.Models.Entities
             get => _destination;
             set => this.RaiseAndSetIfChanged(ref _destination, value);
         }
+
+        public override string? ToString()
+        {
+            return Name;
+        }
     }
 }

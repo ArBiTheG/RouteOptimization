@@ -22,7 +22,7 @@ namespace RouteOptimization.Views.Pages.DataViewers
             this.WhenActivated(action =>
                 action(ViewModel!.ShowDeleteDialog.RegisterHandler(DoShowDeleteDialogAsync)));
         }
-        private async Task DoShowDialogAsync(InteractionContext<ShipmentsEditorViewModel, Shipment?> interaction)
+        private async Task DoShowDialogAsync(IInteractionContext<ShipmentsEditorViewModel, Shipment?> interaction)
         {
             var dialog = new ShipmentsEditorWindow();
             dialog.DataContext = interaction.Input;
@@ -31,7 +31,7 @@ namespace RouteOptimization.Views.Pages.DataViewers
             interaction.SetOutput(result);
         }
 
-        private async Task DoShowDeleteDialogAsync(InteractionContext<DeleteViewModel, bool> interaction)
+        private async Task DoShowDeleteDialogAsync(IInteractionContext<DeleteViewModel, bool> interaction)
         {
             var dialog = new DeleteWindow();
             dialog.DataContext = interaction.Input;

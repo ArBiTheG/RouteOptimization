@@ -22,11 +22,15 @@
       <StackPanel>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Начало маршрута:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedRoute.StartLocationId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          <ComboBox Grid.Column="1" VerticalAlignment="Center" 
+                    ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedRoute.StartLocationId}" SelectedValueBinding="{Binding Id}">
+          </ComboBox>
         </Grid>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Конец маршрута:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedRoute.EndLocationId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          <ComboBox Grid.Column="1" VerticalAlignment="Center" 
+                    ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedRoute.FinishLocationId}" SelectedValueBinding="{Binding Id}">
+          </ComboBox>
         </Grid>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Расстояние:"/>

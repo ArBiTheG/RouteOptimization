@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace RouteOptimization.Models.Entities
 {
@@ -56,6 +57,11 @@ namespace RouteOptimization.Models.Entities
         {
             get => _status;
             set => this.RaiseAndSetIfChanged(ref _status, value);
+        }
+
+        public override string? ToString()
+        {
+            return LicensePlate;
         }
     }
 }

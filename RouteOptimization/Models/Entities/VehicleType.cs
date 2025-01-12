@@ -29,5 +29,10 @@ namespace RouteOptimization.Models.Entities
         [NotMapped]
         public List<Vehicle>? Vehicles { get; set; }
 
+        public override string? ToString()
+        {
+            return Name;
+        }
+
     }
 }

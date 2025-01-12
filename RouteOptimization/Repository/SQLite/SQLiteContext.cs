@@ -39,7 +39,7 @@ namespace RouteOptimization.Repository.SQLite
                 .WithOne(g => g.StartLocation)
                 .HasForeignKey(g => g.StartLocationId);
 
-            modelBuilder.Entity<Location>().HasMany(t => t.RoutesEnd)
+            modelBuilder.Entity<Location>().HasMany(t => t.RoutesFinish)
                 .WithOne(g => g.FinishLocation)
                 .HasForeignKey(g => g.FinishLocationId);
 

@@ -9,9 +9,7 @@ namespace RouteOptimization.Models.Entities
     public interface IRoute
     {
         int Id { get; }
-        int StartLocationId { get; set; }
         Location? StartLocation { get; set; }
-        int FinishLocationId { get; set; }
         Location? FinishLocation { get; set; }
         float Distance { get; set; }
         float Time { get; set; }

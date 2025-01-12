@@ -24,7 +24,7 @@ namespace RouteOptimization.Views.Pages.DataViewers
         }
 
 
-        private async Task DoShowDialogAsync(InteractionContext<LocationsEditorViewModel,Location?> interaction)
+        private async Task DoShowDialogAsync(IInteractionContext<LocationsEditorViewModel,Location?> interaction)
         {
             var dialog = new LocationsEditorWindow();
             dialog.DataContext = interaction.Input;
@@ -33,7 +33,7 @@ namespace RouteOptimization.Views.Pages.DataViewers
             interaction.SetOutput(result);
         }
 
-        private async Task DoShowDeleteDialogAsync(InteractionContext<DeleteViewModel, bool> interaction)
+        private async Task DoShowDeleteDialogAsync(IInteractionContext<DeleteViewModel, bool> interaction)
         {
             var dialog = new DeleteWindow();
             dialog.DataContext = interaction.Input;

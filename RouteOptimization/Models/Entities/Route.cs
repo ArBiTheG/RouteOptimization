@@ -15,7 +15,7 @@ namespace RouteOptimization.Models.Entities
         int _id;
         int _startLocationId;
         Location? _startLocation;
-        int _endLocationId;
+        int _finishLocationId;
         Location? _finishLocation;
         float _distance;
         float _time;
@@ -39,8 +39,8 @@ namespace RouteOptimization.Models.Entities
 
         public int FinishLocationId
         {
-            get => _endLocationId;
-            set => this.RaiseAndSetIfChanged(ref _endLocationId, value);
+            get => _finishLocationId;
+            set => this.RaiseAndSetIfChanged(ref _finishLocationId, value);
         }
 
         public virtual Location? FinishLocation
@@ -58,5 +58,23 @@ namespace RouteOptimization.Models.Entities
             get => _time;
             set => this.RaiseAndSetIfChanged(ref _time, value);
         }
+
+        public string Name
+        {
+            get
+            {
+                if (StartLocation != null && FinishLocation != null)
+                {
+                    return $"Маршрут {StartLocation.Name} - {FinishLocation.Name} ({Distance} м.)";
+                }
+                return $"Маршрут {Id}";
+            }
+        }
+
+        public override string? ToString()
+        {
+            return Name;
+        }
+
     }
 }

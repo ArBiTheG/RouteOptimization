@@ -47,7 +47,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 
         private async Task ExecuteLoadCommand()
         {
-            List = new ObservableCollection<Shipment?>(await _model.GetAll());
+            List = new(await _model.GetAll());
         }
 
         private async Task ExecuteAddCommand()
