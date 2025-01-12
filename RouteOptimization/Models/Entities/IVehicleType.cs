@@ -9,6 +9,6 @@ namespace RouteOptimization.Models.Entities
     public interface IVehicleType
     {
         int Id { get; }
-        string? Name { get; set; }
+        string Name { get; set; }
     }
 }

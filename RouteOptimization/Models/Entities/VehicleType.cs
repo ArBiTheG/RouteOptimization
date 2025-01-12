@@ -6,10 +6,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using ReactiveUI;
 
 namespace RouteOptimization.Models.Entities
 {
-    public class VehicleType : IVehicleType, INotifyPropertyChanged
+    public class VehicleType : ReactiveObject, IVehicleType
     {
         int _id;
         string _name;
@@ -22,21 +23,11 @@ namespace RouteOptimization.Models.Entities
         public string Name
         {
             get => _name;
-            set
-            {
-                _name = value;
-                OnPropertyChanged(nameof(Name));
-            }
+            set => this.RaiseAndSetIfChanged(ref _name, value);
         }
 
         [NotMapped]
         public List<Vehicle>? Vehicles { get; set; }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-        }
     }
 }

@@ -7,10 +7,11 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using ReactiveUI;
 
 namespace RouteOptimization.Models.Entities
 {
-    public class Location : ILocation, INotifyPropertyChanged
+    public class Location : ReactiveObject, ILocation
     {
         private int _id;
         private string? _name;
@@ -26,47 +27,27 @@ namespace RouteOptimization.Models.Entities
         public string? Name
         {
             get => _name;
-            set
-            {
-                _name = value;
-                OnPropertyChanged(nameof(Name));
-            }
+            set => this.RaiseAndSetIfChanged(ref _name, value);
         }
         public string? Description
         {
             get => _description;
-            set
-            {
-                _description = value;
-                OnPropertyChanged(nameof(Description));
-            }
+            set => this.RaiseAndSetIfChanged(ref _description, value);
         }
         public float X
         {
             get => _x;
-            set
-            {
-                _x = value;
-                OnPropertyChanged(nameof(X));
-            }
+            set => this.RaiseAndSetIfChanged(ref _x, value);
         }
         public float Y
         {
             get => _y;
-            set
-            {
-                _y = value;
-                OnPropertyChanged(nameof(Y));
-            }
+            set => this.RaiseAndSetIfChanged(ref _y, value);
         }
         public float Size
         {
             get => _size;
-            set
-            {
-                _size = value;
-                OnPropertyChanged(nameof(Y));
-            }
+            set => this.RaiseAndSetIfChanged(ref _size, value);
         }
 
         [NotMapped]
@@ -78,13 +59,5 @@ namespace RouteOptimization.Models.Entities
         public List<Shipment>? ShipmentsOrigin { get; set; }
         [NotMapped]
         public List<Shipment>? ShipmentsDestination { get; set; }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-        }
     }
 }

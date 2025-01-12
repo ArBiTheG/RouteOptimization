@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Models.Entities
 {
-    public class Shipment : IShipment, INotifyPropertyChanged
+    public class Shipment : ReactiveObject, IShipment
     {
         int _id;
         string _name;
@@ -26,76 +27,41 @@ namespace RouteOptimization.Models.Entities
         public string Name
         {
             get => _name;
-            set
-            {
-                _name = value;
-                OnPropertyChanged(nameof(Name));
-            }
+            set => this.RaiseAndSetIfChanged(ref _name, value);
         }
         public double Weight
         {
             get => _weight;
-            set
-            {
-                _weight = value;
-                OnPropertyChanged(nameof(Weight));
-            }
+            set => this.RaiseAndSetIfChanged(ref _weight, value);
         }
         public DateTime DateTime
         {
             get => _dateTime;
-            set
-            {
-                _dateTime = value;
-                OnPropertyChanged(nameof(DateTime));
-            }
+            set => this.RaiseAndSetIfChanged(ref _dateTime, value);
         }
 
         public int OriginId
         {
             get => _originId;
-            set
-            {
-                _originId = value;
-                OnPropertyChanged(nameof(OriginId));
-            }
+            set => this.RaiseAndSetIfChanged(ref _originId, value);
         }
 
         public virtual Location? Origin
         {
             get => _origin;
-            set
-            {
-                _origin = value;
-                OnPropertyChanged(nameof(Origin));
-            }
+            set => this.RaiseAndSetIfChanged(ref _origin, value);
         }
 
         public int DestinationId
         {
             get => _destinationId;
-            set
-            {
-                _destinationId = value;
-                OnPropertyChanged(nameof(DestinationId));
-            }
+            set => this.RaiseAndSetIfChanged(ref _destinationId, value);
         }
 
         public virtual Location? Destination
         {
             get => _destination;
-            set
-            {
-                _destination = value;
-                OnPropertyChanged(nameof(Destination));
-            }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            set => this.RaiseAndSetIfChanged(ref _destination, value);
         }
     }
 }

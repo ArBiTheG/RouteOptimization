@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Models.Entities
 {
-    public class Vehicle : IVehicle, INotifyPropertyChanged
+    public class Vehicle : ReactiveObject, IVehicle
     {
         int _id;
         string _licensePlate;
@@ -25,67 +26,36 @@ namespace RouteOptimization.Models.Entities
         public double Capacity
         {
             get => _capacity;
-            set
-            {
-                _capacity = value;
-                OnPropertyChanged(nameof(Capacity));
-            }
+            set => this.RaiseAndSetIfChanged(ref _capacity, value);
         }
         public string LicensePlate
         {
             get => _licensePlate;
-            set
-            {
-                _licensePlate = value;
-                OnPropertyChanged(nameof(LicensePlate));
-            }
+            set => this.RaiseAndSetIfChanged(ref _licensePlate, value);
         }
 
         public int TypeId
         {
             get => _typeId;
-            set
-            {
-                _typeId = value;
-                OnPropertyChanged(nameof(TypeId));
-            }
+            set => this.RaiseAndSetIfChanged(ref _typeId, value);
         }
 
         public virtual VehicleType? Type
         {
             get => _type;
-            set
-            {
-                _type = value;
-                OnPropertyChanged(nameof(Type));
-            }
+            set => this.RaiseAndSetIfChanged(ref _type, value);
         }
 
         public int StatusId
         {
             get => _statusId;
-            set
-            {
-                _statusId = value;
-                OnPropertyChanged(nameof(StatusId));
-            }
+            set => this.RaiseAndSetIfChanged(ref _statusId, value);
         }
 
         public virtual VehicleStatus? Status
         {
             get => _status;
-            set
-            {
-                _status = value;
-                OnPropertyChanged(nameof(Status));
-            }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            set => this.RaiseAndSetIfChanged(ref _status, value);
         }
     }
 }

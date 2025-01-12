@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Models.Entities
 {
-    public class Route : IRoute, INotifyPropertyChanged
+    public class Route : ReactiveObject, IRoute
     {
         int _id;
         int _startLocationId;
-        Location _startLocation;
+        Location? _startLocation;
         int _endLocationId;
-        Location _finishLocation;
+        Location? _finishLocation;
         float _distance;
         float _time;
 
@@ -27,78 +28,35 @@ namespace RouteOptimization.Models.Entities
         public int StartLocationId
         {
             get => _startLocationId;
-            set
-            {
-                _startLocationId = value;
-                OnPropertyChanged(nameof(StartLocationId));
-            }
+            set => this.RaiseAndSetIfChanged(ref _startLocationId, value);
         }
 
-        public virtual Location StartLocation
+        public virtual Location? StartLocation
         {
             get => _startLocation;
-            set
-            {
-                _startLocation = value;
-                OnPropertyChanged(nameof(StartLocation));
-            }
+            set => this.RaiseAndSetIfChanged(ref _startLocation, value);
         }
 
         public int FinishLocationId
         {
             get => _endLocationId;
-            set
-            {
-                _endLocationId = value;
-                OnPropertyChanged(nameof(FinishLocationId));
-            }
+            set => this.RaiseAndSetIfChanged(ref _endLocationId, value);
         }
 
-        public virtual Location FinishLocation
+        public virtual Location? FinishLocation
         {
             get => _finishLocation;
-            set
-            {
-                _finishLocation = value;
-                OnPropertyChanged(nameof(FinishLocation));
-            }
+            set => this.RaiseAndSetIfChanged(ref _finishLocation, value);
         }
         public float Distance
         {
             get => _distance;
-            set
-            {
-                _distance = value;
-                OnPropertyChanged(nameof(Distance));
-            }
+            set => this.RaiseAndSetIfChanged(ref _distance, value);
         }
         public float Time
         {
             get => _time;
-            set
-            {
-                _time = value;
-                OnPropertyChanged(nameof(Time));
-            }
-        }
-
-        [NotMapped]
-        public float StartX { get => StartLocation.X; set => StartLocation.X = value; }
-
-        [NotMapped]
-        public float StartY { get => StartLocation.Y; set => StartLocation.Y = value; }
-
-        [NotMapped]
-        public float FinishX { get => FinishLocation.X; set => FinishLocation.X = value; }
-
-        [NotMapped]
-        public float FinishY { get => FinishLocation.Y; set => FinishLocation.Y = value; }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            set => this.RaiseAndSetIfChanged(ref _time, value);
         }
     }
 }
