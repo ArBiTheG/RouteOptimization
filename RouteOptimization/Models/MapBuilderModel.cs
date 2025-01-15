@@ -1,42 +1,60 @@
 ﻿using Mapsui;
 using Mapsui.Layers;
+using Mapsui.Nts;
 using Mapsui.Styles;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 using ReactiveUI;
 using RouteOptimization.Controls;
 using RouteOptimization.Models.Entities;
 using RouteOptimization.Repository;
 using RouteOptimization.Repository.SQLite;
+using RouteOptimization.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Location = RouteOptimization.Models.Entities.Location;
 
 namespace RouteOptimization.Models
 {
     public class MapBuilderModel
     {
         private IRepository<Location> _locationsRepository;
+        private IRepository<Route> _routesRepository;
+
+        private WritableLayer? _pointLayer;
+        private WritableLayer? _lineLayer;
 
         public MapBuilderModel()
         {
             _locationsRepository = new SQLiteLocationsRepository();
+            _routesRepository = new SQLiteRoutesRepository();
         }
 
         public async Task<Map> GetMap()
         {
-            return await Task.Run(CreateMap);
+            var map = await Task.Run(CreateMap);
+
+            _pointLayer?.AddRange(await GetPointFeatures());
+            _lineLayer?.AddRange(await GetLineFeatures());
+
+            return map;
         }
 
-        private static Map CreateMap()
+        private Map CreateMap()
         {
-            var pointLayer = CreatePointLayer();
+            _lineLayer = MapsuiTools.CreateLayer("LineLayer");
+            _pointLayer = MapsuiTools.CreateLayer("PointLayer");
 
             return new MapBuilder()
                 .SetOpenStreetMapLayer()
-                .SetWritableLayer(pointLayer)
-                .SetTextWidget("Постройте карту")
+                .SetWritableLayer(_lineLayer)
+                .SetWritableLayer(_pointLayer)
+                .SetTextWidget("Просмотр карты")
                 .SetCoordinatesWidget()
                 .SetScaleBarWidget()
                 .SetBoundsFromLonLat(22.0, 34.0, 180, 80.0)
@@ -44,27 +62,8 @@ namespace RouteOptimization.Models
                 .SetHome(4337667, 5793728, 50)
                 .Build();
         }
-        private static WritableLayer CreatePointLayer()
-        {
-            return new WritableLayer
-            {
-                Name = "PointLayer",
-                Style = CreatePointStyle()
-            };
-        }
 
-        private static readonly Color TargetLayerColor = new Color(240, 240, 240, 240);
-        private static IStyle CreatePointStyle()
-        {
-            return new VectorStyle
-            {
-                Fill = new Brush(TargetLayerColor),
-                Line = new Pen(TargetLayerColor, 3),
-                Outline = new Pen(Color.Gray, 2)
-            };
-        }
-
-        public async Task<List<IFeature>> GetPointFeatures()
+        private async Task<IEnumerable<IFeature>> GetPointFeatures()
         {
             var locations = new List<Location?>(await _locationsRepository.GetAll());
 
@@ -73,15 +72,36 @@ namespace RouteOptimization.Models
             {
                 if (location == null) continue;
 
-                var point = new PointFeature(location.X, location.Y);
-                point.Styles.Add(new LabelStyle
-                {
-                    Text = location.Name,
-                    BackColor = new Brush(Color.Gray),
-                    HorizontalAlignment = LabelStyle.HorizontalAlignmentEnum.Center
-                });
+                var labelStyle = MapsuiTools.CreateLabelStyle(location.Name ?? "Без имени");
+                var symbolStyle = MapsuiTools.CreateSymbolStyle();
+
+                var point = MapsuiTools.CreatePointFeature(location.X, location.Y, symbolStyle, labelStyle);
 
                 features.Add(point);
+            }
+
+            return features;
+        }
+
+        private async Task<IEnumerable<IFeature>> GetLineFeatures()
+        {
+            var routes = new List<Route?>(await _routesRepository.GetAll());
+
+            var features = new List<IFeature>();
+            foreach (var route in routes)
+            {
+                if (route == null) continue;
+
+                if (route.StartLocation != null && route.FinishLocation != null)
+                {
+                    var vectorStyle = MapsuiTools.CreateVectorStyle();
+
+                    var geometry = MapsuiTools.GetGeometry(route.StartLocation, route.FinishLocation);
+
+                    var geometryFeature = MapsuiTools.CreateGeometryFeature(geometry, vectorStyle);
+
+                    features.Add(geometryFeature);
+                }
             }
 
             return features;

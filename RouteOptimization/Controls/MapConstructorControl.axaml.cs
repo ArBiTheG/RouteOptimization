@@ -7,27 +7,24 @@ using Mapsui.UI;
 using Mapsui.UI.Avalonia;
 using Mapsui;
 using Avalonia;
+using System.Diagnostics;
 
 namespace RouteOptimization.Controls
 {
-    public partial class MapConstructorControl : UserControl
+    public partial class MapConstructorControl : MapControl
     {
-        MapControl _mapControl;
 
         public MapConstructorControl()
         {
             Focusable = true;
 
-            _mapControl = new MapControl(); 
-
-            Content = _mapControl;
         }
 
         public static readonly DirectProperty<MapConstructorControl, Map?> MapSourceProperty =
             AvaloniaProperty.RegisterDirect<MapConstructorControl, Map?>(
                 nameof(MapSource),
-                o => o._mapControl.Map,
-                (o, v) => o._mapControl.Map = v ?? new Map());
+                o => o.Map,
+                (o, v) => o.Map = v ?? new Map());
 
         public Map? MapSource
         {
@@ -39,6 +36,5 @@ namespace RouteOptimization.Controls
                 SetValue(MapSourceProperty, value);
             }
         }
-
     }
 }

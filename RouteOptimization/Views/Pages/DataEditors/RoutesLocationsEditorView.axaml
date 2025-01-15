@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:local="clr-namespace:RouteOptimization.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:RouteOptimization.ViewModels.Pages.DataEditors"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -17,18 +18,18 @@
       <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
     </ia:EventTriggerBehavior>
   </i:Interaction.Behaviors>
-  <Grid Grid.RowDefinitions="1*,36">
+  <Grid Grid.RowDefinitions="auto,1*,36">
     <Border Grid.Row="0">
       <StackPanel>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Начало маршрута:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" 
+          <ComboBox x:Name="locationStartComboBox" Grid.Column="1" VerticalAlignment="Center" 
                     ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedRoute.StartLocationId}" SelectedValueBinding="{Binding Id}">
           </ComboBox>
         </Grid>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Конец маршрута:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" 
+          <ComboBox x:Name="locationFinishComboBox" Grid.Column="1" VerticalAlignment="Center" 
                     ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedRoute.FinishLocationId}" SelectedValueBinding="{Binding Id}">
           </ComboBox>
         </Grid>
@@ -42,7 +43,10 @@
         </Grid>
       </StackPanel>
     </Border>
-    <Border Grid.Row="1">
+    <Border Grid.Row="1" Margin="2"  CornerRadius="4" BorderThickness="1" BorderBrush="Black" ClipToBounds="True">
+      <local:MapConstructorControl x:Name="mapControl"/>
+    </Border>
+    <Border Grid.Row="2">
       <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
         <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="ОК" IsDefault="True"  Command="{Binding ApplyCommand}" CommandParameter="{x:True}"/>
         <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="Отмена" Command="{Binding ApplyCommand}" CommandParameter="{x:False}"/>

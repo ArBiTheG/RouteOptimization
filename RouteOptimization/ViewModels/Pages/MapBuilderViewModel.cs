@@ -45,8 +45,6 @@ namespace RouteOptimization.ViewModels.Pages
         private async Task ExecuteLoadCommand()
         {
             Map = await Model.GetMap();
-            var layer = Map.Layers.FirstOrDefault(f => f.Name == "PointLayer") as WritableLayer;
-            layer?.AddRange(await Model.GetPointFeatures());
         }
 
     }

@@ -123,9 +123,9 @@ namespace RouteOptimization.Controls
             {
                 VerticalAlignment = Mapsui.Widgets.VerticalAlignment.Top,
                 HorizontalAlignment = Mapsui.Widgets.HorizontalAlignment.Center,
-                Text = "Постройте карту",
-                MarginY = 20,
-                PaddingX = 20,
+                Text = text,
+                MarginY = 10,
+                PaddingX = 10,
                 PaddingY = 5
             };
 
@@ -147,8 +147,8 @@ namespace RouteOptimization.Controls
         {
             var scaleBarWidget = new ScaleBarWidget(_map)
             {
-                MarginX = 20,
-                MarginY = 20
+                MarginX = 10,
+                MarginY = 10
             };
             _map.Widgets.Add(scaleBarWidget);
             return this;
@@ -158,8 +158,8 @@ namespace RouteOptimization.Controls
         {
             var zoomInOutWidget = new ZoomInOutWidget()
             {
-                MarginX = 20,
-                MarginY = 20
+                MarginX = 10,
+                MarginY = 10
             };
             _map.Widgets.Add(zoomInOutWidget);
             return this;
