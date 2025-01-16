@@ -18,44 +18,9 @@
       <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
     </ia:EventTriggerBehavior>
   </i:Interaction.Behaviors>
-  <Grid Margin="2">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition/>
-      <ColumnDefinition Width="256"/>
-    </Grid.ColumnDefinitions>
+  <Grid Margin="2" Grid.ColumnDefinitions="*">
     <Border Margin="2" Grid.Column="0" CornerRadius="4" BorderThickness="1" BorderBrush="Black" ClipToBounds="True">
       <local:MapConstructorControl x:Name="map" MapSource="{Binding Map}"/>
-    </Border>
-
-    <Border Grid.Column="1">
-      <StackPanel>
-        <Border Margin="2" CornerRadius="4" BorderThickness="1" BorderBrush="Black" Padding="8,4">
-          <StackPanel>
-            <TextBlock Margin="0,0,0,8">Управление точками:</TextBlock>
-            <Button Command="{Binding AddCommand}">Добавить точку</Button>
-            <Button Command="{Binding EditCommand}" CommandParameter="{Binding SelectedVertex, ElementName=map}">Рудактировать точку</Button>
-            <Button Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedVertex, ElementName=map}">Удалить точку</Button>
-          </StackPanel>
-        </Border>
-
-        <Border Margin="2" CornerRadius="4" BorderThickness="1" BorderBrush="Black" Padding="8,4">
-          <StackPanel>
-            <TextBlock Margin="0,0,0,8">Координаты местности:</TextBlock>
-            <Grid ColumnDefinitions="*,*">
-              <TextBlock Grid.Column="0" Text="X"/>
-              <TextBlock Grid.Column="1" Text="{Binding Scene.X, StringFormat=0.0}"/>
-            </Grid>
-            <Grid ColumnDefinitions="*,*">
-              <TextBlock Grid.Column="0" Text="Y"/>
-              <TextBlock Grid.Column="1" Text="{Binding Scene.Y, StringFormat=0.0}"/>
-            </Grid>
-            <Grid ColumnDefinitions="*,*">
-              <TextBlock Grid.Column="0" Text="Увеличение"/>
-              <TextBlock Grid.Column="1" Text="{Binding Scene.Zoom, StringFormat=\{0:P0\}}"/>
-            </Grid>
-          </StackPanel>
-        </Border>
-      </StackPanel>
     </Border>
     
   </Grid>

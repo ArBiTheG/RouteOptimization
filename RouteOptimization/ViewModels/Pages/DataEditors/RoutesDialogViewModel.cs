@@ -34,12 +34,12 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<bool, Route?> ApplyCommand { get; }
 
-        public RoutesEditorViewModel(): this(new()) { }
-        public RoutesEditorViewModel(Route route)
+        public RoutesEditorViewModel(RoutesModel model) : this(model, new()) { }
+        public RoutesEditorViewModel(RoutesModel model, Route route)
         {
             _selectedRoute = route;
 
-            _routesModel = new RoutesModel();
+            _routesModel = model;
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             ApplyCommand = ReactiveCommand.Create<bool, Route?>(ExecuteApplyCommand);

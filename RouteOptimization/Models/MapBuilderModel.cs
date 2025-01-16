@@ -29,10 +29,10 @@ namespace RouteOptimization.Models
         private WritableLayer? _pointLayer;
         private WritableLayer? _lineLayer;
 
-        public MapBuilderModel()
+        public MapBuilderModel(IRepository<Location> locationsRepository, IRepository<Route> routesRepository)
         {
-            _locationsRepository = new SQLiteLocationsRepository();
-            _routesRepository = new SQLiteRoutesRepository();
+            _locationsRepository = locationsRepository;
+            _routesRepository = routesRepository;
         }
 
         public async Task<Map> GetMap()

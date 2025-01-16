@@ -62,4 +62,8 @@
   <ItemGroup>
     <UpToDateCheckInput Remove="Assets\Icons\box.svg" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RouteOptimization.Library\RouteOptimization.Library.csproj" />
+  </ItemGroup>
 </Project>

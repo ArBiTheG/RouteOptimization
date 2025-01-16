@@ -13,10 +13,11 @@ namespace RouteOptimization.Models
     {
         private IRepository<VehicleStatus> _vehicleStatusesRepository;
 
-        public VehicleStatusesModel()
+        public VehicleStatusesModel(IRepository<VehicleStatus> vehicleStatusesRepository)
         {
-            _vehicleStatusesRepository = new SQLiteVehicleStatusesRepository();
+            _vehicleStatusesRepository = vehicleStatusesRepository;
         }
+
         public async Task<IEnumerable<VehicleStatus?>> GetAll()
         {
             return await _vehicleStatusesRepository.GetAll();

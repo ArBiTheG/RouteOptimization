@@ -39,12 +39,12 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<bool, Vehicle?> ApplyCommand { get; }
 
-        public VehiclesEditorViewModel() : this(new()) { }
-        public VehiclesEditorViewModel(Vehicle vehicle)
+        public VehiclesEditorViewModel(VehiclesModel model) : this(model, new()) { }
+        public VehiclesEditorViewModel(VehiclesModel model, Vehicle vehicle)
         {
             _selectedVehicle = vehicle;
 
-            _vehiclesModel = new VehiclesModel();
+            _vehiclesModel = model;
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             ApplyCommand = ReactiveCommand.Create<bool, Vehicle?>(ExecuteApplyCommand);

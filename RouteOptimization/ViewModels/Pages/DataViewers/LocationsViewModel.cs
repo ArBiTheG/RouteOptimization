@@ -30,9 +30,9 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
         public ReactiveCommand<Location, Unit> EditCommand { get; }
         public ReactiveCommand<Location, Unit> DeleteCommand { get; }
-        public LocationsViewModel()
+        public LocationsViewModel(LocationsModel model)
         {
-            _model = new LocationsModel();
+            _model = model;
 
             ShowDialog = new Interaction<LocationsEditorViewModel, Location?>();
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();

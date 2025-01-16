@@ -14,11 +14,12 @@ namespace RouteOptimization.Models
         private IRepository<Shipment> _shipmentsRepository;
         private IRepository<Location> _locationsRepository;
 
-        public ShipmentsModel()
+        public ShipmentsModel(IRepository<Shipment> shipmentsRepository, IRepository<Location> locationsRepository)
         {
-            _shipmentsRepository = new SQLiteShipmentsRepository();
-            _locationsRepository = new SQLiteLocationsRepository();
+            _shipmentsRepository = shipmentsRepository;
+            _locationsRepository = locationsRepository;
         }
+
         public async Task<IEnumerable<Shipment?>> GetAll()
         {
             return await _shipmentsRepository.GetAll();

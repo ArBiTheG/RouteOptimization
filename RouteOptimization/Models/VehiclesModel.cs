@@ -15,12 +15,13 @@ namespace RouteOptimization.Models
         private IRepository<VehicleType> _vehicleTypesRepository;
         private IRepository<VehicleStatus> _vehicleStatusesRepository;
 
-        public VehiclesModel()
+        public VehiclesModel(IRepository<Vehicle> vehiclesRepository, IRepository<VehicleType> vehicleTypesRepository, IRepository<VehicleStatus> vehicleStatusesRepository)
         {
-            _vehiclesRepository = new SQLiteVehiclesRepository();
-            _vehicleTypesRepository = new SQLiteVehicleTypesRepository();
-            _vehicleStatusesRepository = new SQLiteVehicleStatusesRepository();
+            _vehiclesRepository = vehiclesRepository;
+            _vehicleTypesRepository = vehicleTypesRepository;
+            _vehicleStatusesRepository = vehicleStatusesRepository;
         }
+
         public async Task<IEnumerable<Vehicle?>> GetAll()
         {
             return await _vehiclesRepository.GetAll();

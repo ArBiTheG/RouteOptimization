@@ -2,6 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:local="clr-namespace:RouteOptimization.Controls"
              xmlns:vm="clr-namespace:RouteOptimization.ViewModels.Pages"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -11,4 +13,26 @@
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
     <vm:MapRouteViewModel />
   </Design.DataContext>
+  <i:Interaction.Behaviors>
+    <ia:EventTriggerBehavior EventName="Loaded">
+      <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
+    </ia:EventTriggerBehavior>
+  </i:Interaction.Behaviors>
+  <Grid Margin="2" Grid.ColumnDefinitions="*,256">
+    
+    <Border Margin="2" Grid.Column="0" CornerRadius="4" BorderThickness="1" BorderBrush="Black" ClipToBounds="True">
+      <local:MapConstructorControl x:Name="map" MapSource="{Binding Map}"/>
+    </Border>
+    <Border Margin="2" Grid.Column="1" CornerRadius="4" BorderThickness="1" BorderBrush="Black" ClipToBounds="True">
+      <StackPanel>
+        <TextBlock Text="Укажите первую точку"/>
+        <ComboBox HorizontalAlignment="Stretch" 
+                  ItemsSource="{Binding Locations}" SelectedItem="{Binding SelectedStartLocation}" />
+        <TextBlock Text="Укажите вторую точку"/>
+        <ComboBox HorizontalAlignment="Stretch"
+                  ItemsSource="{Binding Locations}" SelectedItem="{Binding SelectedFinishLocation}" />
+        <Button Content="Построить маршрут" Command="{Binding BuildRouteCommand}"/>
+      </StackPanel>
+    </Border>
+  </Grid>
 </UserControl>

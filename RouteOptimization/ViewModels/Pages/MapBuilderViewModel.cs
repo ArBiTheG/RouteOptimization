@@ -23,7 +23,7 @@ namespace RouteOptimization.ViewModels.Pages
 {
     public class MapBuilderViewModel: ViewModelBase
     {
-        private MapBuilderModel Model { get; set; }
+        private MapBuilderModel _model;
         private Map? _map;
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
@@ -35,16 +35,15 @@ namespace RouteOptimization.ViewModels.Pages
             set => this.RaiseAndSetIfChanged(ref _map, value);
         }
 
-        public MapBuilderViewModel()
+        public MapBuilderViewModel(MapBuilderModel mapBuilderModel)
         {
-            Model = new MapBuilderModel();
-
+            _model = mapBuilderModel;
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
         }
         private async Task ExecuteLoadCommand()
         {
-            Map = await Model.GetMap();
+            Map = await _model.GetMap();
         }
 
     }

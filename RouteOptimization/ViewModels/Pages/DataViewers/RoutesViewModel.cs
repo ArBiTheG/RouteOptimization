@@ -31,9 +31,9 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
         public ReactiveCommand<Route, Unit> EditCommand { get; }
         public ReactiveCommand<Route, Unit> DeleteCommand { get; }
-        public RoutesViewModel()
+        public RoutesViewModel(RoutesModel model)
         {
-            _model = new RoutesModel();
+            _model = model;
 
             ShowDialog = new Interaction<RoutesEditorViewModel, Route?>();
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
@@ -50,7 +50,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 
         private async Task ExecuteAddCommand()
         {
-            var dialog = new RoutesEditorViewModel();
+            var dialog = new RoutesEditorViewModel(_model);
 
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
@@ -61,7 +61,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         }
         private async Task ExecuteEditCommand(Route route)
         {
-            var dialog = new RoutesEditorViewModel(route);
+            var dialog = new RoutesEditorViewModel(_model, route);
 
             var result = await ShowDialog.Handle(dialog);
             if (result != null)

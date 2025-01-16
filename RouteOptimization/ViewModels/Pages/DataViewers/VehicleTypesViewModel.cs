@@ -32,9 +32,9 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         public ReactiveCommand<VehicleType, Unit> EditCommand { get; }
         public ReactiveCommand<VehicleType, Unit> DeleteCommand { get; }
 
-        public VehicleTypesViewModel()
+        public VehicleTypesViewModel(VehicleTypesModel model)
         {
-            _model = new VehicleTypesModel();
+            _model = model;
 
             ShowDialog = new Interaction<VehicleTypesEditorViewModel, VehicleType?>();
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();

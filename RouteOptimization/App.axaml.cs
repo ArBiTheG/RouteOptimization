@@ -2,6 +2,10 @@
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
+using RouteOptimization.Models;
+using RouteOptimization.Models.Entities;
+using RouteOptimization.Repository;
+using RouteOptimization.Repository.SQLite;
 using RouteOptimization.ViewModels;
 using RouteOptimization.ViewModels.Pages;
 using RouteOptimization.ViewModels.Pages.DataViewers;
@@ -47,6 +51,22 @@ public partial class App : Application
 
         // Add the ViewModels as a service (Main as singleton, others as transient)
         services.AddSingleton<MainViewModel>();
+
+        services.AddSingleton<IRepository<Location>, SQLiteLocationsRepository>();
+        services.AddSingleton<IRepository<Route>, SQLiteRoutesRepository>();
+        services.AddSingleton<IRepository<Shipment>, SQLiteShipmentsRepository>();
+        services.AddSingleton<IRepository<Vehicle>, SQLiteVehiclesRepository>();
+        services.AddSingleton<IRepository<VehicleStatus>, SQLiteVehicleStatusesRepository>();
+        services.AddSingleton<IRepository<VehicleType>, SQLiteVehicleTypesRepository>();
+
+        services.AddTransient<LocationsModel>();
+        services.AddTransient<MapBuilderModel>();
+        services.AddTransient<MapRouteModel>();
+        services.AddTransient<RoutesModel>();
+        services.AddTransient<ShipmentsModel>();
+        services.AddTransient<VehiclesModel>();
+        services.AddTransient<VehicleStatusesModel>();
+        services.AddTransient<VehicleTypesModel>();
 
         services.AddTransient<HomeViewModel>();
         services.AddTransient<DatabaseViewModel>();
