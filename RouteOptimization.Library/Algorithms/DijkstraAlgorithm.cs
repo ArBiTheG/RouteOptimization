@@ -29,11 +29,11 @@ namespace RouteOptimization.Library.Algorithms
                 vertexInfoList.Add(vertexInfo);
             }
 
-            var notVisitedVertexInfoList = vertexInfoList.OrderBy(v => v.Weight).ToHashSet();
+            var notVisitedVertexInfoList = vertexInfoList.ToHashSet();
 
             while (notVisitedVertexInfoList.Any())
             {
-                VertexInfo nearestVertexInfo = notVisitedVertexInfoList.First();
+                VertexInfo nearestVertexInfo = notVisitedVertexInfoList.OrderBy(v => v.Weight).First();
                 notVisitedVertexInfoList.Remove(nearestVertexInfo);
 
                 foreach (var edge in nearestVertexInfo.Vertex.Edges)
