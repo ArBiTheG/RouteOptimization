@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Library.Builder
 {
-    public interface IRouteBuilder
+    public interface IWayBuilder
     {
-        IRouteBuilder SetBegin(int id);
-        IRouteBuilder SetEnd(int id);
-        Route Build();
+        IWayBuilder SetBegin(int id);
+        IWayBuilder SetEnd(int id);
+        Way Build();
+        Task<Way> BuildAsync();
     }
 }

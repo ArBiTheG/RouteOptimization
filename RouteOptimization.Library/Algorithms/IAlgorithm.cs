@@ -9,6 +9,6 @@ namespace RouteOptimization.Library.Algorithms
 {
     public interface IAlgorithm
     {
-        Route BuildTo(Vertex vertexBegin, Vertex vertexEnd);
+        Way BuildTo(Vertex vertexBegin, Vertex vertexEnd);
     }
 }

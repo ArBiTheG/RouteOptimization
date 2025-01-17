@@ -2,9 +2,7 @@
 using Mapsui.Layers;
 using RouteOptimization.Controls;
 using RouteOptimization.Library.Builder;
-using Routing = RouteOptimization.Library.Entity.Route;
-using Graph = RouteOptimization.Library.Entity.Graph;
-using Vertex = RouteOptimization.Library.Entity.Vertex;
+using RouteOptimization.Library.Entity;
 using RouteOptimization.Models.Entities;
 using RouteOptimization.Repository;
 using RouteOptimization.Utils;
@@ -14,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Mapsui.Styles;
+using System.Security.Cryptography.X509Certificates;
 
 namespace RouteOptimization.Models
 {
@@ -52,16 +51,9 @@ namespace RouteOptimization.Models
             return await _locationsRepository.GetAll();
         }
 
-
-        public async Task<Map> Navigate(Location? startLocation, Location? finishLocation)
+        public async Task<Way> GetWayAsync(IEnumerable<Route?> routes, Location? startLocation, Location? finishLocation)
         {
-            var locations = new List<Location?>(await _locationsRepository.GetAll());
-            var routes = new List<Route?>(await _routesRepository.GetAll());
-
-            // Создание карты для маршрута
-
             IGraphBuilder graphBuider = GraphBuilder.Create();
-
             foreach (var route in routes)
             {
                 if (route != null)
@@ -71,23 +63,30 @@ namespace RouteOptimization.Models
                     graphBuider.AddEdge(startRoute, finishRoute, route.Time);
                 }
             }
+            Graph graph = await graphBuider.BuildAsync();
 
-            Graph graph = graphBuider.Build();
 
-            // Маршрутизация
-
-            RouteBuilder? routeBuilder = RouteBuilder.Create(graph);
-
+            WayBuilder? wayBuilder = WayBuilder.Create(graph);
             if (startLocation != null && finishLocation != null)
             {
                 int startId = startLocation.Id;
                 int finishId = finishLocation.Id;
 
-                routeBuilder.SetBegin(startId).SetEnd(finishId);
+                wayBuilder.SetBegin(startId).SetEnd(finishId);
             }
+            return await wayBuilder.BuildAsync();
+        }
 
-            Routing routing = routeBuilder.Build();
-            Vertex[] vertices = routing.Vertices.ToArray();
+
+        public async Task<Map> Navigate(Location? startLocation, Location? finishLocation)
+        {
+            var locations = new List<Location?>(await _locationsRepository.GetAll());
+            var routes = new List<Route?>(await _routesRepository.GetAll());
+
+            // Создание карты для маршрута
+
+            Way way = await GetWayAsync(routes, startLocation, finishLocation);
+            Vertex[] vertices = way.Vertices.ToArray();
 
             // Установка точек на карте
             _pointLayer?.Clear();

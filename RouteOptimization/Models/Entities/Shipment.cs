@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Models.Entities
 {
-    public class Shipment : ReactiveObject, IShipment
+    public class Shipment : ReactiveObject, IShipment, IEquatable<Shipment?>
     {
         int _id;
         string _name;
@@ -64,9 +64,42 @@ namespace RouteOptimization.Models.Entities
             set => this.RaiseAndSetIfChanged(ref _destination, value);
         }
 
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Shipment);
+        }
+
+        public bool Equals(Shipment? other)
+        {
+            return other is not null &&
+                   _id == other._id &&
+                   _name == other._name &&
+                   _weight == other._weight &&
+                   _dateTime == other._dateTime &&
+                   _originId == other._originId &&
+                   EqualityComparer<Location?>.Default.Equals(_origin, other._origin) &&
+                   _destinationId == other._destinationId &&
+                   EqualityComparer<Location?>.Default.Equals(_destination, other._destination);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_id, _name, _weight, _dateTime, _originId, _origin, _destinationId, _destination);
+        }
+
         public override string? ToString()
         {
             return Name;
+        }
+
+        public static bool operator ==(Shipment? left, Shipment? right)
+        {
+            return EqualityComparer<Shipment>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(Shipment? left, Shipment? right)
+        {
+            return !(left == right);
         }
     }
 }

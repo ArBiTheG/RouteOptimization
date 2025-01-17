@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Models.Entities
 {
-    public class Route : ReactiveObject, IRoute
+    public class Route : ReactiveObject, IRoute, IEquatable<Route?>
     {
         int _id;
         int _startLocationId;
@@ -71,10 +71,41 @@ namespace RouteOptimization.Models.Entities
             }
         }
 
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Route);
+        }
+
+        public bool Equals(Route? other)
+        {
+            return other is not null &&
+                   _id == other._id &&
+                   _startLocationId == other._startLocationId &&
+                   EqualityComparer<Location?>.Default.Equals(_startLocation, other._startLocation) &&
+                   _finishLocationId == other._finishLocationId &&
+                   EqualityComparer<Location?>.Default.Equals(_finishLocation, other._finishLocation) &&
+                   _distance == other._distance &&
+                   _time == other._time;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_id, _startLocationId, _startLocation, _finishLocationId, _finishLocation, _distance, _time);
+        }
+
         public override string? ToString()
         {
             return Name;
         }
 
+        public static bool operator ==(Route? left, Route? right)
+        {
+            return EqualityComparer<Route>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(Route? left, Route? right)
+        {
+            return !(left == right);
+        }
     }
 }

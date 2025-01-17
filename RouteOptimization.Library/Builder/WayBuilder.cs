@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Library.Builder
 {
-    public class RouteBuilder : IRouteBuilder
+    public class WayBuilder : IWayBuilder
     {
         IAlgorithm _algorithm;
         Graph _graph;
@@ -18,26 +18,26 @@ namespace RouteOptimization.Library.Builder
         int _endId;
 
 
-        private RouteBuilder(Graph graph)
+        private WayBuilder(Graph graph)
         {
             _algorithm = new DijkstraAlgorithm(graph);
             _graph = graph;
         }
 
-        public IRouteBuilder SetBegin(int id)
+        public IWayBuilder SetBegin(int id)
         {
 
             _beginId = id;
             return this;
         }
 
-        public IRouteBuilder SetEnd(int id)
+        public IWayBuilder SetEnd(int id)
         {
             _endId = id;
             return this;
         }
 
-        public Route Build()
+        public Way Build()
         {
             var vertexBegin = _graph.GetVertex(_beginId);
             var vertexEnd = _graph.GetVertex(_endId);
@@ -51,9 +51,14 @@ namespace RouteOptimization.Library.Builder
             return _algorithm.BuildTo(vertexBegin, vertexEnd);
         }
 
-        public static RouteBuilder Create(Graph graph)
+        public async Task<Way> BuildAsync()
         {
-            return new RouteBuilder(graph);
+            return await Task.Run(Build);
+        }
+
+        public static WayBuilder Create(Graph graph)
+        {
+            return new WayBuilder(graph);
         }
     }
 }

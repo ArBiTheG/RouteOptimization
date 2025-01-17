@@ -46,6 +46,10 @@ namespace RouteOptimization.Library.Builder
             Graph graph = new Graph(_vertices);
             return graph;
         }
+        public async Task<Graph> BuildAsync()
+        {
+            return await Task.Run(Build);
+        }
 
         public static GraphBuilder Create()
         {

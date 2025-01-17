@@ -71,8 +71,10 @@ namespace RouteOptimization.Library.Algorithms
                 VertexInfo info = vertexInfoList.First(i => i.Vertex == vertexCursor);
                 vertexCursor = info.PreviousVertex;
 
+
                 if (vertexCursor == null)
-                    throw new RouteException("It is impossible to build a non-existent route");
+                    continue;
+                //    throw new RouteException("It is impossible to build a non-existent route");
 
                 routeResult.Push(vertexCursor);
             }
@@ -80,11 +82,11 @@ namespace RouteOptimization.Library.Algorithms
         }
 
 
-        public Route BuildTo(Vertex vertexBegin, Vertex vertexEnd)
+        public Way BuildTo(Vertex vertexBegin, Vertex vertexEnd)
         {
             var list = Optimize(vertexBegin);
 
-            return new Route(
+            return new Way(
                 GetRoute(list, vertexBegin, vertexEnd),
                 GetTotalWeight(list, vertexEnd));
         }

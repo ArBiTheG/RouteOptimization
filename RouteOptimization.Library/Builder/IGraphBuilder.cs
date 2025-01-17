@@ -13,5 +13,6 @@ namespace RouteOptimization.Library.Builder
 
         public IGraphBuilder AddEdge(int beginId, int endId, double weight);
         public Graph Build();
+        public Task<Graph> BuildAsync();
     }
 }

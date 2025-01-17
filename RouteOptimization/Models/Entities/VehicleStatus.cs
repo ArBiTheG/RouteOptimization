@@ -10,7 +10,7 @@ using ReactiveUI;
 
 namespace RouteOptimization.Models.Entities
 {
-    public class VehicleStatus : ReactiveObject, IVehicleStatus
+    public class VehicleStatus : ReactiveObject, IVehicleStatus, IEquatable<VehicleStatus?>
     {
         int _id;
         string _name;
@@ -29,9 +29,35 @@ namespace RouteOptimization.Models.Entities
         [NotMapped]
         public List<Vehicle>? Vehicles { get; set; }
 
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as VehicleStatus);
+        }
+
+        public bool Equals(VehicleStatus? other)
+        {
+            return other is not null &&
+                   _name == other._name;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_name);
+        }
+
         public override string? ToString()
         {
             return Name;
+        }
+
+        public static bool operator ==(VehicleStatus? left, VehicleStatus? right)
+        {
+            return EqualityComparer<VehicleStatus>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(VehicleStatus? left, VehicleStatus? right)
+        {
+            return !(left == right);
         }
     }
 }
