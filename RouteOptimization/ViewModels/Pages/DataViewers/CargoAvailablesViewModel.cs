@@ -64,12 +64,13 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         }
         private async Task ExecuteEditCommand(CargoAvailable cargoAvailable)
         {
-            var dialog = new CargoAvailablesEditorViewModel(cargoAvailable);
+            var dialog = new CargoAvailablesEditorViewModel(cargoAvailable.Clone());
 
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
             {
-                await _model.Edit(result);
+                cargoAvailable.CopyFrom(result);
+                await _model.Edit(cargoAvailable);
             }
         }
         private async Task ExecuteDeleteCommand(CargoAvailable cargoAvailable)

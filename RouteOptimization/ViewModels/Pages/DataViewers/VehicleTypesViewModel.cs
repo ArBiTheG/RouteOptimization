@@ -65,12 +65,13 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         }
         private async Task ExecuteEditCommand(VehicleType vehicleType)
         {
-            var dialog = new VehicleTypesEditorViewModel(vehicleType);
+            var dialog = new VehicleTypesEditorViewModel(vehicleType.Clone());
 
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
             {
-                await _model.Edit(result);
+                vehicleType.CopyFrom(result);
+                await _model.Edit(vehicleType);
             }
         }
         private async Task ExecuteDeleteCommand(VehicleType vehicleType)

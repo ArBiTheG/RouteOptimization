@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using Avalonia;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +12,7 @@ using System.Xml.Linq;
 
 namespace RouteOptimization.Models.Entities
 {
-    public class Vehicle : ReactiveObject
+    public class Vehicle : ReactiveObject, IEquatable<Vehicle?>, ICloneable<Vehicle>, ICopyable<Vehicle?>
     {
         int _id;
         string _licensePlate;
@@ -64,5 +65,59 @@ namespace RouteOptimization.Models.Entities
 
         [NotMapped]
         public string Name => _type != null ? LicensePlate + " - " + _type.Name : LicensePlate;
+
+        public Vehicle Clone()
+        {
+            var clone = new Vehicle();
+            clone.LicensePlate = LicensePlate;
+            clone.Capacity = Capacity;
+            clone.TypeId = TypeId;
+            clone.Type = Type;
+            clone.StatusId = StatusId;
+            clone.Status = Status;
+
+            return clone;
+        }
+
+        public void CopyFrom(Vehicle? entity)
+        {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            LicensePlate = entity.LicensePlate;
+            Capacity = entity.Capacity;
+            TypeId = entity.TypeId;
+            Type = entity.Type;
+            StatusId = entity.StatusId;
+            Status = entity.Status;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Vehicle);
+        }
+
+        public bool Equals(Vehicle? other)
+        {
+            return other is not null &&
+                   _id == other._id &&
+                   _licensePlate == other._licensePlate &&
+                   _capacity == other._capacity &&
+                   _typeId == other._typeId &&
+                   _statusId == other._statusId;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_id, _licensePlate, _capacity, _typeId, _statusId);
+        }
+
+        public static bool operator ==(Vehicle? left, Vehicle? right)
+        {
+            return EqualityComparer<Vehicle>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(Vehicle? left, Vehicle? right)
+        {
+            return !(left == right);
+        }
     }
 }

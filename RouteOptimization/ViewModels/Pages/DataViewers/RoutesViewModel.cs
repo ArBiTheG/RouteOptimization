@@ -65,12 +65,13 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         }
         private async Task ExecuteEditCommand(Route route)
         {
-            var dialog = new RoutesEditorViewModel(_model, route);
+            var dialog = new RoutesEditorViewModel(_model, route.Clone());
 
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
             {
-                await _model.Edit(result);
+                route.CopyFrom(result);
+                await _model.Edit(route);
             }
         }
         private async Task ExecuteDeleteCommand(Route route)

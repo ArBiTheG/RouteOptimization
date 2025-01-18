@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Models.Entities
 {
-    public class Route : ReactiveObject
+    public class Route : ReactiveObject, IEquatable<Route?>, ICloneable<Route>, ICopyable<Route?>
     {
         int _id;
         int _startLocationId;
@@ -69,6 +69,60 @@ namespace RouteOptimization.Models.Entities
                 }
                 return $"Маршрут {Id}";
             }
+        }
+
+        public Route Clone()
+        {
+            var clone = new Route();
+            clone.StartLocationId = StartLocationId;
+            clone.FinishLocationId = FinishLocationId;
+            clone.StartLocation = StartLocation;
+            clone.FinishLocation = FinishLocation;
+            clone.Distance = Distance;
+            clone.Time = Time;
+
+            return clone;
+        }
+
+        public void CopyFrom(Route? entity)
+        {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            StartLocationId = entity.StartLocationId;
+            FinishLocationId = entity.FinishLocationId;
+            StartLocation = entity.StartLocation;
+            FinishLocation = entity.FinishLocation;
+            Distance = entity.Distance;
+            Time = entity.Time;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Route);
+        }
+
+        public bool Equals(Route? other)
+        {
+            return other is not null &&
+                   _id == other._id &&
+                   _startLocationId == other._startLocationId &&
+                   _finishLocationId == other._finishLocationId &&
+                   _distance == other._distance &&
+                   _time == other._time;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_id, _startLocationId, _finishLocationId, _distance, _time);
+        }
+
+        public static bool operator ==(Route? left, Route? right)
+        {
+            return EqualityComparer<Route>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(Route? left, Route? right)
+        {
+            return !(left == right);
         }
     }
 }

@@ -64,12 +64,13 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         }
         private async Task ExecuteEditCommand(Location location)
         {
-            var dialog = new LocationsEditorViewModel(location);
+            var dialog = new LocationsEditorViewModel(location.Clone());
 
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
             {
-                await _model.Edit(result);
+                location.CopyFrom(result);
+                await _model.Edit(location);
             }
         }
         private async Task ExecuteDeleteCommand(Location location)

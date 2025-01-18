@@ -64,12 +64,13 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         }
         private async Task ExecuteEditCommand(ShipmentStatus shipmentStatus)
         {
-            var dialog = new ShipmentStatusesEditorViewModel(shipmentStatus);
+            var dialog = new ShipmentStatusesEditorViewModel(shipmentStatus.Clone());
 
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
             {
-                await _model.Edit(result);
+                shipmentStatus.CopyFrom(result);
+                await _model.Edit(shipmentStatus);
             }
         }
         private async Task ExecuteDeleteCommand(ShipmentStatus shipmentStatus)

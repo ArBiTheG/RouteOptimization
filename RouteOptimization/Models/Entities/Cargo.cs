@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Models.Entities
 {
-    public class Cargo : ReactiveObject
+    public class Cargo : ReactiveObject, IEquatable<Cargo?>, ICloneable<Cargo>, ICopyable<Cargo?>
     {
         private int _id;
         private string _name;
@@ -35,5 +35,80 @@ namespace RouteOptimization.Models.Entities
         public virtual Location? Location { get => _location; set => this.RaiseAndSetIfChanged(ref _location, value); }
 
         public virtual ICollection<Shipment>? Shipments { get; set; }
+
+        public Cargo Clone()
+        {
+            var clone = new Cargo();
+            clone.Name = _name;
+            clone.Description = _description;
+            clone.Weight = _weight;
+            clone.SizeX = _sizeX;
+            clone.SizeY = _sizeY;
+            clone.SizeZ = _sizeZ;
+            clone.AvailableId = _availableId;
+            clone.Available = _available;
+            clone.LocationId = _locationId;
+            clone.Location = _location;
+            return clone;
+        }
+
+        public void CopyFrom(Cargo? entity)
+        {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            Name = entity.Name;
+            Description = entity.Description;
+            Weight = entity.Weight;
+            SizeX = entity.SizeX;
+            SizeY = entity.SizeY;
+            SizeZ = entity.SizeZ;
+            AvailableId = entity.AvailableId;
+            Available = entity.Available;
+            LocationId = entity.LocationId;
+            Location = entity.Location;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Cargo);
+        }
+
+        public bool Equals(Cargo? other)
+        {
+            return other is not null &&
+                   _id == other._id &&
+                   _name == other._name &&
+                   _description == other._description &&
+                   _weight == other._weight &&
+                   _sizeX == other._sizeX &&
+                   _sizeY == other._sizeY &&
+                   _sizeZ == other._sizeZ &&
+                   _availableId == other._availableId &&
+                   _locationId == other._locationId;
+        }
+
+        public override int GetHashCode()
+        {
+            HashCode hash = new HashCode();
+            hash.Add(_id);
+            hash.Add(_name);
+            hash.Add(_description);
+            hash.Add(_weight);
+            hash.Add(_sizeX);
+            hash.Add(_sizeY);
+            hash.Add(_sizeZ);
+            hash.Add(_availableId);
+            hash.Add(_locationId);
+            return hash.ToHashCode();
+        }
+
+        public static bool operator ==(Cargo? left, Cargo? right)
+        {
+            return EqualityComparer<Cargo>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(Cargo? left, Cargo? right)
+        {
+            return !(left == right);
+        }
     }
 }

@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Models.Entities
 {
-    // TODO: Переделать
-    public class Shipment : ReactiveObject
+    public class Shipment : ReactiveObject, IEquatable<Shipment?>, ICloneable<Shipment>, ICopyable<Shipment?>
     {
         private int _id;
         private int _vehicleId;
@@ -44,5 +43,74 @@ namespace RouteOptimization.Models.Entities
 
         [NotMapped]
         public string Name => _cargo != null ? "Доставка #" + Id +  " - " + _cargo.Name : "Доставка #" + Id;
+
+        public Shipment Clone()
+        {
+            var clone = new Shipment();
+            clone.VehicleId = VehicleId;
+            clone.Vehicle = Vehicle;
+            clone.CargoId = CargoId;
+            clone.Cargo = Cargo;
+            clone.DateTimeStart = DateTimeStart;
+            clone.DateTimeFinish = DateTimeFinish;
+            clone.OriginId = OriginId;
+            clone.Origin = Origin;
+            clone.DestinationId = DestinationId;
+            clone.Destination = Destination;
+            clone.StatusId = StatusId;
+            clone.Status = Status;
+
+            return clone;
+        }
+
+        public void CopyFrom(Shipment? entity)
+        {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            VehicleId = entity.VehicleId;
+            Vehicle = entity.Vehicle;
+            CargoId = entity.CargoId;
+            Cargo = entity.Cargo;
+            DateTimeStart = entity.DateTimeStart;
+            DateTimeFinish = entity.DateTimeFinish;
+            OriginId = entity.OriginId;
+            Origin = entity.Origin;
+            DestinationId = entity.DestinationId;
+            Destination = entity.Destination;
+            StatusId = entity.StatusId;
+            Status = entity.Status;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Shipment);
+        }
+
+        public bool Equals(Shipment? other)
+        {
+            return other is not null &&
+                   _id == other._id &&
+                   _vehicleId == other._vehicleId &&
+                   _cargoId == other._cargoId &&
+                   _dateTimeStart == other._dateTimeStart &&
+                   _dateTimeFinish == other._dateTimeFinish &&
+                   _locationOriginId == other._locationOriginId &&
+                   _locationDestinationId == other._locationDestinationId &&
+                   _shipmentStatusId == other._shipmentStatusId;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_id, _vehicleId, _cargoId, _dateTimeStart, _dateTimeFinish, _locationOriginId, _locationDestinationId, _shipmentStatusId);
+        }
+
+        public static bool operator ==(Shipment? left, Shipment? right)
+        {
+            return EqualityComparer<Shipment>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(Shipment? left, Shipment? right)
+        {
+            return !(left == right);
+        }
     }
 }
