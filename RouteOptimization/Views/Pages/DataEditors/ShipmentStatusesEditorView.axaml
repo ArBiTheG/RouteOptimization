@@ -6,11 +6,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:RouteOptimization.ViewModels.Pages.DataEditors"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="RouteOptimization.Views.Pages.DataEditors.VehicleStatusesEditorView">
+             x:Class="RouteOptimization.Views.Pages.DataEditors.ShipmentStatusesEditorView">
   <Design.DataContext>
     <!-- This only sets the DataContext for the previewer in an IDE,
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-    <vm:VehicleStatusesEditorViewModel/>
+    <vm:ShipmentStatusesEditorViewModel/>
   </Design.DataContext>
   <i:Interaction.Behaviors>
     <ia:EventTriggerBehavior EventName="Loaded">
@@ -22,7 +22,7 @@
       <StackPanel>
         <Grid Margin="2" Grid.ColumnDefinitions="1*,2*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Наименование:"/>
-          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedVehicleStatus.Name}"/>
+          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedShipmentStatus.Name}"/>
         </Grid>
       </StackPanel>
     </Border>

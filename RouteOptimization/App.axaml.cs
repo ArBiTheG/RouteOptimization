@@ -68,9 +68,9 @@ public partial class App : Application
         services.AddTransient<LoadingModel>();
         services.AddTransient<RoutesModel>();
         services.AddTransient<CargosModel>();
-        //services.AddTransient<CargoAvailablesModel>();
+        services.AddTransient<CargoAvailablesModel>();
         services.AddTransient<ShipmentsModel>();
-        //services.AddTransient<ShipmentStatusesModel>();
+        services.AddTransient<ShipmentStatusesModel>();
         services.AddTransient<VehiclesModel>();
         services.AddTransient<VehicleStatusesModel>();
         services.AddTransient<VehicleTypesModel>();
@@ -80,13 +80,14 @@ public partial class App : Application
         services.AddTransient<MapBuilderViewModel>();
         services.AddTransient<MapRouteViewModel>();
         services.AddTransient<LoadingViewModel>();
+        services.AddTransient<SettingsDatabaseViewModel>();
 
         services.AddTransient<LocationsViewModel>();
         services.AddTransient<RoutesViewModel>();
         services.AddTransient<CargosViewModel>();
-        //services.AddTransient<CargoAvailablesViewModel>();
+        services.AddTransient<CargoAvailablesViewModel>();
         services.AddTransient<ShipmentsViewModel>();
-        //services.AddTransient<ShipmentStatusesViewModel>();
+        services.AddTransient<ShipmentStatusesViewModel>();
         services.AddTransient<VehiclesViewModel>();
         services.AddTransient<VehicleStatusesViewModel>();
         services.AddTransient<VehicleTypesViewModel>();

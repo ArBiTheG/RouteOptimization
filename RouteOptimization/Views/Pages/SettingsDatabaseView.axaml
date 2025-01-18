@@ -5,11 +5,11 @@
              xmlns:local="clr-namespace:RouteOptimization.Controls"
              xmlns:vm="clr-namespace:RouteOptimization.ViewModels.Pages"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="RouteOptimization.Views.Pages.DatabaseView">
+             x:Class="RouteOptimization.Views.Pages.SettingsDatabaseView">
   <Design.DataContext>
     <!-- This only sets the DataContext for the previewer in an IDE,
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-    <vm:DatabaseViewModel />
+    <vm:SettingsDatabaseViewModel />
   </Design.DataContext>
   <Grid>
     <StackPanel Margin="4">
@@ -17,36 +17,26 @@
         <StackPanel Orientation="Horizontal">
           <Image Width="32" Height="32" Margin="0,0,8,0">
             <Image.Source>
-              <SvgImage Source="/Assets/Icons/database.svg"/>
+              <SvgImage Source="/Assets/Icons/box.svg"/>
             </Image.Source>
           </Image>
-          <TextBlock VerticalAlignment="Center" Text="Управление данными" FontSize="24"/>
+          <TextBlock VerticalAlignment="Center" Text="Настройки" FontSize="24"/>
         </StackPanel>
       </Label>
       <WrapPanel Margin="2" Grid.IsSharedSizeScope="True">
-        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Locations">
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="CargoAvailables">
           <Grid>
-            <TextBlock>Локации</TextBlock>
+            <TextBlock>Доступность груза</TextBlock>
             <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
-                <SvgImage Source="/Assets/Icons/mark.svg"/>
+                <SvgImage Source="/Assets/Icons/box.svg"/>
               </Image.Source>
             </Image>
           </Grid>
         </Button>
-        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Routes">
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="ShipmentStatuses">
           <Grid>
-            <TextBlock>Маршруты</TextBlock>
-            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-              <Image.Source>
-                <SvgImage Source="/Assets/Icons/build_route.svg" />
-              </Image.Source>
-            </Image>
-          </Grid>
-        </Button>
-        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Vehicles">
-          <Grid>
-            <TextBlock>Транспорт</TextBlock>
+            <TextBlock>Статусы доставки</TextBlock>
             <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
                 <SvgImage Source="/Assets/Icons/truck.svg" />
@@ -54,32 +44,22 @@
             </Image>
           </Grid>
         </Button>
-        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Cargo">
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="VehicleTypes">
           <Grid>
-            <TextBlock>Груз</TextBlock>
+            <TextBlock>Типы транспорта</TextBlock>
             <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
-                <SvgImage Source="/Assets/Icons/box.svg"/>
+                <SvgImage Source="/Assets/Icons/truck.svg" />
               </Image.Source>
             </Image>
           </Grid>
         </Button>
-        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Shipments">
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="VehicleStatuses">
           <Grid>
-            <TextBlock>Погрузки</TextBlock>
+            <TextBlock>Состояния транспорта</TextBlock>
             <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
-                <SvgImage Source="/Assets/Icons/box.svg"/>
-              </Image.Source>
-            </Image>
-          </Grid>
-        </Button>
-        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Settings">
-          <Grid>
-            <TextBlock>Настройки данных</TextBlock>
-            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-              <Image.Source>
-                <SvgImage Source="/Assets/Icons/gear.svg" />
+                <SvgImage Source="/Assets/Icons/truck.svg" />
               </Image.Source>
             </Image>
           </Grid>
