@@ -77,7 +77,7 @@
         </Button>
       </WrapPanel>
     </StackPanel>
-    <Image ZIndex="-1" Margin="-16" Height="256" VerticalAlignment="Bottom" HorizontalAlignment="Left" Source="/Assets/city.png"/>
+    <Image ZIndex="-2" Margin="-16" Height="256" VerticalAlignment="Bottom" HorizontalAlignment="Left" Source="/Assets/city.png"/>
     <Image ZIndex="-1" Margin="-16" Height="320" VerticalAlignment="Bottom" HorizontalAlignment="Right" Source="/Assets/home.png"/>
   </Grid>
 </UserControl>

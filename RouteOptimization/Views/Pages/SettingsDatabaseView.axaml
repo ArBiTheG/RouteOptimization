@@ -66,6 +66,7 @@
         </Button>
       </WrapPanel>
     </StackPanel>
-    <Image ZIndex="-1" Margin="-128" Height="512" VerticalAlignment="Bottom" HorizontalAlignment="Right" Source="/Assets/server.png"/>
+    <Image ZIndex="-2" Margin="-128" Height="512" VerticalAlignment="Bottom" HorizontalAlignment="Left" Source="/Assets/server.png"/>
+    <Image ZIndex="-1" Margin="-16" Height="320" VerticalAlignment="Bottom" HorizontalAlignment="Right" Source="/Assets/database.png"/>
   </Grid>
 </UserControl>
