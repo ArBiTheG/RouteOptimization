@@ -18,8 +18,18 @@
       <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
     </ia:EventTriggerBehavior>
   </i:Interaction.Behaviors>
-  <Grid Margin="2" Grid.ColumnDefinitions="*">
-    <Border Margin="2" Grid.Column="0" CornerRadius="4" BorderThickness="1" BorderBrush="Black" ClipToBounds="True">
+  <Grid Margin="4" RowDefinitions="auto,*">
+    <Label Margin="4">
+      <StackPanel Orientation="Horizontal">
+        <Image Width="32" Height="32" Margin="0,0,8,0">
+          <Image.Source>
+            <SvgImage Source="/Assets/Icons/blueprint.svg"/>
+          </Image.Source>
+        </Image>
+        <TextBlock VerticalAlignment="Center" Text="Конструктор карты" FontSize="24"/>
+      </StackPanel>
+    </Label>
+    <Border Grid.Row="1" Margin="4" CornerRadius="4" ClipToBounds="True">
       <local:MapConstructorControl x:Name="map" MapSource="{Binding Map}"/>
     </Border>
     

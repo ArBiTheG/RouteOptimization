@@ -11,39 +11,72 @@
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
     <vm:DatabaseViewModel />
   </Design.DataContext>
-  <StackPanel>
-    <TextBlock Text="Управление данными" FontSize="24"/>
-    <WrapPanel Grid.IsSharedSizeScope="True">
-      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Locations">
-        <Grid>
-          <TextBlock>Локации</TextBlock>
-          <Image Width="96" Height="96" Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/office.png"/>
-        </Grid>
-      </Button>
-      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Routes">
-        <Grid>
-          <TextBlock>Маршруты</TextBlock>
-          <Image Width="96" Height="96" Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/route.png"/>
-        </Grid>
-      </Button>
-      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Vehicles">
-        <Grid>
-          <TextBlock>Автомобили</TextBlock>
-          <Image Width="128" Height="128" Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/truck.png"/>
-        </Grid>
-      </Button>
-      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Shipments">
-        <Grid>
-          <TextBlock>Отгрузки</TextBlock>
-          <Image Width="96" Height="96"  Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/box.png"/>
-        </Grid>
-      </Button>
-      <Button Margin="2" Width="256" Height="128">
-        <Grid>
-          <TextBlock>Настройки данных</TextBlock>
-          <Image Width="96" Height="96"  Margin="-10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/gear.png"/>
-        </Grid>
-      </Button>
-    </WrapPanel>
-  </StackPanel>
-  </UserControl>
+  <Grid>
+
+    <StackPanel Margin="4">
+      <Label Margin="4">
+        <StackPanel Orientation="Horizontal">
+          <Image Width="32" Height="32" Margin="0,0,8,0">
+            <Image.Source>
+              <SvgImage Source="/Assets/Icons/database.svg"/>
+            </Image.Source>
+          </Image>
+          <TextBlock VerticalAlignment="Center" Text="Управление данными" FontSize="24"/>
+        </StackPanel>
+      </Label>
+      <WrapPanel Margin="2" Grid.IsSharedSizeScope="True">
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Locations">
+          <Grid>
+            <TextBlock>Локации</TextBlock>
+            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="/Assets/Icons/mark.svg"/>
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Routes">
+          <Grid>
+            <TextBlock>Маршруты</TextBlock>
+            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="/Assets/Icons/build_route.svg" />
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Vehicles">
+          <Grid>
+            <TextBlock>Автомобили</TextBlock>
+            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="/Assets/Icons/truck.svg" />
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Shipments">
+          <Grid>
+            <TextBlock>Отгрузки</TextBlock>
+            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="/Assets/Icons/box.svg"/>
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+        <Button Margin="2" Width="256" Height="128">
+          <Grid>
+            <TextBlock>Настройки данных</TextBlock>
+            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="/Assets/Icons/gear.svg" />
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+      </WrapPanel>
+    </StackPanel>
+    <Image ZIndex="-1" Margin="-128" Height="512" VerticalAlignment="Bottom" HorizontalAlignment="Right" Source="/Assets/server.png"/>
+  </Grid>
+</UserControl>

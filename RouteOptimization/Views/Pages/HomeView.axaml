@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:RouteOptimization.ViewModels.Pages"
+             xmlns:svg="using:Avalonia.Svg.Skia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="RouteOptimization.Views.Pages.HomeView">
   <Design.DataContext>
@@ -11,33 +12,62 @@
     <vm:HomeViewModel />
   </Design.DataContext>
 
-  <StackPanel>
-    <TextBlock Text="Главная" FontSize="24"/>
-    <WrapPanel Grid.IsSharedSizeScope="True">
-      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Handle">
-        <Grid>
-          <TextBlock>Управление данными</TextBlock>
-          <Image Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/database.png"/>
-        </Grid>
-      </Button>
-      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Builder">
-        <Grid>
-          <TextBlock>Конструктор карты</TextBlock>
-          <Image Width="128" Height="128" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/map_construct.png"/>
-        </Grid>
-      </Button>
-      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Route">
-        <Grid>
-          <TextBlock>Установить маршрут</TextBlock>
-          <Image Width="128" Height="128" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/map_route.png"/>
-        </Grid>
-      </Button>
-      <Button Margin="2" Width="256" Height="128">
-        <Grid>
-          <TextBlock>Настройки приложения</TextBlock>
-          <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/gear.png"/>
-        </Grid>
-      </Button>
-    </WrapPanel>
-  </StackPanel>
+  <Grid>
+    <StackPanel Margin="4">
+      <Label Margin="4">
+        <StackPanel Orientation="Horizontal">
+          <Image Width="32" Height="32" Margin="0,0,8,0">
+            <Image.Source>
+              <SvgImage Source="/Assets/Icons/house.svg"/>
+            </Image.Source>
+          </Image>
+          <TextBlock VerticalAlignment="Center" Text="Главная" FontSize="24"/>
+        </StackPanel>
+      </Label>
+      <WrapPanel Margin="2" Grid.IsSharedSizeScope="True">
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Handle">
+          <Grid>
+            <TextBlock>Управление данными</TextBlock>
+            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="/Assets/Icons/database.svg" />
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Builder">
+          <Grid>
+            <TextBlock>Конструктор карты</TextBlock>
+            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="/Assets/Icons/blueprint.svg" />
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Route">
+          <Grid>
+            <TextBlock>Система навигации</TextBlock>
+            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="/Assets/Icons/route.svg" />
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+        <Button Margin="2" Width="256" Height="128">
+          <Grid>
+            <TextBlock>Настройки приложения</TextBlock>
+            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="/Assets/Icons/gear.svg" />
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+      </WrapPanel>
+    </StackPanel>
+    <Image ZIndex="-1" Margin="-16" Height="256" VerticalAlignment="Bottom" HorizontalAlignment="Left" Source="/Assets/city.png"/>
+    <Image ZIndex="-1" Margin="-16" Height="320" VerticalAlignment="Bottom" HorizontalAlignment="Right" Source="/Assets/home.png"/>
+  </Grid>
 </UserControl>
