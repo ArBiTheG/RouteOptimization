@@ -35,10 +35,10 @@
     <StackPanel Grid.Row="1" Grid.Column="1" Margin="4">
       <TextBlock Text="Укажите первую точку"/>
       <ComboBox HorizontalAlignment="Stretch" 
-                ItemsSource="{Binding Locations}" SelectedItem="{Binding SelectedStartLocation}" />
+                ItemsSource="{Binding Locations}" SelectedItem="{Binding SelectedStartLocation}" DisplayMemberBinding="{Binding Name}"/>
       <TextBlock Text="Укажите вторую точку"/>
       <ComboBox HorizontalAlignment="Stretch"
-                ItemsSource="{Binding Locations}" SelectedItem="{Binding SelectedFinishLocation}" />
+                ItemsSource="{Binding Locations}" SelectedItem="{Binding SelectedFinishLocation}" DisplayMemberBinding="{Binding Name}"/>
       <Button Content="Построить маршрут" Command="{Binding BuildRouteCommand}"/>
     </StackPanel>
   </Grid>

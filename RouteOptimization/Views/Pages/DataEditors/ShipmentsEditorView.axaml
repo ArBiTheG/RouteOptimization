@@ -22,11 +22,11 @@
       <StackPanel>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Груз:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Cargos}" SelectedValue="{Binding SelectedShipment.CargoId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Cargos}" SelectedValue="{Binding SelectedShipment.CargoId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
         </Grid>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Транспорт:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Vehicles}" SelectedValue="{Binding SelectedShipment.VehicleId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Vehicles}" SelectedValue="{Binding SelectedShipment.VehicleId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
         </Grid>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Дата отбытия:"/>
@@ -34,7 +34,7 @@
         </Grid>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Место отбытия:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedShipment.OriginId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedShipment.OriginId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
         </Grid>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Дата прибытия:"/>
@@ -42,11 +42,11 @@
         </Grid>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Место прибытия:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedShipment.DestinationId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedShipment.DestinationId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
         </Grid>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Состояние отгрузки:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Statuses}" SelectedValue="{Binding SelectedShipment.StatusId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Statuses}" SelectedValue="{Binding SelectedShipment.StatusId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
         </Grid>
       </StackPanel>
     </Border>

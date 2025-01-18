@@ -24,13 +24,13 @@
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Начало маршрута:"/>
           <ComboBox x:Name="locationStartComboBox" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                    ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedRoute.StartLocationId}" SelectedValueBinding="{Binding Id}">
+                    ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedRoute.StartLocationId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}">
           </ComboBox>
         </Grid>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Конец маршрута:"/>
           <ComboBox x:Name="locationFinishComboBox" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                    ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedRoute.FinishLocationId}" SelectedValueBinding="{Binding Id}">
+                    ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedRoute.FinishLocationId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}">
           </ComboBox>
         </Grid>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">

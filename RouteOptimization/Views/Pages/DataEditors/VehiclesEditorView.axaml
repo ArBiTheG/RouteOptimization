@@ -30,11 +30,11 @@
         </Grid>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Тип автомобиля:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Types}" SelectedValue="{Binding SelectedVehicle.TypeId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Types}" SelectedValue="{Binding SelectedVehicle.TypeId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
         </Grid>
         <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
           <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Статус автомобиля:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Statuses}" SelectedValue="{Binding SelectedVehicle.StatusId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Statuses}" SelectedValue="{Binding SelectedVehicle.StatusId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
         </Grid>
       </StackPanel>
     </Border>
