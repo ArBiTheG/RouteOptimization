@@ -13,48 +13,48 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.ViewModels.Pages.DataViewers
 {
-    public class VehicleTypesViewModel : ViewModelBase
+    public class CargosViewModel : ViewModelBase
     {
-        VehicleTypesModel _model;
-        ObservableCollection<VehicleType?>? _list;
+        CargosModel _model;
+        ObservableCollection<Cargo?>? _list;
 
-        public ObservableCollection<VehicleType?>? List
+        public ObservableCollection<Cargo?>? List
         {
             get => _list;
             set => this.RaiseAndSetIfChanged(ref _list, value);
         }
 
-        public Interaction<VehicleTypesEditorViewModel, VehicleType?> ShowDialog { get; }
+        public Interaction<CargosEditorViewModel, Cargo?> ShowDialog { get; }
         public Interaction<DeleteViewModel, bool> ShowDeleteDialog { get; }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
-        public ReactiveCommand<VehicleType, Unit> EditCommand { get; }
-        public ReactiveCommand<VehicleType, Unit> DeleteCommand { get; }
+        public ReactiveCommand<Cargo, Unit> EditCommand { get; }
+        public ReactiveCommand<Cargo, Unit> DeleteCommand { get; }
 
-        public VehicleTypesViewModel()
+        public CargosViewModel()
         {
-
-            ShowDialog = new Interaction<VehicleTypesEditorViewModel, VehicleType?>();
+            ShowDialog = new Interaction<CargosEditorViewModel, Cargo?>();
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
-            EditCommand = ReactiveCommand.CreateFromTask<VehicleType>(ExecuteEditCommand);
-            DeleteCommand = ReactiveCommand.CreateFromTask<VehicleType>(ExecuteDeleteCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<Cargo>(ExecuteEditCommand);
+            DeleteCommand = ReactiveCommand.CreateFromTask<Cargo>(ExecuteDeleteCommand);
         }
-        public VehicleTypesViewModel(VehicleTypesModel model):this()
+        public CargosViewModel(CargosModel model) : this()
         {
             _model = model;
         }
 
         private async Task ExecuteLoadCommand()
         {
-            List = new ObservableCollection<VehicleType?>(await _model.GetAll());
+            List = new(await _model.GetAll());
         }
+
         private async Task ExecuteAddCommand()
         {
-            var dialog = new VehicleTypesEditorViewModel();
+            var dialog = new CargosEditorViewModel(_model);
 
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
@@ -63,9 +63,9 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
                 List?.Add(result);
             }
         }
-        private async Task ExecuteEditCommand(VehicleType vehicleType)
+        private async Task ExecuteEditCommand(Cargo cargo)
         {
-            var dialog = new VehicleTypesEditorViewModel(vehicleType);
+            var dialog = new CargosEditorViewModel(_model, cargo);
 
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
@@ -73,16 +73,15 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
                 await _model.Edit(result);
             }
         }
-        private async Task ExecuteDeleteCommand(VehicleType vehicleType)
+        private async Task ExecuteDeleteCommand(Cargo cargo)
         {
-
             var dialog = new DeleteViewModel();
 
             var result = await ShowDeleteDialog.Handle(dialog);
             if (result != false)
             {
-                await _model.Delete(vehicleType);
-                List?.Remove(vehicleType);
+                await _model.Delete(cargo);
+                List?.Remove(cargo);
             }
         }
     }

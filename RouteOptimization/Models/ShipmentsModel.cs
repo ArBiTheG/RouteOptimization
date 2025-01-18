@@ -12,12 +12,18 @@ namespace RouteOptimization.Models
     public class ShipmentsModel
     {
         private IRepository<Shipment> _shipmentsRepository;
+        private IRepository<Cargo> _cargosRepository;
+        private IRepository<Vehicle> _vehiclesRepository;
         private IRepository<Location> _locationsRepository;
+        private IRepository<ShipmentStatus> _statusesRepository;
 
-        public ShipmentsModel(IRepository<Shipment> shipmentsRepository, IRepository<Location> locationsRepository)
+        public ShipmentsModel(IRepository<Shipment> shipmentsRepository, IRepository<Cargo> cargosRepository, IRepository<Vehicle> vehiclesRepository, IRepository<Location> locationsRepository, IRepository<ShipmentStatus> statusesRepository)
         {
             _shipmentsRepository = shipmentsRepository;
+            _cargosRepository = cargosRepository;
+            _vehiclesRepository = vehiclesRepository;
             _locationsRepository = locationsRepository;
+            _statusesRepository = statusesRepository;
         }
 
         public async Task<IEnumerable<Shipment?>> GetAll()
@@ -48,6 +54,33 @@ namespace RouteOptimization.Models
         public async Task<Location?> GetLocationByID(int id)
         {
             return await _locationsRepository.GetByID(id);
+        }
+
+        public async Task<IEnumerable<Cargo?>> GetCargos()
+        {
+            return await _cargosRepository.GetAll();
+        }
+        public async Task<Cargo?> GetCargoByID(int id)
+        {
+            return await _cargosRepository.GetByID(id);
+        }
+
+        public async Task<IEnumerable<Vehicle?>> GetVehicles()
+        {
+            return await _vehiclesRepository.GetAll();
+        }
+        public async Task<Vehicle?> GetVehicleByID(int id)
+        {
+            return await _vehiclesRepository.GetByID(id);
+        }
+
+        public async Task<IEnumerable<ShipmentStatus?>> GetStatuses()
+        {
+            return await _statusesRepository.GetAll();
+        }
+        public async Task<ShipmentStatus?> GetStatusByID(int id)
+        {
+            return await _statusesRepository.GetByID(id);
         }
     }
 }

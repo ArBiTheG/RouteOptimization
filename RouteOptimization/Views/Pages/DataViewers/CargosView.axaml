@@ -6,11 +6,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:RouteOptimization.ViewModels.Pages.DataViewers"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="RouteOptimization.Views.Pages.DataViewers.VehiclesView">
+             x:Class="RouteOptimization.Views.Pages.DataViewers.CargosView">
   <Design.DataContext>
     <!-- This only sets the DataContext for the previewer in an IDE,
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-    <vm:VehiclesViewModel />
+    <vm:CargosViewModel />
   </Design.DataContext>
   <i:Interaction.Behaviors>
     <ia:EventTriggerBehavior EventName="Loaded">
@@ -22,10 +22,10 @@
       <StackPanel Orientation="Horizontal">
         <Image Width="32" Height="32" Margin="0,0,8,0">
           <Image.Source>
-            <SvgImage Source="/Assets/Icons/truck.svg"/>
+            <SvgImage Source="/Assets/Icons/box.svg"/>
           </Image.Source>
         </Image>
-        <TextBlock VerticalAlignment="Center" Text="Управление транспортом" FontSize="24"/>
+        <TextBlock VerticalAlignment="Center" Text="Управление грузом" FontSize="24"/>
       </StackPanel>
     </Label>
     <ListBox Grid.Row="1" Margin="4" CornerRadius="4"

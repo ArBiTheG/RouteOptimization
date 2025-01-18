@@ -10,10 +10,20 @@ using ReactiveUI;
 
 namespace RouteOptimization.Models.Entities
 {
-    public class VehicleType : ReactiveObject, IVehicleType, IEquatable<VehicleType?>
+    public class VehicleType : ReactiveObject
     {
         int _id;
         string _name;
+
+        public VehicleType()
+        {
+        }
+
+        public VehicleType(int id, string name)
+        {
+            _id = id;
+            _name = name;
+        }
 
         public int Id
         {
@@ -26,39 +36,6 @@ namespace RouteOptimization.Models.Entities
             set => this.RaiseAndSetIfChanged(ref _name, value);
         }
 
-        [NotMapped]
-        public List<Vehicle>? Vehicles { get; set; }
-
-        public override bool Equals(object? obj)
-        {
-            return Equals(obj as VehicleType);
-        }
-
-        public bool Equals(VehicleType? other)
-        {
-            return other is not null &&
-                   _id == other._id &&
-                   _name == other._name;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(_id, _name);
-        }
-
-        public override string? ToString()
-        {
-            return Name;
-        }
-
-        public static bool operator ==(VehicleType? left, VehicleType? right)
-        {
-            return EqualityComparer<VehicleType>.Default.Equals(left, right);
-        }
-
-        public static bool operator !=(VehicleType? left, VehicleType? right)
-        {
-            return !(left == right);
-        }
+        public virtual ICollection<Vehicle>? Vehicles { get; set; }
     }
 }

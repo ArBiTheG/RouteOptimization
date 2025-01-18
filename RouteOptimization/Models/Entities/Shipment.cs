@@ -2,104 +2,47 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RouteOptimization.Models.Entities
 {
-    public class Shipment : ReactiveObject, IShipment, IEquatable<Shipment?>
+    // TODO: Переделать
+    public class Shipment : ReactiveObject
     {
-        int _id;
-        string _name;
-        double _weight;
-        DateTime _dateTime;
-        int _originId;
-        Location? _origin;
-        int _destinationId;
-        Location? _destination;
+        private int _id;
+        private int _vehicleId;
+        private Vehicle? _vehicle;
+        private int _cargoId;
+        private Cargo? _cargo;
+        private DateTime _dateTimeStart;
+        private DateTime _dateTimeFinish;
+        private int _locationOriginId;
+        private Location? _locationOrigin;
+        private int _locationDestinationId;
+        private Location? _locationDestination;
+        private int _shipmentStatusId;
+        private ShipmentStatus? _shipmentStatus;
 
-        public int Id
-        {
-            get => _id;
-        }
-        public string Name
-        {
-            get => _name;
-            set => this.RaiseAndSetIfChanged(ref _name, value);
-        }
-        public double Weight
-        {
-            get => _weight;
-            set => this.RaiseAndSetIfChanged(ref _weight, value);
-        }
-        public DateTime DateTime
-        {
-            get => _dateTime;
-            set => this.RaiseAndSetIfChanged(ref _dateTime, value);
-        }
+        public int Id => _id;
+        public DateTime DateTimeStart { get => _dateTimeStart; set => this.RaiseAndSetIfChanged(ref _dateTimeStart, value); }
+        public DateTime DateTimeFinish { get => _dateTimeFinish; set => this.RaiseAndSetIfChanged(ref _dateTimeFinish, value); }
+        public int VehicleId { get => _vehicleId; set => this.RaiseAndSetIfChanged(ref _vehicleId, value); }
+        public virtual Vehicle? Vehicle { get => _vehicle; set => this.RaiseAndSetIfChanged(ref _vehicle, value); }
+        public int CargoId { get => _cargoId; set => this.RaiseAndSetIfChanged(ref _cargoId, value); }
+        public virtual Cargo? Cargo { get => _cargo; set => this.RaiseAndSetIfChanged(ref _cargo, value); }
+        public int OriginId { get => _locationOriginId; set => this.RaiseAndSetIfChanged(ref _locationOriginId, value); }
+        public virtual Location? Origin { get => _locationOrigin; set => this.RaiseAndSetIfChanged(ref _locationOrigin, value); }
+        public int DestinationId { get => _locationDestinationId; set => this.RaiseAndSetIfChanged(ref _locationDestinationId, value); }
+        public virtual Location? Destination { get => _locationDestination; set => this.RaiseAndSetIfChanged(ref _locationDestination, value); }
+        public int StatusId { get => _shipmentStatusId; set => this.RaiseAndSetIfChanged(ref _shipmentStatusId, value); }
+        public virtual ShipmentStatus? Status { get => _shipmentStatus; set => this.RaiseAndSetIfChanged(ref _shipmentStatus, value); }
 
-        public int OriginId
-        {
-            get => _originId;
-            set => this.RaiseAndSetIfChanged(ref _originId, value);
-        }
-
-        public virtual Location? Origin
-        {
-            get => _origin;
-            set => this.RaiseAndSetIfChanged(ref _origin, value);
-        }
-
-        public int DestinationId
-        {
-            get => _destinationId;
-            set => this.RaiseAndSetIfChanged(ref _destinationId, value);
-        }
-
-        public virtual Location? Destination
-        {
-            get => _destination;
-            set => this.RaiseAndSetIfChanged(ref _destination, value);
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return Equals(obj as Shipment);
-        }
-
-        public bool Equals(Shipment? other)
-        {
-            return other is not null &&
-                   _id == other._id &&
-                   _name == other._name &&
-                   _weight == other._weight &&
-                   _dateTime == other._dateTime &&
-                   _originId == other._originId &&
-                   EqualityComparer<Location?>.Default.Equals(_origin, other._origin) &&
-                   _destinationId == other._destinationId &&
-                   EqualityComparer<Location?>.Default.Equals(_destination, other._destination);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(_id, _name, _weight, _dateTime, _originId, _origin, _destinationId, _destination);
-        }
-
-        public override string? ToString()
-        {
-            return Name;
-        }
-
-        public static bool operator ==(Shipment? left, Shipment? right)
-        {
-            return EqualityComparer<Shipment>.Default.Equals(left, right);
-        }
-
-        public static bool operator !=(Shipment? left, Shipment? right)
-        {
-            return !(left == right);
-        }
+        [NotMapped]
+        public string Name => _cargo != null ? "Доставка #" + Id +  " - " + _cargo.Name : "Доставка #" + Id;
     }
 }

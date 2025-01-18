@@ -35,14 +35,14 @@ namespace RouteOptimization.Repository.SQLite
         public async Task<IEnumerable<Shipment?>> GetAll()
         {
             using SQLiteContext context = new SQLiteContext();
-            await context.Shipments.LoadAsync();
+            await context.Shipments.Include(t => t.Cargo).LoadAsync();
             return context.Shipments.Local.ToArray();
         }
 
         public async Task<IEnumerable<Shipment?>> GetAll(int page, int pageSize = 10, string filter = "")
         {
             using SQLiteContext context = new SQLiteContext();
-            await context.Shipments.Skip((page - 1) * pageSize).Take(pageSize).LoadAsync();
+            await context.Shipments.Include(t=> t.Cargo).Skip((page - 1) * pageSize).Take(pageSize).LoadAsync();
             return context.Shipments.ToArray();
         }
 

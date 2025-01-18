@@ -25,7 +25,7 @@
             <SvgImage Source="/Assets/Icons/box.svg"/>
           </Image.Source>
         </Image>
-        <TextBlock VerticalAlignment="Center" Text="Управление отгрузками" FontSize="24"/>
+        <TextBlock VerticalAlignment="Center" Text="Управление погрузками" FontSize="24"/>
       </StackPanel>
     </Label>
     <ListBox Grid.Row="1" Margin="4" CornerRadius="4"

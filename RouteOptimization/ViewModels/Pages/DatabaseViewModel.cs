@@ -16,6 +16,7 @@ namespace RouteOptimization.ViewModels.Pages
         {
             new PageItem("Locations", typeof(LocationsViewModel)),
             new PageItem("Routes", typeof(RoutesViewModel)),
+            new PageItem("Cargo", typeof(CargosViewModel)),
             new PageItem("Shipments", typeof(ShipmentsViewModel)),
             new PageItem("Vehicles", typeof(VehiclesViewModel)),
             new PageItem("VehicleStatuses", typeof(VehicleStatusesViewModel)),

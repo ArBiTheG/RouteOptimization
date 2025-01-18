@@ -54,7 +54,10 @@ public partial class App : Application
 
         services.AddSingleton<IRepository<Location>, SQLiteLocationsRepository>();
         services.AddSingleton<IRepository<Route>, SQLiteRoutesRepository>();
+        services.AddSingleton<IRepository<Cargo>, SQLiteCargosRepository>();
+        services.AddSingleton<IRepository<CargoAvailable>, SQLiteCargoAvailablesRepository>();
         services.AddSingleton<IRepository<Shipment>, SQLiteShipmentsRepository>();
+        services.AddSingleton<IRepository<ShipmentStatus>, SQLiteShipmentStatusesRepository>();
         services.AddSingleton<IRepository<Vehicle>, SQLiteVehiclesRepository>();
         services.AddSingleton<IRepository<VehicleStatus>, SQLiteVehicleStatusesRepository>();
         services.AddSingleton<IRepository<VehicleType>, SQLiteVehicleTypesRepository>();
@@ -62,8 +65,12 @@ public partial class App : Application
         services.AddTransient<LocationsModel>();
         services.AddTransient<MapBuilderModel>();
         services.AddTransient<MapRouteModel>();
+        services.AddTransient<LoadingModel>();
         services.AddTransient<RoutesModel>();
+        services.AddTransient<CargosModel>();
+        //services.AddTransient<CargoAvailablesModel>();
         services.AddTransient<ShipmentsModel>();
+        //services.AddTransient<ShipmentStatusesModel>();
         services.AddTransient<VehiclesModel>();
         services.AddTransient<VehicleStatusesModel>();
         services.AddTransient<VehicleTypesModel>();
@@ -72,10 +79,14 @@ public partial class App : Application
         services.AddTransient<DatabaseViewModel>();
         services.AddTransient<MapBuilderViewModel>();
         services.AddTransient<MapRouteViewModel>();
+        services.AddTransient<LoadingViewModel>();
 
         services.AddTransient<LocationsViewModel>();
         services.AddTransient<RoutesViewModel>();
+        services.AddTransient<CargosViewModel>();
+        //services.AddTransient<CargoAvailablesViewModel>();
         services.AddTransient<ShipmentsViewModel>();
+        //services.AddTransient<ShipmentStatusesViewModel>();
         services.AddTransient<VehiclesViewModel>();
         services.AddTransient<VehicleStatusesViewModel>();
         services.AddTransient<VehicleTypesViewModel>();

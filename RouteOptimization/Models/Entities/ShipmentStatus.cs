@@ -1,25 +1,23 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using ReactiveUI;
 
 namespace RouteOptimization.Models.Entities
 {
-    public class VehicleStatus : ReactiveObject
+    public class ShipmentStatus: ReactiveObject
     {
         int _id;
         string _name;
 
-        public VehicleStatus()
+        public ShipmentStatus()
         {
         }
 
-        public VehicleStatus(int id, string name)
+        public ShipmentStatus(int id, string name)
         {
             _id = id;
             _name = name;
@@ -36,6 +34,6 @@ namespace RouteOptimization.Models.Entities
             set => this.RaiseAndSetIfChanged(ref _name, value);
         }
 
-        public virtual ICollection<Vehicle>? Vehicles { get; set; }
+        public virtual ICollection<Shipment>? Shipments { get; set; }
     }
 }

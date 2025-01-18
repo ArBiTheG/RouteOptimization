@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:RouteOptimization.ViewModels.Pages.DataEditors"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="RouteOptimization.Views.Pages.DataEditors.CargosEditorView">
+  <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <vm:CargosEditorViewModel />
+  </Design.DataContext>
+  <i:Interaction.Behaviors>
+    <ia:EventTriggerBehavior EventName="Loaded">
+      <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
+    </ia:EventTriggerBehavior>
+  </i:Interaction.Behaviors>
+  <Grid Grid.RowDefinitions="1*,36">
+    <Border Grid.Row="0">
+      <StackPanel>
+        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Наименование:"/>
+          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargo.Name}"/>
+        </Grid>
+        <Grid Margin="2" ColumnDefinitions="2*,4*">
+          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Описание:"/>
+          <TextBox Grid.Column="1" VerticalAlignment="Center" Height="64" Text="{Binding SelectedCargo.Description}"/>
+        </Grid>
+        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Вес:"/>
+          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargo.Weight}"/>
+        </Grid>
+        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Длина:"/>
+          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargo.SizeZ}"/>
+        </Grid>
+        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Ширина:"/>
+          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargo.SizeX}"/>
+        </Grid>
+        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Высота:"/>
+          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargo.SizeY}"/>
+        </Grid>
+        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Местонахождение:"/>
+          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedCargo.LocationId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+        </Grid>
+        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Доступность:"/>
+          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Availables}" SelectedValue="{Binding SelectedCargo.AvailableId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+        </Grid>
+      </StackPanel>
+    </Border>
+    <Border Grid.Row="1">
+      <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+        <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="ОК" IsDefault="True"  Command="{Binding ApplyCommand}" CommandParameter="{x:True}"/>
+        <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="Отмена" Command="{Binding ApplyCommand}" CommandParameter="{x:False}"/>
+      </StackPanel>
+    </Border>
+  </Grid>
+</UserControl>

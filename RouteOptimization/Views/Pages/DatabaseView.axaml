@@ -47,7 +47,7 @@
         </Button>
         <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Vehicles">
           <Grid>
-            <TextBlock>Автомобили</TextBlock>
+            <TextBlock>Транспорт</TextBlock>
             <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
                 <SvgImage Source="/Assets/Icons/truck.svg" />
@@ -55,9 +55,19 @@
             </Image>
           </Grid>
         </Button>
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Cargo">
+          <Grid>
+            <TextBlock>Груз</TextBlock>
+            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="/Assets/Icons/box.svg"/>
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
         <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Shipments">
           <Grid>
-            <TextBlock>Отгрузки</TextBlock>
+            <TextBlock>Погрузки</TextBlock>
             <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
                 <SvgImage Source="/Assets/Icons/box.svg"/>

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -10,7 +11,7 @@ using System.Xml.Linq;
 
 namespace RouteOptimization.Models.Entities
 {
-    public class Vehicle : ReactiveObject, IVehicle, IEquatable<Vehicle?>
+    public class Vehicle : ReactiveObject
     {
         int _id;
         string _licensePlate;
@@ -59,41 +60,9 @@ namespace RouteOptimization.Models.Entities
             set => this.RaiseAndSetIfChanged(ref _status, value);
         }
 
-        public override bool Equals(object? obj)
-        {
-            return Equals(obj as Vehicle);
-        }
+        public virtual ICollection<Shipment>? Shipments { get; set; }
 
-        public bool Equals(Vehicle? other)
-        {
-            return other is not null &&
-                   _id == other._id &&
-                   _licensePlate == other._licensePlate &&
-                   _capacity == other._capacity &&
-                   _typeId == other._typeId &&
-                   _statusId == other._statusId &&
-                   EqualityComparer<VehicleType?>.Default.Equals(_type, other._type) &&
-                   EqualityComparer<VehicleStatus?>.Default.Equals(_status, other._status);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(_id, _licensePlate, _capacity, _typeId, _statusId, _type, _status);
-        }
-
-        public override string? ToString()
-        {
-            return LicensePlate;
-        }
-
-        public static bool operator ==(Vehicle? left, Vehicle? right)
-        {
-            return EqualityComparer<Vehicle>.Default.Equals(left, right);
-        }
-
-        public static bool operator !=(Vehicle? left, Vehicle? right)
-        {
-            return !(left == right);
-        }
+        [NotMapped]
+        public string Name => _type != null ? LicensePlate + " - " + _type.Name : LicensePlate;
     }
 }

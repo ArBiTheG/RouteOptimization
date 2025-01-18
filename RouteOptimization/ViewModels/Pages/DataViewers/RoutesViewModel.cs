@@ -31,10 +31,9 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
         public ReactiveCommand<Route, Unit> EditCommand { get; }
         public ReactiveCommand<Route, Unit> DeleteCommand { get; }
-        public RoutesViewModel(RoutesModel model)
-        {
-            _model = model;
 
+        public RoutesViewModel()
+        {
             ShowDialog = new Interaction<RoutesEditorViewModel, Route?>();
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
 
@@ -43,6 +42,11 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             EditCommand = ReactiveCommand.CreateFromTask<Route>(ExecuteEditCommand);
             DeleteCommand = ReactiveCommand.CreateFromTask<Route>(ExecuteDeleteCommand);
         }
+        public RoutesViewModel(RoutesModel model) : this()
+        {
+            _model = model;
+        }
+
         private async Task ExecuteLoadCommand()
         {
             List = new(await _model.GetAll());

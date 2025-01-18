@@ -8,9 +8,7 @@ namespace RouteOptimization.Models.Entities
 {
     public interface ILocation
     {
-        int Id { get; }
         string? Name { get; set; }
-        string? Description { get; set; }
         float X { get; set; }
         float Y { get; set; }
     }

@@ -55,6 +55,16 @@
             </Image>
           </Grid>
         </Button>
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Loading">
+          <Grid>
+            <TextBlock>Погрузка</TextBlock>
+            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="/Assets/Icons/box.svg" />
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
         <Button Margin="2" Width="256" Height="128">
           <Grid>
             <TextBlock>Настройки приложения</TextBlock>
