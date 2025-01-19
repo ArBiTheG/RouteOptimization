@@ -17,48 +17,50 @@
       <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
     </ia:EventTriggerBehavior>
   </i:Interaction.Behaviors>
-  <Grid Grid.RowDefinitions="1*,36">
-    <Border Grid.Row="0">
-      <StackPanel>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Наименование:"/>
-          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargo.Name}"/>
-        </Grid>
-        <Grid Margin="2" ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Описание:"/>
-          <TextBox Grid.Column="1" VerticalAlignment="Center" Height="64" Text="{Binding SelectedCargo.Description}"/>
-        </Grid>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Вес:"/>
-          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargo.Weight}"/>
-        </Grid>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Длина:"/>
-          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargo.SizeZ}"/>
-        </Grid>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Ширина:"/>
-          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargo.SizeX}"/>
-        </Grid>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Высота:"/>
-          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargo.SizeY}"/>
-        </Grid>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Местонахождение:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedCargo.LocationId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
-        </Grid>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Доступность:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Availables}" SelectedValue="{Binding SelectedCargo.AvailableId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
-        </Grid>
-      </StackPanel>
-    </Border>
-    <Border Grid.Row="1">
-      <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-        <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="ОК" IsDefault="True"  Command="{Binding ApplyCommand}" CommandParameter="{x:True}"/>
-        <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="Отмена" Command="{Binding ApplyCommand}" CommandParameter="{x:False}"/>
-      </StackPanel>
-    </Border>
+  <Grid>
+    <Grid Grid.RowDefinitions="auto,*,auto">
+      <Border Grid.Row="1">
+        <StackPanel>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Наименование:"/>
+            <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargo.Name}"/>
+          </Grid>
+          <Grid Margin="2" ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Описание:"/>
+            <TextBox Grid.Column="1" VerticalAlignment="Center" Height="64" Text="{Binding SelectedCargo.Description}"/>
+          </Grid>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Вес:"/>
+            <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargo.Weight}"/>
+          </Grid>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Длина:"/>
+            <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargo.SizeZ}"/>
+          </Grid>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Ширина:"/>
+            <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargo.SizeX}"/>
+          </Grid>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Высота:"/>
+            <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargo.SizeY}"/>
+          </Grid>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Местонахождение:"/>
+            <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedCargo.LocationId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          </Grid>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Доступность:"/>
+            <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Availables}" SelectedValue="{Binding SelectedCargo.AvailableId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          </Grid>
+        </StackPanel>
+      </Border>
+      <Border Grid.Row="2">
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+          <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="ОК" IsDefault="True"  Command="{Binding ApplyCommand}" CommandParameter="{x:True}"/>
+          <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="Отмена" Command="{Binding ApplyCommand}" CommandParameter="{x:False}"/>
+        </StackPanel>
+      </Border>
+    </Grid>
   </Grid>
 </UserControl>

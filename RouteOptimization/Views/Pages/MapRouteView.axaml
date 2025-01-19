@@ -18,28 +18,32 @@
       <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
     </ia:EventTriggerBehavior>
   </i:Interaction.Behaviors>
-  <Grid Margin="4" RowDefinitions="auto,*" ColumnDefinitions="*,256">
-    <Label Margin="4">
-      <StackPanel Orientation="Horizontal">
-        <Image Width="32" Height="32" Margin="0,0,8,0">
-          <Image.Source>
-            <SvgImage Source="/Assets/Icons/route.svg"/>
-          </Image.Source>
-        </Image>
-        <TextBlock VerticalAlignment="Center" Text="Система навигации" FontSize="24"/>
-      </StackPanel>
-    </Label>
-    <Border Grid.Row="1" Grid.Column="0" Margin="4" CornerRadius="4" ClipToBounds="True">
-      <local:MapConstructorControl x:Name="map" MapSource="{Binding Map}"/>
-    </Border>
-    <StackPanel Grid.Row="1" Grid.Column="1" Margin="4">
-      <TextBlock Text="Укажите первую точку"/>
-      <ComboBox HorizontalAlignment="Stretch" 
-                ItemsSource="{Binding Locations}" SelectedItem="{Binding SelectedStartLocation}" DisplayMemberBinding="{Binding Name}"/>
-      <TextBlock Text="Укажите вторую точку"/>
-      <ComboBox HorizontalAlignment="Stretch"
-                ItemsSource="{Binding Locations}" SelectedItem="{Binding SelectedFinishLocation}" DisplayMemberBinding="{Binding Name}"/>
-      <Button Content="Построить маршрут" Command="{Binding BuildRouteCommand}"/>
-    </StackPanel>
+  <Grid>
+    <Grid RowDefinitions="auto,*" Margin="4">
+      <Label Margin="4">
+        <StackPanel Orientation="Horizontal">
+          <Image Width="32" Height="32" Margin="0,0,8,0">
+            <Image.Source>
+              <SvgImage Source="{DynamicResource RouteIcon}"/>
+            </Image.Source>
+          </Image>
+          <TextBlock VerticalAlignment="Center" Text="Система навигации" FontSize="24"/>
+        </StackPanel>
+      </Label>
+      <Grid Grid.Row="1" ColumnDefinitions="*,256">
+        <Border Grid.Column="0" Margin="4" CornerRadius="4" ClipToBounds="True">
+          <local:MapConstructorControl x:Name="map" MapSource="{Binding Map}"/>
+        </Border>
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="4">
+          <TextBlock Text="Укажите первую точку"/>
+          <ComboBox HorizontalAlignment="Stretch"
+                    ItemsSource="{Binding Locations}" SelectedItem="{Binding SelectedStartLocation}" DisplayMemberBinding="{Binding Name}"/>
+          <TextBlock Text="Укажите вторую точку"/>
+          <ComboBox HorizontalAlignment="Stretch"
+                    ItemsSource="{Binding Locations}" SelectedItem="{Binding SelectedFinishLocation}" DisplayMemberBinding="{Binding Name}"/>
+          <Button Content="Построить маршрут" Command="{Binding BuildRouteCommand}"/>
+        </StackPanel>
+      </Grid>
+    </Grid>
   </Grid>
 </UserControl>

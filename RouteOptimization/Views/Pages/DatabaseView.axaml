@@ -12,80 +12,80 @@
     <vm:DatabaseViewModel />
   </Design.DataContext>
   <Grid>
-    <StackPanel Margin="4">
-      <Label Margin="4">
+    <Grid RowDefinitions="auto,*,auto" Margin="4">
+      <Label Grid.Row="0" Margin="4">
         <StackPanel Orientation="Horizontal">
           <Image Width="32" Height="32" Margin="0,0,8,0">
             <Image.Source>
-              <SvgImage Source="/Assets/Icons/database.svg"/>
+              <SvgImage Source="{DynamicResource DatabaseIcon}"/>
             </Image.Source>
           </Image>
           <TextBlock VerticalAlignment="Center" Text="Управление данными" FontSize="24"/>
         </StackPanel>
       </Label>
-      <WrapPanel Margin="2" Grid.IsSharedSizeScope="True">
+      <WrapPanel Grid.Row="1" Margin="2" Grid.IsSharedSizeScope="True">
         <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Locations">
           <Grid>
-            <TextBlock>Локации</TextBlock>
-            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <TextBlock FontSize="20">Локации</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
-                <SvgImage Source="/Assets/Icons/mark.svg"/>
+                <SvgImage Source="{DynamicResource MarkIcon}"/>
               </Image.Source>
             </Image>
           </Grid>
         </Button>
         <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Routes">
           <Grid>
-            <TextBlock>Маршруты</TextBlock>
-            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <TextBlock FontSize="20">Маршруты</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
-                <SvgImage Source="/Assets/Icons/build_route.svg" />
+                <SvgImage Source="{DynamicResource BuildRouteIcon}"/>
               </Image.Source>
             </Image>
           </Grid>
         </Button>
         <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Vehicles">
           <Grid>
-            <TextBlock>Транспорт</TextBlock>
-            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <TextBlock FontSize="20">Транспорт</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
-                <SvgImage Source="/Assets/Icons/truck.svg" />
+                <SvgImage Source="{DynamicResource TruckIcon}"/>
               </Image.Source>
             </Image>
           </Grid>
         </Button>
         <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Cargo">
           <Grid>
-            <TextBlock>Груз</TextBlock>
-            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <TextBlock FontSize="20">Груз</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
-                <SvgImage Source="/Assets/Icons/box.svg"/>
+                <SvgImage Source="{DynamicResource BoxIcon}"/>
               </Image.Source>
             </Image>
           </Grid>
         </Button>
         <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Shipments">
           <Grid>
-            <TextBlock>Погрузки</TextBlock>
-            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <TextBlock FontSize="20">Погрузки</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
-                <SvgImage Source="/Assets/Icons/box.svg"/>
+                <SvgImage Source="{DynamicResource BoxIcon}"/>
               </Image.Source>
             </Image>
           </Grid>
         </Button>
         <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Settings">
           <Grid>
-            <TextBlock>Настройки данных</TextBlock>
-            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <TextBlock FontSize="20">Настройки данных</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
-                <SvgImage Source="/Assets/Icons/gear.svg" />
+                <SvgImage Source="{DynamicResource GearIcon}"/>
               </Image.Source>
             </Image>
           </Grid>
         </Button>
       </WrapPanel>
-    </StackPanel>
+    </Grid>
     <Image ZIndex="-2" Margin="-128" Height="512" VerticalAlignment="Bottom" HorizontalAlignment="Left" Source="/Assets/server.png"/>
     <Image ZIndex="-1" Margin="-16" Height="320" VerticalAlignment="Bottom" HorizontalAlignment="Right" Source="/Assets/database.png"/>
   </Grid>

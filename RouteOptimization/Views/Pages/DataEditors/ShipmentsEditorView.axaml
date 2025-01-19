@@ -17,44 +17,47 @@
       <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
     </ia:EventTriggerBehavior>
   </i:Interaction.Behaviors>
-  <Grid Grid.RowDefinitions="1*,36">
-    <Border Grid.Row="0">
-      <StackPanel>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Груз:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Cargos}" SelectedValue="{Binding SelectedShipment.CargoId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
-        </Grid>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Транспорт:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Vehicles}" SelectedValue="{Binding SelectedShipment.VehicleId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
-        </Grid>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Дата отбытия:"/>
-          <DatePicker Grid.Column="1" VerticalAlignment="Center" SelectedDate="{Binding SelectedShipment.DateTimeStart}"/>
-        </Grid>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Место отбытия:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedShipment.OriginId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
-        </Grid>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Дата прибытия:"/>
-          <DatePicker Grid.Column="1" VerticalAlignment="Center" SelectedDate="{Binding SelectedShipment.DateTimeFinish}"/>
-        </Grid>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Место прибытия:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedShipment.DestinationId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
-        </Grid>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Состояние отгрузки:"/>
-          <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Statuses}" SelectedValue="{Binding SelectedShipment.StatusId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
-        </Grid>
-      </StackPanel>
-    </Border>
-    <Border Grid.Row="1">
-      <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-        <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="ОК" IsDefault="True"  Command="{Binding ApplyCommand}" CommandParameter="{x:True}"/>
-        <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="Отмена"  Command="{Binding ApplyCommand}" CommandParameter="{x:False}"/>
-      </StackPanel>
-    </Border>
+
+  <Grid>
+    <Grid Grid.RowDefinitions="auto,*,auto">
+      <Border Grid.Row="1">
+        <StackPanel>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Груз:"/>
+            <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Cargos}" SelectedValue="{Binding SelectedShipment.CargoId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          </Grid>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Транспорт:"/>
+            <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Vehicles}" SelectedValue="{Binding SelectedShipment.VehicleId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          </Grid>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Дата отбытия:"/>
+            <DatePicker Grid.Column="1" VerticalAlignment="Center" SelectedDate="{Binding SelectedShipment.DateTimeStart}"/>
+          </Grid>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Место отбытия:"/>
+            <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedShipment.OriginId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          </Grid>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Дата прибытия:"/>
+            <DatePicker Grid.Column="1" VerticalAlignment="Center" SelectedDate="{Binding SelectedShipment.DateTimeFinish}"/>
+          </Grid>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Место прибытия:"/>
+            <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedShipment.DestinationId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          </Grid>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Состояние отгрузки:"/>
+            <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Statuses}" SelectedValue="{Binding SelectedShipment.StatusId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}"/>
+          </Grid>
+        </StackPanel>
+      </Border>
+      <Border Grid.Row="2">
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+          <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="ОК" IsDefault="True"  Command="{Binding ApplyCommand}" CommandParameter="{x:True}"/>
+          <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="Отмена"  Command="{Binding ApplyCommand}" CommandParameter="{x:False}"/>
+        </StackPanel>
+      </Border>
+    </Grid>
   </Grid>
 </UserControl>

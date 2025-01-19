@@ -12,60 +12,60 @@
     <vm:SettingsDatabaseViewModel />
   </Design.DataContext>
   <Grid>
-    <StackPanel Margin="4">
-      <Label Margin="4">
+    <Grid Margin="4" RowDefinitions="auto,*,auto">
+      <Label Grid.Row="0" Margin="4">
         <StackPanel Orientation="Horizontal">
           <Image Width="32" Height="32" Margin="0,0,8,0">
             <Image.Source>
-              <SvgImage Source="/Assets/Icons/box.svg"/>
+              <SvgImage Source="{DynamicResource GearIcon}"/>
             </Image.Source>
           </Image>
           <TextBlock VerticalAlignment="Center" Text="Настройки" FontSize="24"/>
         </StackPanel>
       </Label>
-      <WrapPanel Margin="2" Grid.IsSharedSizeScope="True">
+      <WrapPanel Grid.Row="1" Margin="2" Grid.IsSharedSizeScope="True">
         <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="CargoAvailables">
           <Grid>
-            <TextBlock>Доступность груза</TextBlock>
-            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <TextBlock FontSize="20">Доступность груза</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
-                <SvgImage Source="/Assets/Icons/box.svg"/>
+                <SvgImage Source="{DynamicResource BoxIcon}"/>
               </Image.Source>
             </Image>
           </Grid>
         </Button>
         <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="ShipmentStatuses">
           <Grid>
-            <TextBlock>Статусы доставки</TextBlock>
-            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <TextBlock FontSize="20">Статусы доставки</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
-                <SvgImage Source="/Assets/Icons/truck.svg" />
+                <SvgImage Source="{DynamicResource TruckIcon}"/>
               </Image.Source>
             </Image>
           </Grid>
         </Button>
         <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="VehicleTypes">
           <Grid>
-            <TextBlock>Типы транспорта</TextBlock>
-            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <TextBlock FontSize="20">Типы транспорта</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
-                <SvgImage Source="/Assets/Icons/truck.svg" />
+                <SvgImage Source="{DynamicResource TruckIcon}"/>
               </Image.Source>
             </Image>
           </Grid>
         </Button>
         <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="VehicleStatuses">
           <Grid>
-            <TextBlock>Состояния транспорта</TextBlock>
-            <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <TextBlock FontSize="20">Состояния транспорта</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
               <Image.Source>
-                <SvgImage Source="/Assets/Icons/truck.svg" />
+                <SvgImage Source="{DynamicResource TruckIcon}"/>
               </Image.Source>
             </Image>
           </Grid>
         </Button>
       </WrapPanel>
-    </StackPanel>
+    </Grid>
     <Image ZIndex="-2" Margin="-128" Height="512" VerticalAlignment="Bottom" HorizontalAlignment="Left" Source="/Assets/server.png"/>
     <Image ZIndex="-1" Margin="-16" Height="320" VerticalAlignment="Bottom" HorizontalAlignment="Right" Source="/Assets/database.png"/>
   </Grid>

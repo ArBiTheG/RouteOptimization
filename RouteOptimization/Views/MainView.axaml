@@ -19,14 +19,18 @@
     <SplitView.Pane>
       <StackPanel>
         <Button HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Background="Transparent" Command="{Binding PaneOpenCloseCommand}">
-          -
+          <Image Width="24" Height="24">
+            <Image.Source>
+              <SvgImage Source="{DynamicResource LinesIcon}"/>
+            </Image.Source>
+          </Image>
         </Button>
         <StackPanel>
           <Button HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="48" Background="Transparent" Command="{Binding OpenPage}" CommandParameter="Home">
             <StackPanel Orientation="Horizontal">
               <Image Width="32" Height="32">
                 <Image.Source>
-                  <SvgImage Source="/Assets/Icons/house.svg" />
+                  <SvgImage Source="{DynamicResource HouseIcon}"/>
                 </Image.Source>
               </Image>
               <TextBlock Margin="10" Text="Главная"/>
@@ -36,7 +40,7 @@
             <StackPanel Orientation="Horizontal">
               <Image Width="32" Height="32">
                 <Image.Source>
-                  <SvgImage Source="/Assets/Icons/database.svg" />
+                  <SvgImage Source="{DynamicResource DatabaseIcon}"/>
                 </Image.Source>
               </Image>
               <TextBlock Margin="10" Text="Данные"/>
@@ -46,7 +50,7 @@
             <StackPanel Orientation="Horizontal">
               <Image Width="32" Height="32">
                 <Image.Source>
-                  <SvgImage Source="/Assets/Icons/blueprint.svg" />
+                  <SvgImage Source="{DynamicResource BlueprintIcon}"/>
                 </Image.Source>
               </Image>
               <TextBlock Margin="10" Text="Конструктор"/>
@@ -56,7 +60,7 @@
             <StackPanel Orientation="Horizontal">
               <Image Width="32" Height="32">
                 <Image.Source>
-                  <SvgImage Source="/Assets/Icons/mark.svg" />
+                  <SvgImage Source="{DynamicResource MarkIcon}"/>
                 </Image.Source>
               </Image>
               <TextBlock Margin="10" Text="Маршрут"/>

@@ -10,15 +10,17 @@
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
     <vm:DeleteViewModel />
   </Design.DataContext>
-  <Grid Grid.RowDefinitions="1*,36">
-    <Border Grid.Row="0">
-      <TextBlock Text="Вы действительно хотите удалить запись?"/>
-    </Border>
-    <Border Grid.Row="1">
-      <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-        <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="Удалить" IsDefault="True"  Command="{Binding ApplyCommand}" CommandParameter="{x:True}"/>
-        <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="Отмена" Command="{Binding ApplyCommand}" CommandParameter="{x:False}"/>
-      </StackPanel>
-    </Border>
+  <Grid>
+    <Grid Grid.RowDefinitions="auto,*,auto">
+      <Border Grid.Row="1">
+        <TextBlock Text="Вы действительно хотите удалить запись?"/>
+      </Border>
+      <Border Grid.Row="2">
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+          <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="Удалить" IsDefault="True"  Command="{Binding ApplyCommand}" CommandParameter="{x:True}"/>
+          <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="Отмена" Command="{Binding ApplyCommand}" CommandParameter="{x:False}"/>
+        </StackPanel>
+      </Border>
+    </Grid>
   </Grid>
 </UserControl>

@@ -18,39 +18,41 @@
       <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
     </ia:EventTriggerBehavior>
   </i:Interaction.Behaviors>
-  <Grid Grid.RowDefinitions="auto,1*,36">
-    <Border Grid.Row="0">
-      <StackPanel>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Начало маршрута:"/>
-          <ComboBox x:Name="locationStartComboBox" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                    ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedRoute.StartLocationId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}">
-          </ComboBox>
-        </Grid>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Конец маршрута:"/>
-          <ComboBox x:Name="locationFinishComboBox" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                    ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedRoute.FinishLocationId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}">
-          </ComboBox>
-        </Grid>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Расстояние:"/>
-          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedRoute.Distance}"/>
-        </Grid>
-        <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Оценочное время:"/>
-          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedRoute.Time}"/>
-        </Grid>
-      </StackPanel>
-    </Border>
-    <Border Grid.Row="1" Margin="2"  CornerRadius="4" BorderThickness="1" BorderBrush="Black" ClipToBounds="True">
-      <local:MapConstructorControl x:Name="mapControl"/>
-    </Border>
-    <Border Grid.Row="2">
-      <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-        <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="ОК" IsDefault="True" Command="{Binding ApplyCommand}" CommandParameter="{x:True}"/>
-        <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="Отмена" Command="{Binding ApplyCommand}" CommandParameter="{x:False}"/>
-      </StackPanel>
-    </Border>
+  <Grid>
+    <Grid Grid.RowDefinitions="auto,1,auto">
+      <Border Grid.Row="0">
+        <StackPanel>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Начало маршрута:"/>
+            <ComboBox x:Name="locationStartComboBox" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedRoute.StartLocationId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}">
+            </ComboBox>
+          </Grid>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Конец маршрута:"/>
+            <ComboBox x:Name="locationFinishComboBox" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding Locations}" SelectedValue="{Binding SelectedRoute.FinishLocationId}" DisplayMemberBinding="{Binding Name}" SelectedValueBinding="{Binding Id}">
+            </ComboBox>
+          </Grid>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Расстояние:"/>
+            <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedRoute.Distance}"/>
+          </Grid>
+          <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Оценочное время:"/>
+            <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedRoute.Time}"/>
+          </Grid>
+        </StackPanel>
+      </Border>
+      <Border Grid.Row="1" Margin="2"  CornerRadius="4" BorderThickness="1" BorderBrush="Black" ClipToBounds="True">
+        <local:MapConstructorControl x:Name="mapControl"/>
+      </Border>
+      <Border Grid.Row="2">
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+          <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="ОК" IsDefault="True" Command="{Binding ApplyCommand}" CommandParameter="{x:True}"/>
+          <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="Отмена" Command="{Binding ApplyCommand}" CommandParameter="{x:False}"/>
+        </StackPanel>
+      </Border>
+    </Grid>
   </Grid>
 </UserControl>
