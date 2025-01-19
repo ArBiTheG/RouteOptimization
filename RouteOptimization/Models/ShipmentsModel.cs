@@ -11,13 +11,13 @@ namespace RouteOptimization.Models
 {
     public class ShipmentsModel
     {
-        private IRepository<Shipment> _shipmentsRepository;
-        private IRepository<Cargo> _cargosRepository;
+        private IShipmentRepository _shipmentsRepository;
+        private ICargoRepository _cargosRepository;
         private IRepository<Vehicle> _vehiclesRepository;
         private IRepository<Location> _locationsRepository;
         private IRepository<ShipmentStatus> _statusesRepository;
 
-        public ShipmentsModel(IRepository<Shipment> shipmentsRepository, IRepository<Cargo> cargosRepository, IRepository<Vehicle> vehiclesRepository, IRepository<Location> locationsRepository, IRepository<ShipmentStatus> statusesRepository)
+        public ShipmentsModel(IShipmentRepository shipmentsRepository, ICargoRepository cargosRepository, IRepository<Vehicle> vehiclesRepository, IRepository<Location> locationsRepository, IRepository<ShipmentStatus> statusesRepository)
         {
             _shipmentsRepository = shipmentsRepository;
             _cargosRepository = cargosRepository;

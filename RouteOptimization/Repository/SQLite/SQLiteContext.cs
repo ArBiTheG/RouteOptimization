@@ -85,8 +85,9 @@ namespace RouteOptimization.Repository.SQLite
             modelBuilder.Entity<CargoAvailable>().HasData(
                  new CargoAvailable(1,"Отсутствует"),
                  new CargoAvailable(2,"В наличии"),
-                 new CargoAvailable(3,"Ожидает"),
-                 new CargoAvailable(4,"Продано")
+                 new CargoAvailable(3,"В пути"),
+                 new CargoAvailable(4,"Ожидается"),
+                 new CargoAvailable(5,"Продано")
                 );
 
             modelBuilder.Entity<ShipmentStatus>().HasData(

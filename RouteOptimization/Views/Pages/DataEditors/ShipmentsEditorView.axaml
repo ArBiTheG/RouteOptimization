@@ -32,7 +32,7 @@
           </Grid>
           <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
             <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Дата отбытия:"/>
-            <DatePicker Grid.Column="1" VerticalAlignment="Center" SelectedDate="{Binding SelectedShipment.DateTimeStart}"/>
+            <CalendarDatePicker Grid.Column="1" HorizontalAlignment="Stretch" FirstDayOfWeek="Monday" IsTodayHighlighted="True" SelectedDateFormat="Short" SelectedDate="{Binding SelectedShipment.DateTimeStart}"/>
           </Grid>
           <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
             <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Место отбытия:"/>
@@ -40,7 +40,7 @@
           </Grid>
           <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
             <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Дата прибытия:"/>
-            <DatePicker Grid.Column="1" VerticalAlignment="Center" SelectedDate="{Binding SelectedShipment.DateTimeFinish}"/>
+            <CalendarDatePicker Grid.Column="1"  HorizontalAlignment="Stretch" FirstDayOfWeek="Monday" IsTodayHighlighted="True" SelectedDateFormat="Short" SelectedDate="{Binding SelectedShipment.DateTimeFinish}"/>
           </Grid>
           <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
             <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Место прибытия:"/>

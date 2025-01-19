@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Repository.SQLite
 {
-    public class SQLiteShipmentsRepository : IRepository<Shipment>
+    public class SQLiteShipmentsRepository : IShipmentRepository
     {
         public async Task<Shipment?> Create(Shipment entity)
         {
@@ -16,6 +16,31 @@ namespace RouteOptimization.Repository.SQLite
             await context.Shipments.AddAsync(entity);
             await context.SaveChangesAsync();
             return entity;
+        }
+        public async Task CreateShipmentsEditCargosVehicle(IEnumerable<Shipment> shipments, IEnumerable<Cargo> cargos, Vehicle vehicle)
+        {
+            using SQLiteContext context = new SQLiteContext();
+            using var transaction = await context.Database.BeginTransactionAsync();
+            try
+            {
+                foreach (var shipment in shipments)
+                {
+                    context.Shipments.Add(shipment);
+                }
+                foreach (var cargo in cargos)
+                {
+                    context.Cargos.Update(cargo);
+                }
+                context.Vehicles.Update(vehicle);
+
+                await context.SaveChangesAsync();
+
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+            }
         }
 
         public async Task Delete(Shipment entity)

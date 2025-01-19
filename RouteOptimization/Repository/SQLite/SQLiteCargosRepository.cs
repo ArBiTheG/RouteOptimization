@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Repository.SQLite
 {
-    public class SQLiteCargosRepository : IRepository<Cargo>
+    public class SQLiteCargosRepository : ICargoRepository
     {
         public async Task<int?> Count()
         {
@@ -36,6 +36,14 @@ namespace RouteOptimization.Repository.SQLite
             using SQLiteContext context = new SQLiteContext();
             await context.Cargos.LoadAsync();
             return context.Cargos.ToArray();
+        }
+        public async Task<IEnumerable<Cargo?>> GetAllByLocationAvailable(Location location, CargoAvailable available)
+        {
+            return await Task.Run(() =>
+            {
+                using SQLiteContext context = new SQLiteContext();
+                return context.Cargos.Where(u => u.LocationId == location.Id && u.AvailableId == available.Id).ToArray();
+            });
         }
 
         public async Task<IEnumerable<Cargo?>> GetAll(int page, int pageSize = 10, string filter = "")

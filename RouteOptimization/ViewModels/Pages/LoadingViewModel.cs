@@ -1,7 +1,12 @@
-﻿using RouteOptimization.Models;
+﻿using DynamicData;
+using ReactiveUI;
+using RouteOptimization.Models;
+using RouteOptimization.Models.Entities;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,11 +14,225 @@ namespace RouteOptimization.ViewModels.Pages
 {
     public class LoadingViewModel : ViewModelBase
     {
-        LoadingModel _model;
+        private LoadingModel? _loadingModel;
 
-        public LoadingViewModel(LoadingModel model)
+        private Vehicle? _selectedVehicle;
+        private Location? _origin;
+        private Location? _destination;
+        private DateTime _dateTimeFinish;
+
+        private ObservableCollection<Cargo?>? _cargosStorage;
+        private ObservableCollection<Vehicle?>? _vehicles;
+        private ObservableCollection<Location?>? _locations;
+        private ObservableCollection<CargoAvailable?>? _cargoAvailables;
+        private ObservableCollection<ShipmentStatus?>? _shipmentStatuses;
+        private ObservableCollection<VehicleStatus?>? _vehicleStatuses;
+        private ObservableCollection<Cargo?> _cargosCart;
+
+        private bool _isContinueFilling;
+
+
+        public Vehicle? SelectedVehicle
         {
-            _model = model;
+            get => _selectedVehicle;
+            set => this.RaiseAndSetIfChanged(ref _selectedVehicle, value);
+        }
+
+        public Location? SelectedOrigin
+        {
+            get => _origin;
+            set => this.RaiseAndSetIfChanged(ref _origin, value);
+        }
+
+        public Location? SelectedDestination
+        {
+            get => _destination;
+            set => this.RaiseAndSetIfChanged(ref _destination, value);
+        }
+
+        public DateTime SelectedDateTimeFinish
+        {
+            get => _dateTimeFinish;
+            set => this.RaiseAndSetIfChanged(ref _dateTimeFinish, value);
+        }
+
+        public ObservableCollection<Vehicle?>? Vehicles
+        {
+            get => _vehicles;
+            set => this.RaiseAndSetIfChanged(ref _vehicles, value);
+        }
+        public ObservableCollection<Location?>? Locations
+        {
+            get => _locations;
+            set => this.RaiseAndSetIfChanged(ref _locations, value);
+        }
+        public ObservableCollection<CargoAvailable?>? CargoAvailables
+        {
+            get => _cargoAvailables;
+            set => this.RaiseAndSetIfChanged(ref _cargoAvailables, value);
+        }
+
+        public ObservableCollection<ShipmentStatus?>? ShipmentStatuses
+        {
+            get => _shipmentStatuses;
+            set => this.RaiseAndSetIfChanged(ref _shipmentStatuses, value);
+        }
+
+        public ObservableCollection<VehicleStatus?>? VehicleStatuses
+        {
+            get => _vehicleStatuses;
+            set => this.RaiseAndSetIfChanged(ref _vehicleStatuses, value);
+        }
+
+        public ObservableCollection<Cargo?>? CargosStorage
+        {
+            get => _cargosStorage;
+            set => this.RaiseAndSetIfChanged(ref _cargosStorage, value);
+        }
+        public ObservableCollection<Cargo?> CargosCart
+        {
+            get => _cargosCart;
+            set => this.RaiseAndSetIfChanged(ref _cargosCart, value);
+        }
+
+        public bool IsContinueFilling
+        {
+            get => _isContinueFilling;
+            set => this.RaiseAndSetIfChanged(ref _isContinueFilling, value);
+        }
+
+        public ReactiveCommand<Unit, Unit> LoadCommand { get; }
+        public ReactiveCommand<Unit, Unit> ApplyCommand { get; }
+        public ReactiveCommand<Location?, Unit> LoadCargosStorageCommand { get; }
+        public ReactiveCommand<Cargo?, Unit> CargoToCartCommand { get; }
+        public ReactiveCommand<Cargo?, Unit> CargoToStorageCommand { get; }
+        public ReactiveCommand<Unit, Unit> CargoToStorageAllCommand { get; }
+
+        public LoadingViewModel()
+        {
+            _cargosCart = new();
+            _isContinueFilling = false;
+            _dateTimeFinish = DateTime.Now;
+
+        LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
+            LoadCargosStorageCommand = ReactiveCommand.CreateFromTask<Location?>(ExecuteLoadStorageCommand);
+            ApplyCommand = ReactiveCommand.CreateFromTask(ExecuteApplyCommand);
+            CargoToCartCommand = ReactiveCommand.Create<Cargo?>(ExecuteCargoToCartCommand);
+            CargoToStorageCommand = ReactiveCommand.Create<Cargo?>(ExecuteCargoToStorageCommand);
+            CargoToStorageAllCommand = ReactiveCommand.Create(ExecuteCargoToStorageAllCommand);
+        }
+
+
+        private async Task ExecuteLoadStorageCommand(Location? location)
+        {
+            IsContinueFilling = false;
+            CargosCart.Clear();
+            if (_loadingModel != null)
+            {
+                var available = CargoAvailables?.First(e => e?.Id == 2);
+                if (location != null && available!=null)
+                    CargosStorage = new(await _loadingModel.GetCargosByLocationAvailable(location, available));
+            }
+
+            if (_cargosStorage != null)
+                if (_cargosStorage.Count > 0)
+                    IsContinueFilling = true;
+        }
+
+        private void ExecuteCargoToCartCommand(Cargo? cargo)
+        {
+            if (CargosStorage !=null)
+            {
+                if (cargo != null)
+                {
+                    CargosStorage.Remove(cargo);
+                    CargosCart.Add(cargo);
+                }
+            }
+        }
+
+        private void ExecuteCargoToStorageCommand(Cargo? cargo)
+        {
+            if (CargosStorage != null)
+            {
+                if (cargo != null)
+                {
+                    CargosStorage.Add(cargo);
+                    CargosCart.Remove(cargo);
+                }
+            }
+        }
+
+        private void ExecuteCargoToStorageAllCommand()
+        {
+            if (CargosStorage != null)
+            {
+                CargosStorage.AddRange(CargosCart);
+                CargosCart.Clear();
+            }
+        }
+
+        public LoadingViewModel(LoadingModel model) : this()
+        {
+            _loadingModel = model;
+        }
+
+        private async Task ExecuteLoadCommand()
+        {
+            if (_loadingModel != null)
+            {
+                Vehicles = new(await _loadingModel.GetVehicles());
+                Locations = new(await _loadingModel.GetLocations());
+                CargoAvailables = new(await _loadingModel.GetCargoAvailables());
+                ShipmentStatuses = new(await _loadingModel.GetShipmentStatuses());
+                VehicleStatuses = new(await _loadingModel.GetVehicleStatuses());
+            }
+        }
+        private async Task ExecuteApplyCommand()
+        {
+            if (SelectedVehicle == null) return;
+            if (SelectedOrigin == null) return;
+            if (SelectedDestination == null) return;
+            if (ShipmentStatuses == null) return;
+            if (CargosCart.Count <= 0) return;
+
+            if (_loadingModel != null) {
+                Shipment prototype = new Shipment();
+                prototype.VehicleId = SelectedVehicle.Id;
+                prototype.OriginId = SelectedOrigin.Id;
+                prototype.DestinationId = SelectedDestination.Id;
+                prototype.DateTimeStart = DateTime.Now;
+                prototype.DateTimeFinish = SelectedDateTimeFinish;
+                prototype.StatusId = 2;
+
+                Vehicle vehicle = SelectedVehicle;
+                vehicle.StatusId = 2;
+
+                List<Cargo> cargos = new List<Cargo>();
+                foreach (Cargo? entity in CargosCart)
+                {
+                    if (entity != null)
+                    {
+                        entity.AvailableId = 3;
+
+                        cargos.Add(entity);
+                    }
+                }
+
+                List<Shipment> shipments = new List<Shipment>();
+                foreach (Cargo? cargo in CargosCart)
+                {
+                    if (cargo != null)
+                    {
+                        Shipment entity = prototype.Clone();
+                        entity.Cargo = cargo;
+                        entity.CargoId = cargo.Id;
+
+                        shipments.Add(entity);
+                    }
+                }
+                await _loadingModel.CreateShipmentsEditCargosVehicle(shipments, cargos, vehicle);
+            }
         }
     }
 }
