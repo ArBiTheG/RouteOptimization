@@ -19,7 +19,7 @@
     </ia:EventTriggerBehavior>
   </i:Interaction.Behaviors>
   <Grid>
-    <Grid Grid.RowDefinitions="auto,1,auto">
+    <Grid Grid.RowDefinitions="auto,*,auto">
       <Border Grid.Row="0">
         <StackPanel>
           <Grid Margin="2" Grid.ColumnDefinitions="2*,4*">
