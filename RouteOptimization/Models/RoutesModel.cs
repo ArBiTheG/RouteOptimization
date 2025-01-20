@@ -11,10 +11,10 @@ namespace RouteOptimization.Models
 {
     public class RoutesModel
     {
-        private IRepository<Route> _routesRepository;
+        private IRoutesRepository _routesRepository;
         private IRepository<Location> _locationsRepository;
 
-        public RoutesModel(IRepository<Route> routesRepository, IRepository<Location> locationsRepository)
+        public RoutesModel(IRoutesRepository routesRepository, IRepository<Location> locationsRepository)
         {
             _routesRepository = routesRepository;
             _locationsRepository = locationsRepository;

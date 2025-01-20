@@ -11,16 +11,16 @@ namespace RouteOptimization.Models
 {
     public class LoadingModel : ReactiveObject
     {
-        private IShipmentRepository _shipmentsRepository;
-        private ICargoRepository _cargosRepository;
+        private IShipmentsRepository _shipmentsRepository;
+        private ICargosRepository _cargosRepository;
         private IRepository<Vehicle> _vehiclesRepository;
         private IRepository<Location> _locationsRepository;
         private IRepository<CargoAvailable> _cargoAvailableesRepository;
         private IRepository<ShipmentStatus> _shipmentStatusesRepository;
         private IRepository<VehicleStatus> _vehicleStatusesRepository;
 
-        public LoadingModel(IShipmentRepository shipmentsRepository, 
-            ICargoRepository cargosRepository, 
+        public LoadingModel(IShipmentsRepository shipmentsRepository, 
+            ICargosRepository cargosRepository, 
             IRepository<Vehicle> vehiclesRepository, 
             IRepository<Location> locationsRepository,
             IRepository<CargoAvailable> cargoAvailableesRepository, 

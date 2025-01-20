@@ -53,10 +53,10 @@ public partial class App : Application
         services.AddSingleton<MainViewModel>();
 
         services.AddSingleton<IRepository<Location>, SQLiteLocationsRepository>();
-        services.AddSingleton<IRepository<Route>, SQLiteRoutesRepository>();
-        services.AddSingleton<ICargoRepository, SQLiteCargosRepository>();
+        services.AddSingleton<IRoutesRepository, SQLiteRoutesRepository>();
+        services.AddSingleton<ICargosRepository, SQLiteCargosRepository>();
         services.AddSingleton<IRepository<CargoAvailable>, SQLiteCargoAvailablesRepository>();
-        services.AddSingleton<IShipmentRepository, SQLiteShipmentsRepository>();
+        services.AddSingleton<IShipmentsRepository, SQLiteShipmentsRepository>();
         services.AddSingleton<IRepository<ShipmentStatus>, SQLiteShipmentStatusesRepository>();
         services.AddSingleton<IRepository<Vehicle>, SQLiteVehiclesRepository>();
         services.AddSingleton<IRepository<VehicleStatus>, SQLiteVehicleStatusesRepository>();

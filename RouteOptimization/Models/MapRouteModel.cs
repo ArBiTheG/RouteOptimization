@@ -19,31 +19,32 @@ namespace RouteOptimization.Models
     public class MapRouteModel
     {
         private IRepository<Location> _locationsRepository;
-        private IRepository<Route> _routesRepository;
+        private IRoutesRepository _routesRepository;
 
         private Map _map;
 
-        private WritableLayer? _pointLayer;
-        private WritableLayer? _lineLayer;
+        private WritableLayer _pointLayer;
+        private WritableLayer _lineLayer;
 
-        public MapRouteModel(IRepository<Location> locationsRepository, IRepository<Route> routesRepository)
+        public MapRouteModel(IRepository<Location> locationsRepository, IRoutesRepository routesRepository)
         {
             _locationsRepository = locationsRepository;
             _routesRepository = routesRepository;
 
+            _lineLayer = MapsuiTools.CreateLayer("LineLayer");
+            _pointLayer = MapsuiTools.CreateLayer("PointLayer");
             _map = CreateMap();
         }
 
 
-        public async Task<Map> GetMap()
+        public Map GetMap()
+        {
+            return _map;
+        }
+        public void ClearMap()
         {
             _pointLayer?.Clear();
-            _pointLayer?.AddRange(await GetPointFeatures());
-
             _lineLayer?.Clear();
-            _lineLayer?.AddRange(await GetLineFeatures());
-
-            return _map;
         }
 
         public async Task<IEnumerable<Location?>> GetLocations()
@@ -51,102 +52,24 @@ namespace RouteOptimization.Models
             return await _locationsRepository.GetAll();
         }
 
-        public async Task<Way> GetWayAsync(IEnumerable<Route?> routes, Location? startLocation, Location? finishLocation)
+        public async Task<RouteWay?> Navigate(Location? startLocation, Location? finishLocation)
         {
-            IGraphBuilder graphBuider = GraphBuilder.Create();
-            foreach (var route in routes)
+            if (startLocation!=null && finishLocation != null)
             {
-                if (route != null)
-                {
-                    var startRoute = route.StartLocationId;
-                    var finishRoute = route.FinishLocationId;
-                    graphBuider.AddEdge(startRoute, finishRoute, route.Time);
-                }
+                RouteWay routeWay = await _routesRepository.GetRouteWay(startLocation.Id, finishLocation.Id);
+
+                _pointLayer?.Clear();
+                _pointLayer?.AddRange(GetPointFeatures(routeWay.Locations));
+
+                _lineLayer?.Clear();
+                _lineLayer?.AddRange(GetLineFeatures(routeWay.Routes));
+                return routeWay;
             }
-            Graph graph = await graphBuider.BuildAsync();
-
-
-            WayBuilder? wayBuilder = WayBuilder.Create(graph);
-            if (startLocation != null && finishLocation != null)
-            {
-                int startId = startLocation.Id;
-                int finishId = finishLocation.Id;
-
-                wayBuilder.SetBegin(startId).SetEnd(finishId);
-            }
-            return await wayBuilder.BuildAsync();
-        }
-
-
-        public async Task<Map> Navigate(Location? startLocation, Location? finishLocation)
-        {
-            var locations = new List<Location?>(await _locationsRepository.GetAll());
-            var routes = new List<Route?>(await _routesRepository.GetAll());
-
-            // Создание карты для маршрута
-
-            Way way = await GetWayAsync(routes, startLocation, finishLocation);
-            Vertex[] vertices = way.Vertices.ToArray();
-
-            // Установка точек на карте
-            _pointLayer?.Clear();
-
-            var pointFeatures = new List<IFeature>();
-            foreach (var vertex in vertices)
-            {
-                var location = locations.First(u => u?.Id == vertex.Id);
-
-                if (location != null)
-                {
-                    var labelStyle = MapsuiTools.CreateLabelStyle(location.Name ?? "Без имени");
-                    var symbolStyle = MapsuiTools.CreateSymbolStyle();
-                    var point = MapsuiTools.CreatePointFeature(location.X, location.Y, symbolStyle, labelStyle);
-                    pointFeatures.Add(point);
-                }
-            }
-            _pointLayer?.AddRange(pointFeatures);
-
-
-            // Установка линий на карте
-            _lineLayer?.Clear();
-
-            var lineFeatures = new List<IFeature>();
-
-
-            for (int i = 1; i < vertices.Length; i++)
-            {
-                int startId = vertices[i-1].Id;
-                int finishId = vertices[i].Id;
-
-                var route = routes.FirstOrDefault(
-                    u => u?.StartLocationId == startId && u?.FinishLocationId == finishId || 
-                    u?.FinishLocationId == startId && u?.StartLocationId == finishId
-                    );
-
-                if (route != null)
-                {
-                    if (route.StartLocation!=null && route.FinishLocation != null)
-                    {
-                        var vectorStyle = MapsuiTools.CreateVectorStyle();
-                        var geometry = MapsuiTools.GetGeometry(route.StartLocation, route.FinishLocation);
-                        var geometryFeature = MapsuiTools.CreateGeometryFeature(geometry, vectorStyle);
-
-                        lineFeatures.Add(geometryFeature);
-                    }
-                }
-
-            }
-
-            _lineLayer?.AddRange(lineFeatures);
-
-            return _map;
+            return null;
         }
 
         private Map CreateMap()
         {
-            _lineLayer = MapsuiTools.CreateLayer("LineLayer");
-            _pointLayer = MapsuiTools.CreateLayer("PointLayer");
-
             return new MapBuilder()
                 .SetOpenStreetMapLayer()
                 .SetWritableLayer(_lineLayer)
@@ -160,10 +83,8 @@ namespace RouteOptimization.Models
                 .Build();
         }
 
-        private async Task<IEnumerable<IFeature>> GetPointFeatures()
+        private IEnumerable<IFeature> GetPointFeatures(IEnumerable<Location> locations)
         {
-            var locations = new List<Location?>(await _locationsRepository.GetAll());
-
             var features = new List<IFeature>();
             foreach (var location in locations)
             {
@@ -180,10 +101,8 @@ namespace RouteOptimization.Models
             return features;
         }
 
-        private async Task<IEnumerable<IFeature>> GetLineFeatures()
+        private IEnumerable<IFeature> GetLineFeatures(IEnumerable<Route> routes)
         {
-            var routes = new List<Route?>(await _routesRepository.GetAll());
-
             var features = new List<IFeature>();
             foreach (var route in routes)
             {

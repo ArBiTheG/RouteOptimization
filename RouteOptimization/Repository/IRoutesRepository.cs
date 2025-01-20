@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Repository
 {
-    public interface ICargoRepository: IRepository<Cargo>
+    public interface IRoutesRepository: IRepository<Route>
     {
-        Task<IEnumerable<Cargo?>> GetAllByLocationAvailable(Location location, CargoAvailable available);
+        Task<RouteWay> GetRouteWay(int startLocationId, int finishLocationId);
     }
 }

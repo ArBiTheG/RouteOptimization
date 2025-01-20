@@ -24,12 +24,12 @@ namespace RouteOptimization.Models
     public class MapBuilderModel
     {
         private IRepository<Location> _locationsRepository;
-        private IRepository<Route> _routesRepository;
+        private IRoutesRepository _routesRepository;
 
         private WritableLayer? _pointLayer;
         private WritableLayer? _lineLayer;
 
-        public MapBuilderModel(IRepository<Location> locationsRepository, IRepository<Route> routesRepository)
+        public MapBuilderModel(IRepository<Location> locationsRepository, IRoutesRepository routesRepository)
         {
             _locationsRepository = locationsRepository;
             _routesRepository = routesRepository;

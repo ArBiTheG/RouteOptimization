@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Repository.SQLite
 {
-    public class SQLiteCargosRepository : ICargoRepository
+    public class SQLiteCargosRepository : ICargosRepository
     {
         public async Task<int?> Count()
         {

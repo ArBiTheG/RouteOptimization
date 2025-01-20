@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Repository.SQLite
 {
-    public class SQLiteShipmentsRepository : IShipmentRepository
+    public class SQLiteShipmentsRepository : IShipmentsRepository
     {
         public async Task<Shipment?> Create(Shipment entity)
         {

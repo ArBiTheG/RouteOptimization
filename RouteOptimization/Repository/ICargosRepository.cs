@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Repository
 {
-    public interface IShipmentRepository: IRepository<Shipment>
+    public interface ICargosRepository: IRepository<Cargo>
     {
-        Task CreateShipmentsEditCargosVehicle(IEnumerable<Shipment> shipments, IEnumerable<Cargo> cargos, Vehicle vehicle);
+        Task<IEnumerable<Cargo?>> GetAllByLocationAvailable(Location location, CargoAvailable available);
     }
 }

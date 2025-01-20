@@ -11,11 +11,11 @@ namespace RouteOptimization.Models
 {
     public class CargosModel : ReactiveObject
     {
-        private ICargoRepository _cargoesRepository;
+        private ICargosRepository _cargoesRepository;
         private IRepository<CargoAvailable> _cargoAvailablesRepository;
         private IRepository<Location> _locationsRepository;
 
-        public CargosModel(ICargoRepository cargoesRepository, IRepository<CargoAvailable> cargoAvailablesRepository, IRepository<Location> locationsRepository)
+        public CargosModel(ICargosRepository cargoesRepository, IRepository<CargoAvailable> cargoAvailablesRepository, IRepository<Location> locationsRepository)
         {
             _cargoesRepository = cargoesRepository;
             _cargoAvailablesRepository = cargoAvailablesRepository;
