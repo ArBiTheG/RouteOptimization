@@ -100,7 +100,6 @@ namespace RouteOptimization.ViewModels.Pages
                 text += $"\nПримерное время {generalTime}";
                 TextInfo = text;
             }
-
         }
 
         private async Task ExecuteLoadCommand()

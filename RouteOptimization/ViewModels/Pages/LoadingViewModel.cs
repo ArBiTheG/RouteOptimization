@@ -1,10 +1,12 @@
 ﻿using DynamicData;
+using Mapsui;
 using ReactiveUI;
 using RouteOptimization.Models;
 using RouteOptimization.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Reactive;
 using System.Text;
@@ -14,12 +16,13 @@ namespace RouteOptimization.ViewModels.Pages
 {
     public class LoadingViewModel : ViewModelBase
     {
-        private LoadingModel? _loadingModel;
+        private LoadingModel _loadingModel;
 
         private Vehicle? _selectedVehicle;
         private Location? _origin;
         private Location? _destination;
         private DateTime _dateTimeFinish;
+        private string _textInfo;
 
         private ObservableCollection<Cargo?>? _cargosStorage;
         private ObservableCollection<Vehicle?>? _vehicles;
@@ -101,8 +104,15 @@ namespace RouteOptimization.ViewModels.Pages
             set => this.RaiseAndSetIfChanged(ref _isContinueFilling, value);
         }
 
+        public string TextInfo
+        {
+            get => _textInfo;
+            set => this.RaiseAndSetIfChanged(ref _textInfo, value);
+        }
+
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<Unit, Unit> ApplyCommand { get; }
+        public ReactiveCommand<Unit, Unit> CheckCommand { get; }
         public ReactiveCommand<Location?, Unit> LoadCargosStorageCommand { get; }
         public ReactiveCommand<Cargo?, Unit> CargoToCartCommand { get; }
         public ReactiveCommand<Cargo?, Unit> CargoToStorageCommand { get; }
@@ -110,6 +120,7 @@ namespace RouteOptimization.ViewModels.Pages
 
         public LoadingViewModel()
         {
+            _textInfo = "";
             _cargosCart = new();
             _isContinueFilling = false;
             _dateTimeFinish = DateTime.Now;
@@ -117,11 +128,33 @@ namespace RouteOptimization.ViewModels.Pages
         LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             LoadCargosStorageCommand = ReactiveCommand.CreateFromTask<Location?>(ExecuteLoadStorageCommand);
             ApplyCommand = ReactiveCommand.CreateFromTask(ExecuteApplyCommand);
+            CheckCommand = ReactiveCommand.CreateFromTask(ExecuteCheckCommand);
             CargoToCartCommand = ReactiveCommand.Create<Cargo?>(ExecuteCargoToCartCommand);
             CargoToStorageCommand = ReactiveCommand.Create<Cargo?>(ExecuteCargoToStorageCommand);
             CargoToStorageAllCommand = ReactiveCommand.Create(ExecuteCargoToStorageAllCommand);
         }
 
+        private async Task ExecuteCheckCommand()
+        {
+            var way = await _loadingModel.Navigate(SelectedOrigin, SelectedDestination);
+
+            if (way != null)
+            {
+                var text = $"Маршрут от {SelectedOrigin?.Name ?? "Без имени"} до {SelectedDestination?.Name ?? "Без имени"} \n";
+                float generalDistance = 0;
+                float generalTime = 0;
+                int phase = 1;
+                foreach (var route in way.Routes)
+                {
+                    text += $"\n{phase++}.\tот {route.StartLocation?.Name ?? "Без имени"} до {route.FinishLocation?.Name ?? "Без имени"} - {route.Distance} м.";
+                    generalDistance += route.Distance;
+                    generalTime += route.Time;
+                }
+                text += $"\n\nПримерное расстояние {generalDistance} м.";
+                text += $"\nПримерное время {generalTime} с.";
+                TextInfo = text;
+            }
+        }
 
         private async Task ExecuteLoadStorageCommand(Location? location)
         {

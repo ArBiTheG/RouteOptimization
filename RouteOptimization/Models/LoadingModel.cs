@@ -15,6 +15,7 @@ namespace RouteOptimization.Models
         private ICargosRepository _cargosRepository;
         private IRepository<Vehicle> _vehiclesRepository;
         private IRepository<Location> _locationsRepository;
+        private IRoutesRepository _routesRepository;
         private IRepository<CargoAvailable> _cargoAvailableesRepository;
         private IRepository<ShipmentStatus> _shipmentStatusesRepository;
         private IRepository<VehicleStatus> _vehicleStatusesRepository;
@@ -23,6 +24,7 @@ namespace RouteOptimization.Models
             ICargosRepository cargosRepository, 
             IRepository<Vehicle> vehiclesRepository, 
             IRepository<Location> locationsRepository,
+            IRoutesRepository routesRepository,
             IRepository<CargoAvailable> cargoAvailableesRepository, 
             IRepository<ShipmentStatus> shipmentStatusesRepository,
             IRepository<VehicleStatus> vehiclesStatusesRepository)
@@ -31,6 +33,7 @@ namespace RouteOptimization.Models
             _cargosRepository = cargosRepository;
             _vehiclesRepository = vehiclesRepository;
             _locationsRepository = locationsRepository;
+            _routesRepository = routesRepository;
             _cargoAvailableesRepository = cargoAvailableesRepository;
             _shipmentStatusesRepository = shipmentStatusesRepository;
             _vehicleStatusesRepository = vehiclesStatusesRepository;
@@ -51,6 +54,16 @@ namespace RouteOptimization.Models
         public async Task CreateShipmentsEditCargosVehicle(IEnumerable<Shipment> shipments, IEnumerable<Cargo> cargos, Vehicle vehicle)
         {
             await _shipmentsRepository.CreateShipmentsEditCargosVehicle(shipments, cargos, vehicle);
+        }
+        public async Task<RouteWay?> Navigate(Location? startLocation, Location? finishLocation)
+        {
+            if (startLocation != null && finishLocation != null)
+            {
+                RouteWay routeWay = await _routesRepository.GetRouteWay(startLocation.Id, finishLocation.Id);
+
+                return routeWay;
+            }
+            return null;
         }
         public async Task Edit(Shipment entity)
         {

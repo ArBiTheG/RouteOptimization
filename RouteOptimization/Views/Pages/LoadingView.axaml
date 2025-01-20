@@ -86,13 +86,13 @@
             </StackPanel>
           </StackPanel>
         </ScrollViewer>
-        <Border Grid.Column="1">
-          <TextBlock>
-            Сводка
-          </TextBlock>
-        </Border>
+        <StackPanel Grid.Column="1">
+          <TextBlock Text="Сводка"/>
+          <TextBlock Text="{Binding TextInfo}"/>
+        </StackPanel>
       </Grid>
       <StackPanel Grid.Row="2" Margin="4" Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button Content="Посчитать" Command="{Binding CheckCommand}" IsEnabled="{Binding IsContinueFilling}"/>
         <Button Content="Добавить" Command="{Binding ApplyCommand}" IsEnabled="{Binding IsContinueFilling}"/>
         <Button Content="Очистить"/>
       </StackPanel>
