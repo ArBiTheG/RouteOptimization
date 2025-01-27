@@ -23,6 +23,9 @@
           <SvgSource x:Key="MarkIcon" Path="/Assets/Icons/mark.svg" Css="#svg{fill:#000}"/>
           <SvgSource x:Key="RouteIcon" Path="/Assets/Icons/route.svg" Css="#svg{fill:#000}"/>
           <SvgSource x:Key="TruckIcon" Path="/Assets/Icons/truck.svg" Css="#svg{fill:#000}"/>
+          <SvgSource x:Key="WarehouseIcon" Path="/Assets/Icons/warehouse.svg" Css="#svg{fill:#000}"/>
+          <SvgSource x:Key="MapIcon" Path="/Assets/Icons/map.svg" Css="#svg{fill:#000}"/>
+          <SvgSource x:Key="TaskIcon" Path="/Assets/Icons/task.svg" Css="#svg{fill:#000}"/>
         </ResourceDictionary>
         <ResourceDictionary x:Key='Dark'>
           <SvgSource x:Key="BlueprintIcon" Path="/Assets/Icons/blueprint.svg" Css="#svg{fill:#fff}"/>
@@ -35,6 +38,9 @@
           <SvgSource x:Key="MarkIcon" Path="/Assets/Icons/mark.svg" Css="#svg{fill:#fff}"/>
           <SvgSource x:Key="RouteIcon" Path="/Assets/Icons/route.svg" Css="#svg{fill:#fff}"/>
           <SvgSource x:Key="TruckIcon" Path="/Assets/Icons/truck.svg" Css="#svg{fill:#fff}"/>
+          <SvgSource x:Key="WarehouseIcon" Path="/Assets/Icons/warehouse.svg" Css="#svg{fill:#fff}"/>
+          <SvgSource x:Key="MapIcon" Path="/Assets/Icons/map.svg" Css="#svg{fill:#fff}"/>
+          <SvgSource x:Key="TaskIcon" Path="/Assets/Icons/task.svg" Css="#svg{fill:#fff}"/>
         </ResourceDictionary>
       </ResourceDictionary.ThemeDictionaries>
     </ResourceDictionary>

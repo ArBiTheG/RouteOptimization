@@ -67,4 +67,8 @@
   <ItemGroup>
     <ProjectReference Include="..\RouteOptimization.Library\RouteOptimization.Library.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Pages\WarehouseView.axaml" />
+  </ItemGroup>
 </Project>

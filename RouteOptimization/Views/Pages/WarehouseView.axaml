@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:RouteOptimization.ViewModels.Pages"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="RouteOptimization.Views.Pages.WarehouseView">
+  <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <vm:WarehouseViewModel />
+  </Design.DataContext>
+  <i:Interaction.Behaviors>
+    <ia:EventTriggerBehavior EventName="Loaded">
+      <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
+    </ia:EventTriggerBehavior>
+  </i:Interaction.Behaviors>
+
+  <Grid>
+    <Grid Margin="4" RowDefinitions="auto,auto,*,auto">
+      <Label Margin="4">
+        <StackPanel Orientation="Horizontal">
+          <Image Width="32" Height="32" Margin="0,0,8,0">
+            <Image.Source>
+              <SvgImage Source="{DynamicResource WarehouseIcon}"/>
+            </Image.Source>
+          </Image>
+          <TextBlock VerticalAlignment="Center" Text="Склад" FontSize="24"/>
+        </StackPanel>
+      </Label>
+      <StackPanel Grid.Row="1" Margin="4">
+        <TextBlock Text="Выберите склад:" VerticalAlignment="Center"/>
+        <ComboBox HorizontalAlignment="Stretch"/>
+      </StackPanel>
+      <Grid Grid.Row="2" Margin="2" ColumnDefinitions="3*,2*">
+        <ListBox Grid.Column="0" Margin="2" CornerRadius="4"
+                 x:Name="list" ItemsSource="{Binding List}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel>
+                <TextBlock Text="{Binding Name}" FontSize="16" />
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+        <TextBlock Grid.Column="1" Margin="2" Text="Сведенье о товаре:"/>
+      </Grid>
+
+      <StackPanel Grid.Row="3" Margin="4" HorizontalAlignment="Right" Orientation="Horizontal">
+        <Button Content="Оформить" Command="{Binding AddCommand}"/>
+        <Button Content="Продать" Command="{Binding AddCommand}"/>
+        <Button Content="Удалить" Command="{Binding AddCommand}"/>
+      </StackPanel>
+    </Grid>
+  </Grid>
+</UserControl>

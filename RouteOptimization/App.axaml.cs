@@ -80,6 +80,8 @@ public partial class App : Application
         services.AddTransient<MapBuilderViewModel>();
         services.AddTransient<MapRouteViewModel>();
         services.AddTransient<LoadingViewModel>();
+        services.AddTransient<HandlingViewModel>();
+        services.AddTransient<WarehouseViewModel>();
         services.AddTransient<SettingsDatabaseViewModel>();
 
         services.AddTransient<LocationsViewModel>();

@@ -50,10 +50,10 @@
             <StackPanel Orientation="Horizontal">
               <Image Width="32" Height="32">
                 <Image.Source>
-                  <SvgImage Source="{DynamicResource BlueprintIcon}"/>
+                  <SvgImage Source="{DynamicResource MapIcon}"/>
                 </Image.Source>
               </Image>
-              <TextBlock Margin="10" Text="Конструктор"/>
+              <TextBlock Margin="10" Text="Карта"/>
             </StackPanel>
           </Button>
           <Button HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="48" Background="Transparent" Command="{Binding OpenPage}" CommandParameter="Route">

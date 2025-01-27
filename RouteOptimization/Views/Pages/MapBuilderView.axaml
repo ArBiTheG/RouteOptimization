@@ -27,7 +27,7 @@
               <SvgImage Source="{DynamicResource BlueprintIcon}"/>
             </Image.Source>
           </Image>
-          <TextBlock VerticalAlignment="Center" Text="Конструктор карты" FontSize="24"/>
+          <TextBlock VerticalAlignment="Center" Text="Карта" FontSize="24"/>
         </StackPanel>
       </Label>
       <Border Grid.Row="1" Margin="4" CornerRadius="4" ClipToBounds="True">

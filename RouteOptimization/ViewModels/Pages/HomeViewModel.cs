@@ -17,6 +17,8 @@ namespace RouteOptimization.ViewModels.Pages
             new PageItem("Builder", typeof(MapBuilderViewModel)),
             new PageItem("Route", typeof(MapRouteViewModel)),
             new PageItem("Loading", typeof(LoadingViewModel)),
+            new PageItem("Handling", typeof(HandlingViewModel)),
+            new PageItem("Warehouse", typeof(WarehouseViewModel)),
         };
 
         private HistoryRouter<ViewModelBase> _router;
