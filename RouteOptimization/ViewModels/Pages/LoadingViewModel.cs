@@ -202,7 +202,6 @@ namespace RouteOptimization.ViewModels.Pages
             {
                 Vehicles = new(await _loadingModel.GetVehicles());
                 Locations = new(await _loadingModel.GetLocations());
-                VehicleStatuses = new(await _loadingModel.GetVehicleStatuses());
             }
         }
         private async Task ExecuteApplyCommand()

@@ -16,27 +16,18 @@ namespace RouteOptimization.Models
         private IRepository<Vehicle> _vehiclesRepository;
         private IRepository<Location> _locationsRepository;
         private IRoutesRepository _routesRepository;
-        private IRepository<CargoAvailable> _cargoAvailableesRepository;
-        private IRepository<ShipmentStatus> _shipmentStatusesRepository;
-        private IRepository<VehicleStatus> _vehicleStatusesRepository;
 
         public LoadingModel(IShipmentsRepository shipmentsRepository, 
             ICargosRepository cargosRepository, 
             IRepository<Vehicle> vehiclesRepository, 
             IRepository<Location> locationsRepository,
-            IRoutesRepository routesRepository,
-            IRepository<CargoAvailable> cargoAvailableesRepository, 
-            IRepository<ShipmentStatus> shipmentStatusesRepository,
-            IRepository<VehicleStatus> vehiclesStatusesRepository)
+            IRoutesRepository routesRepository)
         {
             _shipmentsRepository = shipmentsRepository;
             _cargosRepository = cargosRepository;
             _vehiclesRepository = vehiclesRepository;
             _locationsRepository = locationsRepository;
             _routesRepository = routesRepository;
-            _cargoAvailableesRepository = cargoAvailableesRepository;
-            _shipmentStatusesRepository = shipmentStatusesRepository;
-            _vehicleStatusesRepository = vehiclesStatusesRepository;
         }
 
         public async Task<IEnumerable<Shipment?>> GetAll()
@@ -103,33 +94,6 @@ namespace RouteOptimization.Models
         public async Task<Vehicle?> GetVehicleByID(int id)
         {
             return await _vehiclesRepository.GetByID(id);
-        }
-
-        public async Task<IEnumerable<CargoAvailable?>> GetCargoAvailables()
-        {
-            return await _cargoAvailableesRepository.GetAll();
-        }
-        public async Task<CargoAvailable?> GetCargoAvailableByID(int id)
-        {
-            return await _cargoAvailableesRepository.GetByID(id);
-        }
-
-        public async Task<IEnumerable<ShipmentStatus?>> GetShipmentStatuses()
-        {
-            return await _shipmentStatusesRepository.GetAll();
-        }
-        public async Task<ShipmentStatus?> GetShipmentStatusByID(int id)
-        {
-            return await _shipmentStatusesRepository.GetByID(id);
-        }
-
-        public async Task<IEnumerable<VehicleStatus?>> GetVehicleStatuses()
-        {
-            return await _vehicleStatusesRepository.GetAll();
-        }
-        public async Task<VehicleStatus?> GetVehicleStatusByID(int id)
-        {
-            return await _vehicleStatusesRepository.GetByID(id);
         }
     }
 }
