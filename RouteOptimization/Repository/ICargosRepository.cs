@@ -9,6 +9,6 @@ namespace RouteOptimization.Repository
 {
     public interface ICargosRepository: IRepository<Cargo>
     {
-        Task<IEnumerable<Cargo?>> GetAllByLocationAvailable(Location location, CargoAvailable available);
+        Task<IEnumerable<Cargo?>> GetAllByLocationAvailable(Location location, int available_id);
     }
 }

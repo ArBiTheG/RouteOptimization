@@ -27,8 +27,6 @@ namespace RouteOptimization.ViewModels.Pages
         private ObservableCollection<Cargo?>? _cargosStorage;
         private ObservableCollection<Vehicle?>? _vehicles;
         private ObservableCollection<Location?>? _locations;
-        private ObservableCollection<CargoAvailable?>? _cargoAvailables;
-        private ObservableCollection<ShipmentStatus?>? _shipmentStatuses;
         private ObservableCollection<VehicleStatus?>? _vehicleStatuses;
         private ObservableCollection<Cargo?> _cargosCart;
 
@@ -68,17 +66,6 @@ namespace RouteOptimization.ViewModels.Pages
         {
             get => _locations;
             set => this.RaiseAndSetIfChanged(ref _locations, value);
-        }
-        public ObservableCollection<CargoAvailable?>? CargoAvailables
-        {
-            get => _cargoAvailables;
-            set => this.RaiseAndSetIfChanged(ref _cargoAvailables, value);
-        }
-
-        public ObservableCollection<ShipmentStatus?>? ShipmentStatuses
-        {
-            get => _shipmentStatuses;
-            set => this.RaiseAndSetIfChanged(ref _shipmentStatuses, value);
         }
 
         public ObservableCollection<VehicleStatus?>? VehicleStatuses
@@ -162,9 +149,8 @@ namespace RouteOptimization.ViewModels.Pages
             CargosCart.Clear();
             if (_loadingModel != null)
             {
-                var available = CargoAvailables?.First(e => e?.Id == 2);
-                if (location != null && available!=null)
-                    CargosStorage = new(await _loadingModel.GetCargosByLocationAvailable(location, available));
+                if (location != null)
+                    CargosStorage = new(await _loadingModel.GetCargosByLocationAvailable(location, CargoAvailableValue.Present.Id));
             }
 
             if (_cargosStorage != null)
@@ -216,8 +202,6 @@ namespace RouteOptimization.ViewModels.Pages
             {
                 Vehicles = new(await _loadingModel.GetVehicles());
                 Locations = new(await _loadingModel.GetLocations());
-                CargoAvailables = new(await _loadingModel.GetCargoAvailables());
-                ShipmentStatuses = new(await _loadingModel.GetShipmentStatuses());
                 VehicleStatuses = new(await _loadingModel.GetVehicleStatuses());
             }
         }
@@ -226,7 +210,6 @@ namespace RouteOptimization.ViewModels.Pages
             if (SelectedVehicle == null) return;
             if (SelectedOrigin == null) return;
             if (SelectedDestination == null) return;
-            if (ShipmentStatuses == null) return;
             if (CargosCart.Count <= 0) return;
 
             if (_loadingModel != null) {
@@ -236,17 +219,17 @@ namespace RouteOptimization.ViewModels.Pages
                 prototype.DestinationId = SelectedDestination.Id;
                 prototype.DateTimeStart = DateTime.Now;
                 prototype.DateTimeFinish = SelectedDateTimeFinish;
-                prototype.StatusId = 2;
+                prototype.StatusId = ShipmentStatusValue.Moving.Id;
 
                 Vehicle vehicle = SelectedVehicle;
-                vehicle.StatusId = 2;
+                vehicle.StatusId = VehicleStatusValue.Moving.Id;
 
                 List<Cargo> cargos = new List<Cargo>();
                 foreach (Cargo? entity in CargosCart)
                 {
                     if (entity != null)
                     {
-                        entity.AvailableId = 3;
+                        entity.AvailableId = CargoAvailableValue.Moving.Id;
 
                         cargos.Add(entity);
                     }

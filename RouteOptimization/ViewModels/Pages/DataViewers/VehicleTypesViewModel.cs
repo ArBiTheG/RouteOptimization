@@ -28,9 +28,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         public Interaction<DeleteViewModel, bool> ShowDeleteDialog { get; }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
-        public ReactiveCommand<Unit, Unit> AddCommand { get; }
         public ReactiveCommand<VehicleType, Unit> EditCommand { get; }
-        public ReactiveCommand<VehicleType, Unit> DeleteCommand { get; }
 
         public VehicleTypesViewModel()
         {
@@ -39,9 +37,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
             EditCommand = ReactiveCommand.CreateFromTask<VehicleType>(ExecuteEditCommand);
-            DeleteCommand = ReactiveCommand.CreateFromTask<VehicleType>(ExecuteDeleteCommand);
         }
         public VehicleTypesViewModel(VehicleTypesModel model):this()
         {
@@ -52,17 +48,6 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         {
             List = new ObservableCollection<VehicleType?>(await _model.GetAll());
         }
-        private async Task ExecuteAddCommand()
-        {
-            var dialog = new VehicleTypesEditorViewModel();
-
-            var result = await ShowDialog.Handle(dialog);
-            if (result != null)
-            {
-                await _model.Create(result);
-                List?.Add(result);
-            }
-        }
         private async Task ExecuteEditCommand(VehicleType vehicleType)
         {
             var dialog = new VehicleTypesEditorViewModel(vehicleType.Clone());
@@ -72,18 +57,6 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             {
                 vehicleType.CopyFrom(result);
                 await _model.Edit(vehicleType);
-            }
-        }
-        private async Task ExecuteDeleteCommand(VehicleType vehicleType)
-        {
-
-            var dialog = new DeleteViewModel();
-
-            var result = await ShowDeleteDialog.Handle(dialog);
-            if (result != false)
-            {
-                await _model.Delete(vehicleType);
-                List?.Remove(vehicleType);
             }
         }
     }

@@ -37,12 +37,12 @@ namespace RouteOptimization.Repository.SQLite
             await context.Cargos.LoadAsync();
             return context.Cargos.ToArray();
         }
-        public async Task<IEnumerable<Cargo?>> GetAllByLocationAvailable(Location location, CargoAvailable available)
+        public async Task<IEnumerable<Cargo?>> GetAllByLocationAvailable(Location location, int available_id)
         {
             return await Task.Run(() =>
             {
                 using SQLiteContext context = new SQLiteContext();
-                return context.Cargos.Where(u => u.LocationId == location.Id && u.AvailableId == available.Id).ToArray();
+                return context.Cargos.Where(u => u.LocationId == location.Id && u.AvailableId == available_id).ToArray();
             });
         }
 

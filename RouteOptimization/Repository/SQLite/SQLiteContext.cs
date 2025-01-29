@@ -83,23 +83,21 @@ namespace RouteOptimization.Repository.SQLite
             modelBuilder.Entity<VehicleType>().HasMany(u => u.Vehicles).WithOne(u => u.Type).HasForeignKey(u => u.TypeId);
 
             modelBuilder.Entity<CargoAvailable>().HasData(
-                 new CargoAvailable(1,"Отсутствует"),
-                 new CargoAvailable(2,"В наличии"),
-                 new CargoAvailable(3,"В пути"),
-                 new CargoAvailable(4,"Ожидается"),
-                 new CargoAvailable(5,"Продано")
+                 CargoAvailableValue.Absent,
+                 CargoAvailableValue.Present,
+                 CargoAvailableValue.Moving,
+                 CargoAvailableValue.Bought
                 );
 
             modelBuilder.Entity<ShipmentStatus>().HasData(
-                 new ShipmentStatus(1,"Не доставлено"),
-                 new ShipmentStatus(2,"Доставляется"),
-                 new ShipmentStatus(3,"Доставлено")
+                ShipmentStatusValue.Moving,
+                ShipmentStatusValue.Delivered,
+                ShipmentStatusValue.Cancelled
                 );
 
             modelBuilder.Entity<VehicleStatus>().HasData(
-                 new VehicleStatus(1,"Не зайдествован"),
-                 new VehicleStatus(2,"Занят"),
-                 new VehicleStatus(3,"Неисправно")
+                 VehicleStatusValue.Idle,
+                 VehicleStatusValue.Moving
                 );
 
             modelBuilder.Entity<VehicleType>().HasData(
@@ -109,9 +107,6 @@ namespace RouteOptimization.Repository.SQLite
                  new VehicleType(4,"Платформа"),
                  new VehicleType(5,"Цистерна")
                 );
-
-
-
         }
     }
 }

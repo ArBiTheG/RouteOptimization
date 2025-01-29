@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,8 +11,8 @@ namespace RouteOptimization.Models.Entities
 {
     public class ShipmentStatus: ReactiveObject, IEquatable<ShipmentStatus?>, ICloneable<ShipmentStatus>, ICopyable<ShipmentStatus?>
     {
-        int _id;
-        string _name;
+        private int _id;
+        private string _name;
 
         public ShipmentStatus()
         {
@@ -76,4 +77,12 @@ namespace RouteOptimization.Models.Entities
             return !(left == right);
         }
     }
+
+    public static class ShipmentStatusValue
+    {
+        public static ShipmentStatus Moving => new(1, "В пути");
+        public static ShipmentStatus Delivered => new(2, "Доставлено");
+        public static ShipmentStatus Cancelled => new(3, "Отменено");
+    }
+
 }

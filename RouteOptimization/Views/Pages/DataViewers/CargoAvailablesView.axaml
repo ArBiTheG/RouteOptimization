@@ -41,9 +41,7 @@
       </ListBox>
 
       <StackPanel Grid.Row="2" Margin="4" Orientation="Horizontal">
-        <Button Content="Добавить" Command="{Binding AddCommand}"/>
         <Button Content="Изменить" Command="{Binding EditCommand}" CommandParameter="{Binding SelectedItem, ElementName=list}"/>
-        <Button Content="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedItem, ElementName=list}"/>
       </StackPanel>
     </Grid>
   </Grid>

@@ -28,9 +28,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         public Interaction<DeleteViewModel, bool> ShowDeleteDialog { get; }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
-        public ReactiveCommand<Unit, Unit> AddCommand { get; }
         public ReactiveCommand<ShipmentStatus, Unit> EditCommand { get; }
-        public ReactiveCommand<ShipmentStatus, Unit> DeleteCommand { get; }
 
         public ShipmentStatusesViewModel()
         {
@@ -38,9 +36,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
             EditCommand = ReactiveCommand.CreateFromTask<ShipmentStatus>(ExecuteEditCommand);
-            DeleteCommand = ReactiveCommand.CreateFromTask<ShipmentStatus>(ExecuteDeleteCommand);
         }
         public ShipmentStatusesViewModel(ShipmentStatusesModel model) : this()
         {
@@ -51,17 +47,6 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         {
             List = new ObservableCollection<ShipmentStatus?>(await _model.GetAll());
         }
-        private async Task ExecuteAddCommand()
-        {
-            var dialog = new ShipmentStatusesEditorViewModel();
-
-            var result = await ShowDialog.Handle(dialog);
-            if (result != null)
-            {
-                await _model.Create(result);
-                List?.Add(result);
-            }
-        }
         private async Task ExecuteEditCommand(ShipmentStatus shipmentStatus)
         {
             var dialog = new ShipmentStatusesEditorViewModel(shipmentStatus.Clone());
@@ -71,18 +56,6 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             {
                 shipmentStatus.CopyFrom(result);
                 await _model.Edit(shipmentStatus);
-            }
-        }
-        private async Task ExecuteDeleteCommand(ShipmentStatus shipmentStatus)
-        {
-
-            var dialog = new DeleteViewModel();
-
-            var result = await ShowDeleteDialog.Handle(dialog);
-            if (result != false)
-            {
-                await _model.Delete(shipmentStatus);
-                List?.Remove(shipmentStatus);
             }
         }
     }

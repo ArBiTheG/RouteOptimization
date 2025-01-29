@@ -87,9 +87,9 @@ namespace RouteOptimization.Models
         {
             return await _cargosRepository.GetAll();
         }
-        public async Task<IEnumerable<Cargo?>> GetCargosByLocationAvailable(Location location, CargoAvailable available )
+        public async Task<IEnumerable<Cargo?>> GetCargosByLocationAvailable(Location location, int available_id )
         {
-            return await _cargosRepository.GetAllByLocationAvailable(location, available);
+            return await _cargosRepository.GetAllByLocationAvailable(location, available_id);
         }
         public async Task<Cargo?> GetCargoByID(int id)
         {

@@ -50,8 +50,8 @@
 
       <StackPanel Grid.Row="3" Margin="4" HorizontalAlignment="Right" Orientation="Horizontal">
         <Button Content="Оформить" Command="{Binding AddCommand}"/>
+        <Button Content="Изменить" Command="{Binding AddCommand}"/>
         <Button Content="Продать" Command="{Binding AddCommand}"/>
-        <Button Content="Удалить" Command="{Binding AddCommand}"/>
       </StackPanel>
     </Grid>
   </Grid>

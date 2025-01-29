@@ -12,17 +12,12 @@ namespace RouteOptimization.Repository.SQLite
     {
         public async Task<VehicleType?> Create(VehicleType entity)
         {
-            using SQLiteContext context = new SQLiteContext();
-            await context.VehicleTypes.AddAsync(entity);
-            await context.SaveChangesAsync();
-            return entity;
+            throw new NotImplementedException();
         }
 
         public async Task Delete(VehicleType entity)
         {
-            using SQLiteContext context = new SQLiteContext();
-            context.VehicleTypes.Remove(entity);
-            await context.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
         public async Task Update(VehicleType entity)

@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using ReactiveUI;
+using System.Security.Cryptography;
 
 namespace RouteOptimization.Models.Entities
 {
@@ -77,5 +78,12 @@ namespace RouteOptimization.Models.Entities
         {
             return !(left == right);
         }
+
+    }
+
+    public static class VehicleStatusValue
+    {
+        public static VehicleStatus Idle => new(1, "Простаивает");
+        public static VehicleStatus Moving => new(2, "В движении");
     }
 }

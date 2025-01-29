@@ -23,7 +23,7 @@
         <StackPanel>
           <Grid Margin="2" Grid.ColumnDefinitions="1*,2*">
             <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Наименование:"/>
-            <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedVehicleStatus.Name}"/>
+            <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedCargoAvailable.Name}"/>
           </Grid>
         </StackPanel>
       </Border>

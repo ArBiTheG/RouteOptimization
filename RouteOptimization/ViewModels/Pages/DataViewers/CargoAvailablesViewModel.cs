@@ -28,9 +28,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         public Interaction<DeleteViewModel, bool> ShowDeleteDialog { get; }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
-        public ReactiveCommand<Unit, Unit> AddCommand { get; }
         public ReactiveCommand<CargoAvailable, Unit> EditCommand { get; }
-        public ReactiveCommand<CargoAvailable, Unit> DeleteCommand { get; }
 
         public CargoAvailablesViewModel()
         {
@@ -38,9 +36,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
             EditCommand = ReactiveCommand.CreateFromTask<CargoAvailable>(ExecuteEditCommand);
-            DeleteCommand = ReactiveCommand.CreateFromTask<CargoAvailable>(ExecuteDeleteCommand);
         }
         public CargoAvailablesViewModel(CargoAvailablesModel model) : this()
         {
@@ -51,17 +47,6 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         {
             List = new ObservableCollection<CargoAvailable?>(await _model.GetAll());
         }
-        private async Task ExecuteAddCommand()
-        {
-            var dialog = new CargoAvailablesEditorViewModel();
-
-            var result = await ShowDialog.Handle(dialog);
-            if (result != null)
-            {
-                await _model.Create(result);
-                List?.Add(result);
-            }
-        }
         private async Task ExecuteEditCommand(CargoAvailable cargoAvailable)
         {
             var dialog = new CargoAvailablesEditorViewModel(cargoAvailable.Clone());
@@ -71,18 +56,6 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             {
                 cargoAvailable.CopyFrom(result);
                 await _model.Edit(cargoAvailable);
-            }
-        }
-        private async Task ExecuteDeleteCommand(CargoAvailable cargoAvailable)
-        {
-
-            var dialog = new DeleteViewModel();
-
-            var result = await ShowDeleteDialog.Handle(dialog);
-            if (result != false)
-            {
-                await _model.Delete(cargoAvailable);
-                List?.Remove(cargoAvailable);
             }
         }
     }

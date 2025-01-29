@@ -18,17 +18,12 @@ namespace RouteOptimization.Repository.SQLite
 
         public async Task<CargoAvailable?> Create(CargoAvailable entity)
         {
-            using SQLiteContext context = new SQLiteContext();
-            await context.CargoAvailables.AddAsync(entity);
-            await context.SaveChangesAsync();
-            return entity;
+            throw new NotImplementedException();
         }
 
         public async Task Delete(CargoAvailable entity)
         {
-            using SQLiteContext context = new SQLiteContext();
-            context.CargoAvailables.Remove(entity);
-            await context.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<CargoAvailable?>> GetAll()

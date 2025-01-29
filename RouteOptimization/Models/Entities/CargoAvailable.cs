@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -64,5 +65,14 @@ namespace RouteOptimization.Models.Entities
         {
             return !(left == right);
         }
+
+    }
+
+    public static class CargoAvailableValue
+    {
+        public static CargoAvailable Absent => new(1, "Отсутствует");
+        public static CargoAvailable Present => new(2, "Присутствует");
+        public static CargoAvailable Moving => new(3, "В пути");
+        public static CargoAvailable Bought => new(4, "Купил");
     }
 }

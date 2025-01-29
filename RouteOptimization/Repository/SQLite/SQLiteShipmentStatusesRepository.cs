@@ -18,17 +18,12 @@ namespace RouteOptimization.Repository.SQLite
 
         public async Task<ShipmentStatus?> Create(ShipmentStatus entity)
         {
-            using SQLiteContext context = new SQLiteContext();
-            await context.ShipmentStatuses.AddAsync(entity);
-            await context.SaveChangesAsync();
-            return entity;
+            throw new NotImplementedException();
         }
 
         public async Task Delete(ShipmentStatus entity)
         {
-            using SQLiteContext context = new SQLiteContext();
-            context.ShipmentStatuses.Remove(entity);
-            await context.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<ShipmentStatus?>> GetAll()
