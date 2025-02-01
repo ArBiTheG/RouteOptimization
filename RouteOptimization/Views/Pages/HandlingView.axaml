@@ -31,7 +31,7 @@
       </Label>
       <Grid Grid.Row="1" Margin="2" ColumnDefinitions="3*,2*">
         <ListBox Grid.Column="0" Margin="2" CornerRadius="4"
-                 x:Name="list" ItemsSource="{Binding List}">
+                 x:Name="list" ItemsSource="{Binding Shipments}">
           <ListBox.ItemTemplate>
             <DataTemplate>
               <StackPanel>
@@ -44,8 +44,8 @@
       </Grid>
 
       <StackPanel Grid.Row="2" Margin="4" HorizontalAlignment="Right" Orientation="Horizontal">
-        <Button Content="Выполнить" Command="{Binding AddCommand}"/>
-        <Button Content="Отменить" Command="{Binding EditCommand}" CommandParameter="{Binding SelectedItem, ElementName=list}"/>
+        <Button Content="Выполнить" Command="{Binding ApplyCommand}" CommandParameter="{Binding SelectedItem, ElementName=list}"/>
+        <Button Content="Отменить" Command="{Binding CancelCommand}" CommandParameter="{Binding SelectedItem, ElementName=list}"/>
       </StackPanel>
     </Grid>
   </Grid>

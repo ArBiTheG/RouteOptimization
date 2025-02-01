@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Avalonia.Animation;
+using Microsoft.EntityFrameworkCore;
 using RouteOptimization.Models.Entities;
 using System;
 using System.Collections.Generic;
@@ -81,6 +82,70 @@ namespace RouteOptimization.Repository.SQLite
         {
             using SQLiteContext context = new SQLiteContext();
             return await context.Shipments.CountAsync();
+        }
+
+        public async Task AcceptShipment(Shipment shipment)
+        {
+            using SQLiteContext context = new SQLiteContext();
+            await context.Shipments.Include(t => t.Cargo).Include(t => t.Vehicle).LoadAsync();
+            Shipment[] array = await context.Shipments.ToArrayAsync();
+            
+            Shipment? findedShipment = array.FirstOrDefault(array => array.Id == shipment.Id);
+
+            if (findedShipment != null)
+            {
+                var cargo = findedShipment.Cargo;
+                var vehicle = findedShipment.Vehicle;
+                if (cargo != null && vehicle != null)
+                {
+                    findedShipment.StatusId = ShipmentStatusValue.Delivered.Id;
+
+                    cargo.AvailableId = CargoAvailableValue.Present.Id;
+                    cargo.LocationId = findedShipment.DestinationId;
+
+                    vehicle.StatusId = VehicleStatusValue.Idle.Id;
+
+                    context.Shipments.Update(findedShipment);
+                    context.Cargos.Update(cargo);
+                    context.Vehicles.Update(vehicle);
+                    await context.SaveChangesAsync();
+                }
+            }
+        }
+
+        public async Task CancelShipment(Shipment shipment)
+        {
+            using SQLiteContext context = new SQLiteContext();
+            await context.Shipments.Include(t => t.Cargo).Include(t => t.Vehicle).LoadAsync();
+            Shipment[] array = await context.Shipments.ToArrayAsync();
+
+            Shipment? findedShipment = array.FirstOrDefault(array => array.Id == shipment.Id);
+
+            if (findedShipment != null)
+            {
+                var cargo = findedShipment.Cargo;
+                var vehicle = findedShipment.Vehicle;
+                if (cargo != null && vehicle != null)
+                {
+                    findedShipment.StatusId = ShipmentStatusValue.Cancelled.Id;
+
+                    cargo.AvailableId = CargoAvailableValue.Present.Id;
+
+                    vehicle.StatusId = VehicleStatusValue.Idle.Id;
+
+                    context.Shipments.Update(findedShipment);
+                    context.Cargos.Update(cargo);
+                    context.Vehicles.Update(vehicle);
+                    await context.SaveChangesAsync();
+                }
+            }
+        }
+
+        public async Task<IEnumerable<Shipment?>> GetUncompleteShipments()
+        {
+            using SQLiteContext context = new SQLiteContext();
+            await context.Shipments.Include(t => t.Cargo).Include(t => t.Vehicle).Where(t => t.StatusId == ShipmentStatusValue.Moving.Id).LoadAsync();
+            return context.Shipments.Local.ToArray();
         }
     }
 }

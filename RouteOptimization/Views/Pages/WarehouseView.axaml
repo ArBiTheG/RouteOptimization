@@ -32,7 +32,7 @@
       </Label>
       <StackPanel Grid.Row="1" Margin="4">
         <TextBlock Text="Выберите склад:" VerticalAlignment="Center"/>
-        <ComboBox x:Name="locations" HorizontalAlignment="Stretch" ItemsSource="{Binding Locations}" DisplayMemberBinding="{Binding Name}">
+        <ComboBox x:Name="locations" HorizontalAlignment="Stretch" ItemsSource="{Binding Locations}" SelectedItem="{Binding SelectedLocation}" DisplayMemberBinding="{Binding Name}">
           <i:Interaction.Behaviors>
             <ia:EventTriggerBehavior EventName="SelectionChanged">
               <ia:EventTriggerBehavior.Actions>
@@ -44,7 +44,7 @@
       </StackPanel>
       <Grid Grid.Row="2" Margin="2" ColumnDefinitions="3*,2*">
         <ListBox Grid.Column="0" Margin="2" CornerRadius="4"
-                 x:Name="cargos" ItemsSource="{Binding Cargos}">
+                 x:Name="cargos" ItemsSource="{Binding Cargos}" SelectedItem="{Binding SelectedCargo}">
           <ListBox.ItemTemplate>
             <DataTemplate>
               <StackPanel>
@@ -53,13 +53,27 @@
             </DataTemplate>
           </ListBox.ItemTemplate>
         </ListBox>
-        <TextBlock Grid.Column="1" Margin="2" Text="Сведенье о товаре:"/>
+        <StackPanel Grid.Column="1" Margin="2" >
+          <TextBlock  Margin="4" Text="Сведенье о товаре:"/>
+          <TextBlock Text="Наименование товара:"/>
+          <TextBlock Text="{Binding SelectedCargo.Name}"/>
+          <TextBlock Text="Описание товара:"/>
+          <TextBlock Text="{Binding SelectedCargo.Description}"/>
+          <TextBlock Text="Ширина:"/>
+          <TextBlock Text="{Binding SelectedCargo.SizeX,  StringFormat={}{0} см\.}"/>
+          <TextBlock Text="Длина:"/>
+          <TextBlock Text="{Binding SelectedCargo.SizeZ,  StringFormat={}{0} см\.}"/>
+          <TextBlock Text="Высота:"/>
+          <TextBlock Text="{Binding SelectedCargo.SizeY,  StringFormat={}{0} см\.}"/>
+          <TextBlock Text="Вес:"/>
+          <TextBlock Text="{Binding SelectedCargo.Weight,  StringFormat={}{0} г\.}"/>
+        </StackPanel>
       </Grid>
 
       <StackPanel Grid.Row="3" Margin="4" HorizontalAlignment="Right" Orientation="Horizontal">
         <Button Content="Оформить" Command="{Binding AddCommand}"/>
-        <Button Content="Изменить" Command="{Binding AddCommand}"/>
-        <Button Content="Продать" Command="{Binding AddCommand}"/>
+        <Button Content="Изменить" Command="{Binding EditCommand}" CommandParameter="{Binding SelectedItem, ElementName=cargos}"/>
+        <Button Content="Продать" Command="{Binding SellCommand}" CommandParameter="{Binding SelectedItem, ElementName=cargos}"/>
       </StackPanel>
     </Grid>
   </Grid>

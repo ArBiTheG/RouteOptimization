@@ -75,7 +75,8 @@ public partial class App : Application
         services.AddTransient<VehicleStatusesModel>();
         services.AddTransient<VehicleTypesModel>();
         services.AddTransient<WarehouseModel>();
-        
+        services.AddTransient<HandlingModel>();
+
 
         services.AddTransient<HomeViewModel>();
         services.AddTransient<DatabaseViewModel>();

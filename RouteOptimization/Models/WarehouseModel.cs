@@ -35,17 +35,20 @@ namespace RouteOptimization.Models
         {
             return await _cargosRepository.GetByID(id);
         }
-        public async Task<Cargo?> Create(Cargo entity)
+        public async Task<Cargo?> Create(Cargo entity, Location place)
         {
+            entity.LocationId = place.Id;
+            entity.AvailableId = CargoAvailableValue.Bought.Id;
             return await _cargosRepository.Create(entity);
         }
         public async Task Edit(Cargo entity)
         {
             await _cargosRepository.Update(entity);
         }
-        public async Task Delete(Cargo entity)
+        public async Task Sell(Cargo entity)
         {
-            await _cargosRepository.Delete(entity);
+            entity.AvailableId = CargoAvailableValue.Bought.Id;
+            await _cargosRepository.Update(entity);
         }
         public async Task<IEnumerable<Cargo?>> GetCargosByLocationAvailable(Location location, int available_id )
         {

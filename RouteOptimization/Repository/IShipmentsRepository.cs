@@ -10,5 +10,8 @@ namespace RouteOptimization.Repository
     public interface IShipmentsRepository: IRepository<Shipment>
     {
         Task CreateShipmentsEditCargosVehicle(IEnumerable<Shipment> shipments, IEnumerable<Cargo> cargos, Vehicle vehicle);
+        Task<IEnumerable<Shipment?>> GetUncompleteShipments();
+        Task AcceptShipment(Shipment shipment);
+        Task CancelShipment(Shipment shipment);
     }
 }
