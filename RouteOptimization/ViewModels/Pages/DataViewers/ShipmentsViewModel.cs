@@ -29,8 +29,8 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
-        public ReactiveCommand<Shipment, Unit> EditCommand { get; }
-        public ReactiveCommand<Shipment, Unit> DeleteCommand { get; }
+        public ReactiveCommand<Shipment?, Unit> EditCommand { get; }
+        public ReactiveCommand<Shipment?, Unit> DeleteCommand { get; }
 
         public ShipmentsViewModel()
         {
@@ -39,8 +39,8 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
-            EditCommand = ReactiveCommand.CreateFromTask<Shipment>(ExecuteEditCommand);
-            DeleteCommand = ReactiveCommand.CreateFromTask<Shipment>(ExecuteDeleteCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<Shipment?>(ExecuteEditCommand);
+            DeleteCommand = ReactiveCommand.CreateFromTask<Shipment?>(ExecuteDeleteCommand);
         }
         public ShipmentsViewModel(ShipmentsModel model) : this()
         {
@@ -63,8 +63,10 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
                 List?.Add(result);
             }
         }
-        private async Task ExecuteEditCommand(Shipment shipment)
+        private async Task ExecuteEditCommand(Shipment? shipment)
         {
+            if (shipment == null) return;
+
             var dialog = new ShipmentsEditorViewModel(_model, shipment.Clone());
 
             var result = await ShowDialog.Handle(dialog);
@@ -74,8 +76,10 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
                 await _model.Edit(shipment);
             }
         }
-        private async Task ExecuteDeleteCommand(Shipment shipment)
+        private async Task ExecuteDeleteCommand(Shipment? shipment)
         {
+            if (shipment == null) return;
+
             var dialog = new DeleteViewModel();
 
             var result = await ShowDeleteDialog.Handle(dialog);

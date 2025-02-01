@@ -4,6 +4,7 @@ using RouteOptimization.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Text;
@@ -35,7 +36,9 @@ namespace RouteOptimization.ViewModels.Pages.DataEditors
 
         private async Task ExecuteLoadCommand()
         {
+            return;
         }
+
         private CargoAvailable? ExecuteApplyCommand(bool arg)
         {
             if (arg)

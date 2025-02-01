@@ -28,7 +28,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         public Interaction<DeleteViewModel, bool> ShowDeleteDialog { get; }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
-        public ReactiveCommand<ShipmentStatus, Unit> EditCommand { get; }
+        public ReactiveCommand<ShipmentStatus?, Unit> EditCommand { get; }
 
         public ShipmentStatusesViewModel()
         {
@@ -36,8 +36,9 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            EditCommand = ReactiveCommand.CreateFromTask<ShipmentStatus>(ExecuteEditCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<ShipmentStatus?>(ExecuteEditCommand);
         }
+
         public ShipmentStatusesViewModel(ShipmentStatusesModel model) : this()
         {
             _model = model;
@@ -47,8 +48,11 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         {
             List = new ObservableCollection<ShipmentStatus?>(await _model.GetAll());
         }
-        private async Task ExecuteEditCommand(ShipmentStatus shipmentStatus)
+
+        private async Task ExecuteEditCommand(ShipmentStatus? shipmentStatus)
         {
+            if (shipmentStatus == null) return;
+
             var dialog = new ShipmentStatusesEditorViewModel(shipmentStatus.Clone());
 
             var result = await ShowDialog.Handle(dialog);

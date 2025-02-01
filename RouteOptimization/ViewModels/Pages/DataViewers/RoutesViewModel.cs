@@ -29,8 +29,8 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
-        public ReactiveCommand<Route, Unit> EditCommand { get; }
-        public ReactiveCommand<Route, Unit> DeleteCommand { get; }
+        public ReactiveCommand<Route?, Unit> EditCommand { get; }
+        public ReactiveCommand<Route?, Unit> DeleteCommand { get; }
 
         public RoutesViewModel()
         {
@@ -39,8 +39,8 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
-            EditCommand = ReactiveCommand.CreateFromTask<Route>(ExecuteEditCommand);
-            DeleteCommand = ReactiveCommand.CreateFromTask<Route>(ExecuteDeleteCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<Route?>(ExecuteEditCommand);
+            DeleteCommand = ReactiveCommand.CreateFromTask<Route?>(ExecuteDeleteCommand);
         }
         public RoutesViewModel(RoutesModel model) : this()
         {
@@ -65,6 +65,8 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         }
         private async Task ExecuteEditCommand(Route route)
         {
+            if (route == null) return;
+
             var dialog = new RoutesEditorViewModel(_model, route.Clone());
 
             var result = await ShowDialog.Handle(dialog);
@@ -76,6 +78,8 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         }
         private async Task ExecuteDeleteCommand(Route route)
         {
+            if (route == null) return;
+
             var dialog = new DeleteViewModel();
 
             var result = await ShowDeleteDialog.Handle(dialog);

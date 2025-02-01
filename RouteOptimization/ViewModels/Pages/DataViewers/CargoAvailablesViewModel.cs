@@ -28,7 +28,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         public Interaction<DeleteViewModel, bool> ShowDeleteDialog { get; }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
-        public ReactiveCommand<CargoAvailable, Unit> EditCommand { get; }
+        public ReactiveCommand<CargoAvailable?, Unit> EditCommand { get; }
 
         public CargoAvailablesViewModel()
         {
@@ -36,7 +36,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            EditCommand = ReactiveCommand.CreateFromTask<CargoAvailable>(ExecuteEditCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<CargoAvailable?>(ExecuteEditCommand);
         }
         public CargoAvailablesViewModel(CargoAvailablesModel model) : this()
         {
@@ -47,8 +47,10 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         {
             List = new ObservableCollection<CargoAvailable?>(await _model.GetAll());
         }
-        private async Task ExecuteEditCommand(CargoAvailable cargoAvailable)
+        private async Task ExecuteEditCommand(CargoAvailable? cargoAvailable)
         {
+            if (cargoAvailable == null) return;
+
             var dialog = new CargoAvailablesEditorViewModel(cargoAvailable.Clone());
 
             var result = await ShowDialog.Handle(dialog);

@@ -10,7 +10,6 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static SkiaSharp.HarfBuzz.SKShaper;
 
 namespace RouteOptimization.ViewModels.Pages
 {
@@ -52,8 +51,8 @@ namespace RouteOptimization.ViewModels.Pages
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<Location?, Unit> LoadCargosStorageCommand { get; }
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
-        public ReactiveCommand<Cargo, Unit> EditCommand { get; }
-        public ReactiveCommand<Cargo, Unit> SellCommand { get; }
+        public ReactiveCommand<Cargo?, Unit> EditCommand { get; }
+        public ReactiveCommand<Cargo?, Unit> SellCommand { get; }
 
         public WarehouseViewModel()
         {
@@ -64,18 +63,22 @@ namespace RouteOptimization.ViewModels.Pages
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             LoadCargosStorageCommand = ReactiveCommand.CreateFromTask<Location?>(ExecuteLoadStorageCommand);
             AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
-            EditCommand = ReactiveCommand.CreateFromTask<Cargo>(ExecuteEditCommand);
-            SellCommand = ReactiveCommand.CreateFromTask<Cargo>(ExecuteSellCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<Cargo?>(ExecuteEditCommand);
+            SellCommand = ReactiveCommand.CreateFromTask<Cargo?>(ExecuteSellCommand);
         }
 
-        private async Task ExecuteSellCommand(Cargo cargo)
+        private async Task ExecuteSellCommand(Cargo? cargo)
         {
+            if (cargo == null) return;
+
             await _warehouseModel.Sell(cargo);
             Cargos?.Remove(cargo);
         }
 
-        private async Task ExecuteEditCommand(Cargo cargo)
+        private async Task ExecuteEditCommand(Cargo? cargo)
         {
+            if (cargo == null) return;
+
             var dialog = new WarehouseEditorViewModel(_warehouseModel, cargo);
 
             var result = await ShowDialog.Handle(dialog);

@@ -29,8 +29,8 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
-        public ReactiveCommand<Cargo, Unit> EditCommand { get; }
-        public ReactiveCommand<Cargo, Unit> DeleteCommand { get; }
+        public ReactiveCommand<Cargo?, Unit> EditCommand { get; }
+        public ReactiveCommand<Cargo?, Unit> DeleteCommand { get; }
 
         public CargosViewModel()
         {
@@ -39,8 +39,8 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
-            EditCommand = ReactiveCommand.CreateFromTask<Cargo>(ExecuteEditCommand);
-            DeleteCommand = ReactiveCommand.CreateFromTask<Cargo>(ExecuteDeleteCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<Cargo?>(ExecuteEditCommand);
+            DeleteCommand = ReactiveCommand.CreateFromTask<Cargo?>(ExecuteDeleteCommand);
         }
         public CargosViewModel(CargosModel model) : this()
         {
@@ -63,8 +63,9 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
                 List?.Add(result);
             }
         }
-        private async Task ExecuteEditCommand(Cargo cargo)
+        private async Task ExecuteEditCommand(Cargo? cargo)
         {
+            if (cargo == null) return;
             var dialog = new CargosEditorViewModel(_model, cargo.Clone());
 
             var result = await ShowDialog.Handle(dialog);
@@ -74,8 +75,10 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
                 await _model.Edit(cargo);
             }
         }
-        private async Task ExecuteDeleteCommand(Cargo cargo)
+        private async Task ExecuteDeleteCommand(Cargo? cargo)
         {
+            if (cargo == null) return;
+
             var dialog = new DeleteViewModel();
 
             var result = await ShowDeleteDialog.Handle(dialog);

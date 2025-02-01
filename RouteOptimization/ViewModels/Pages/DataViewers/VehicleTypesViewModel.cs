@@ -28,16 +28,15 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         public Interaction<DeleteViewModel, bool> ShowDeleteDialog { get; }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
-        public ReactiveCommand<VehicleType, Unit> EditCommand { get; }
+        public ReactiveCommand<VehicleType?, Unit> EditCommand { get; }
 
         public VehicleTypesViewModel()
         {
-
             ShowDialog = new Interaction<VehicleTypesEditorViewModel, VehicleType?>();
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            EditCommand = ReactiveCommand.CreateFromTask<VehicleType>(ExecuteEditCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<VehicleType?>(ExecuteEditCommand);
         }
         public VehicleTypesViewModel(VehicleTypesModel model):this()
         {
@@ -48,8 +47,10 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         {
             List = new ObservableCollection<VehicleType?>(await _model.GetAll());
         }
-        private async Task ExecuteEditCommand(VehicleType vehicleType)
+        private async Task ExecuteEditCommand(VehicleType? vehicleType)
         {
+            if (vehicleType == null) return;
+
             var dialog = new VehicleTypesEditorViewModel(vehicleType.Clone());
 
             var result = await ShowDialog.Handle(dialog);
