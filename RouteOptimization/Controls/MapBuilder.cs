@@ -22,7 +22,6 @@ namespace RouteOptimization.Controls
     public class MapBuilder
     {
         Map _map;
-        MapConstructorManager _mapManager;
 
         public MapBuilder()
         {

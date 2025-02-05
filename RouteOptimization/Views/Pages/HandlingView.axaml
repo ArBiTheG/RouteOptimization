@@ -31,7 +31,7 @@
       </Label>
       <Grid Grid.Row="1" Margin="2" ColumnDefinitions="3*,2*">
         <ListBox Grid.Column="0" Margin="2" CornerRadius="4"
-                 x:Name="list" ItemsSource="{Binding Shipments}">
+                 x:Name="list" SelectedItem="{Binding CurrentShipment}" ItemsSource="{Binding Shipments}">
           <ListBox.ItemTemplate>
             <DataTemplate>
               <StackPanel>
@@ -40,7 +40,29 @@
             </DataTemplate>
           </ListBox.ItemTemplate>
         </ListBox>
-        <TextBlock Grid.Column="1" Margin="2" Text="Сведение о транспортировке:"/>
+        <StackPanel Grid.Column="1" Margin="2" >
+          <TextBlock  Margin="4" Text="Начало маршрута:"/>
+          <TextBlock Text="{Binding CurrentShipment.Origin.Name}"/>
+          <TextBlock  Margin="4" Text="Конец маршрута:"/>
+          <TextBlock Text="{Binding CurrentShipment.Destination.Name}"/>
+          <TextBlock  Margin="4" Text="Время начала:"/>
+          <TextBlock Text="{Binding CurrentShipment.DateTimeStart}"/>
+          <TextBlock  Margin="4" Text="Время конца:"/>
+          <TextBlock Text="{Binding CurrentShipment.DateTimeFinish}"/>
+          <TextBlock  Margin="4" Text="Сведенье о транспорте:"/>
+          <TextBlock Text="{Binding CurrentShipment.Vehicle.Name}"/>
+          <TextBlock  Margin="4" Text="Сведенье о товаре:"/>
+          <TextBlock Text="Наименование товара:"/>
+          <TextBlock Text="{Binding CurrentShipment.Cargo.Name}"/>
+          <TextBlock Text="Ширина:"/>
+          <TextBlock Text="{Binding CurrentShipment.Cargo.SizeX,  StringFormat={}{0} см\.}"/>
+          <TextBlock Text="Длина:"/>
+          <TextBlock Text="{Binding CurrentShipment.Cargo.SizeZ,  StringFormat={}{0} см\.}"/>
+          <TextBlock Text="Высота:"/>
+          <TextBlock Text="{Binding CurrentShipment.Cargo.SizeY,  StringFormat={}{0} см\.}"/>
+          <TextBlock Text="Вес:"/>
+          <TextBlock Text="{Binding CurrentShipment.Cargo.Weight,  StringFormat={}{0} г\.}"/>
+        </StackPanel>
       </Grid>
 
       <StackPanel Grid.Row="2" Margin="4" HorizontalAlignment="Right" Orientation="Horizontal">

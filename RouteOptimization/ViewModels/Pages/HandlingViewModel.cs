@@ -18,11 +18,18 @@ namespace RouteOptimization.ViewModels.Pages
         private HandlingModel _handlingModel;
 
         private ObservableCollection<Shipment?>? _shipments;
+        private Shipment? _currentShipment;
 
         public ObservableCollection<Shipment?>? Shipments
         {
             get => _shipments;
             set => this.RaiseAndSetIfChanged(ref _shipments, value);
+        }
+
+        public Shipment? CurrentShipment
+        {
+            get => _currentShipment;
+            set => this.RaiseAndSetIfChanged(ref _currentShipment, value);
         }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }

@@ -144,7 +144,7 @@ namespace RouteOptimization.Repository.SQLite
         public async Task<IEnumerable<Shipment?>> GetUncompleteShipments()
         {
             using SQLiteContext context = new SQLiteContext();
-            await context.Shipments.Include(t => t.Cargo).Include(t => t.Vehicle).Where(t => t.StatusId == ShipmentStatusValue.Moving.Id).LoadAsync();
+            await context.Shipments.Include(t => t.Destination).Include(t => t.Origin).Include(t => t.Cargo).Include(t => t.Vehicle).Where(t => t.StatusId == ShipmentStatusValue.Moving.Id).LoadAsync();
             return context.Shipments.Local.ToArray();
         }
     }
