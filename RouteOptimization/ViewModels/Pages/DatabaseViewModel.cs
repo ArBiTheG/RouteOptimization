@@ -1,5 +1,4 @@
 ﻿using ReactiveUI;
-using RouteOptimization.Controls.MapBuilder;
 using RouteOptimization.ViewModels.Pages.DataViewers;
 using System;
 using System.Collections.Generic;
@@ -17,19 +16,16 @@ namespace RouteOptimization.ViewModels.Pages
         {
             new PageItem("Locations", typeof(LocationsViewModel)),
             new PageItem("Routes", typeof(RoutesViewModel)),
+            new PageItem("Cargo", typeof(CargosViewModel)),
             new PageItem("Shipments", typeof(ShipmentsViewModel)),
             new PageItem("Vehicles", typeof(VehiclesViewModel)),
-            new PageItem("VehicleStatuses", typeof(VehicleStatusesViewModel)),
-            new PageItem("VehicleTypes", typeof(VehicleTypesViewModel)),
+            new PageItem("Settings", typeof(SettingsDatabaseViewModel)),
         };
 
         private HistoryRouter<ViewModelBase> _router;
         public ReactiveCommand<string, Unit> OpenPage { get; }
 
-        public DatabaseViewModel()
-        {
-
-        }
+        public DatabaseViewModel() { }
 
         public DatabaseViewModel(HistoryRouter<ViewModelBase> router)
         {

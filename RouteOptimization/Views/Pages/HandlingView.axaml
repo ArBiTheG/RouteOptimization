@@ -1,0 +1,74 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:RouteOptimization.ViewModels.Pages"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="RouteOptimization.Views.Pages.HandlingView">
+  <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <vm:HandlingViewModel />
+  </Design.DataContext>
+  <i:Interaction.Behaviors>
+    <ia:EventTriggerBehavior EventName="Loaded">
+      <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
+    </ia:EventTriggerBehavior>
+  </i:Interaction.Behaviors>
+  <Grid>
+    <Grid Margin="4" RowDefinitions="auto,*,auto">
+      <Label Margin="4">
+        <StackPanel Orientation="Horizontal">
+          <Image Width="32" Height="32" Margin="0,0,8,0">
+            <Image.Source>
+              <SvgImage Source="{DynamicResource TaskIcon}"/>
+            </Image.Source>
+          </Image>
+          <TextBlock VerticalAlignment="Center" Text="Задачи" FontSize="24"/>
+        </StackPanel>
+      </Label>
+      <Grid Grid.Row="1" Margin="2" ColumnDefinitions="3*,2*">
+        <ListBox Grid.Column="0" Margin="2" CornerRadius="4"
+                 x:Name="list" SelectedItem="{Binding CurrentShipment}" ItemsSource="{Binding Shipments}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel>
+                <TextBlock Text="{Binding Name}" FontSize="16" />
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Grid.Column="1" Margin="2" >
+          <TextBlock  Margin="4" Text="Начало маршрута:"/>
+          <TextBlock Text="{Binding CurrentShipment.Origin.Name}"/>
+          <TextBlock  Margin="4" Text="Конец маршрута:"/>
+          <TextBlock Text="{Binding CurrentShipment.Destination.Name}"/>
+          <TextBlock  Margin="4" Text="Время начала:"/>
+          <TextBlock Text="{Binding CurrentShipment.DateTimeStart}"/>
+          <TextBlock  Margin="4" Text="Время конца:"/>
+          <TextBlock Text="{Binding CurrentShipment.DateTimeFinish}"/>
+          <TextBlock  Margin="4" Text="Сведенье о транспорте:"/>
+          <TextBlock Text="{Binding CurrentShipment.Vehicle.Name}"/>
+          <TextBlock  Margin="4" Text="Сведенье о товаре:"/>
+          <TextBlock Text="Наименование товара:"/>
+          <TextBlock Text="{Binding CurrentShipment.Cargo.Name}"/>
+          <TextBlock Text="Ширина:"/>
+          <TextBlock Text="{Binding CurrentShipment.Cargo.SizeX,  StringFormat={}{0} см\.}"/>
+          <TextBlock Text="Длина:"/>
+          <TextBlock Text="{Binding CurrentShipment.Cargo.SizeZ,  StringFormat={}{0} см\.}"/>
+          <TextBlock Text="Высота:"/>
+          <TextBlock Text="{Binding CurrentShipment.Cargo.SizeY,  StringFormat={}{0} см\.}"/>
+          <TextBlock Text="Вес:"/>
+          <TextBlock Text="{Binding CurrentShipment.Cargo.Weight,  StringFormat={}{0} г\.}"/>
+        </StackPanel>
+      </Grid>
+
+      <StackPanel Grid.Row="2" Margin="4" HorizontalAlignment="Right" Orientation="Horizontal">
+        <Button Content="Выполнить" Command="{Binding ApplyCommand}" CommandParameter="{Binding SelectedItem, ElementName=list}"/>
+        <Button Content="Отменить" Command="{Binding CancelCommand}" CommandParameter="{Binding SelectedItem, ElementName=list}"/>
+      </StackPanel>
+    </Grid>
+  </Grid>
+</UserControl>

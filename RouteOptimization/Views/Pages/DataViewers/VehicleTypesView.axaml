@@ -18,32 +18,32 @@
     </ia:EventTriggerBehavior>
   </i:Interaction.Behaviors>
   <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="64"/>
-      <RowDefinition/>
-      <RowDefinition Height="64"/>
-    </Grid.RowDefinitions>
-    <Border Grid.Row="0" Margin="2" Padding="4" BorderBrush="Black" BorderThickness="1" CornerRadius="4">
-      <TextBlock Text="Управление типами автомобилей" FontSize="24"/>
-    </Border>
+    <Grid Margin="4" RowDefinitions="auto,*,auto">
+      <Label Margin="4">
+        <StackPanel Orientation="Horizontal">
+          <Image Width="32" Height="32" Margin="0,0,8,0">
+            <Image.Source>
+              <SvgImage Source="{DynamicResource TruckIcon}"/>
+            </Image.Source>
+          </Image>
+          <TextBlock VerticalAlignment="Center" Text="Управление типами транспорта" FontSize="24"/>
+        </StackPanel>
+      </Label>
+      <ListBox Grid.Row="1" Margin="4" CornerRadius="4"
+               x:Name="list" ItemsSource="{Binding List}">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <StackPanel>
+              <TextBlock Text="{Binding Name}" FontSize="16" />
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
 
-    <ListBox x:Name="list" ItemsSource="{Binding List}"
-             Grid.Row="1" Margin="2" BorderThickness="1" CornerRadius="4" BorderBrush="Black">
-      <ListBox.ItemTemplate>
-        <DataTemplate>
-          <StackPanel>
-            <TextBlock Text="{Binding Name}" FontSize="16" />
-          </StackPanel>
-        </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
-
-    <Border Grid.Row="2" Margin="2" Padding="4" BorderBrush="Black" BorderThickness="1" CornerRadius="4">
-      <StackPanel Grid.Row="2" Orientation="Horizontal">
-        <Button Content="Добавить" Command="{Binding AddCommand}"/>
+      <StackPanel Grid.Row="2" Margin="4" Orientation="Horizontal">
         <Button Content="Изменить" Command="{Binding EditCommand}" CommandParameter="{Binding SelectedItem, ElementName=list}"/>
-        <Button Content="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedItem, ElementName=list}"/>
+        
       </StackPanel>
-    </Border>
+    </Grid>
   </Grid>
 </UserControl>

@@ -1,4 +1,4 @@
-﻿using RouteOptimization.Models;
+﻿using RouteOptimization.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Repository
 {
-    public interface IRoutesRepository
+    public interface IRoutesRepository: IRepository<Route>
     {
-        Task<IEnumerable<Route?>> GetAll();
-        Task<Route?> GetByID(int id);
-        Task<Route?> Create(Route entity);
-        Task Edit(Route entity);
-        Task Delete(Route entity);
+        Task<RouteWay> GetRouteWay(int startLocationId, int finishLocationId);
     }
 }

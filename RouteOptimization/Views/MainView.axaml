@@ -18,31 +18,51 @@
              DisplayMode="CompactInline">
     <SplitView.Pane>
       <StackPanel>
-        <Button HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Command="{Binding PaneOpenCloseCommand}">
-          -
+        <Button HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Background="Transparent" Command="{Binding PaneOpenCloseCommand}">
+          <Image Width="24" Height="24">
+            <Image.Source>
+              <SvgImage Source="{DynamicResource LinesIcon}"/>
+            </Image.Source>
+          </Image>
         </Button>
         <StackPanel>
-          <Button HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="48" Command="{Binding OpenPage}" CommandParameter="Home">
+          <Button HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="48" Background="Transparent" Command="{Binding OpenPage}" CommandParameter="Home">
             <StackPanel Orientation="Horizontal">
-              <Image Width="32" Source="avares://RouteOptimization/Assets/Icons/home.png"/>
+              <Image Width="32" Height="32">
+                <Image.Source>
+                  <SvgImage Source="{DynamicResource HouseIcon}"/>
+                </Image.Source>
+              </Image>
               <TextBlock Margin="10" Text="Главная"/>
             </StackPanel>
           </Button>
-          <Button HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="48" Command="{Binding OpenPage}" CommandParameter="Handle">
+          <Button HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="48" Background="Transparent" Command="{Binding OpenPage}" CommandParameter="Handle">
             <StackPanel Orientation="Horizontal">
-              <Image Width="32" Source="avares://RouteOptimization/Assets/Icons/database.png"/>
+              <Image Width="32" Height="32">
+                <Image.Source>
+                  <SvgImage Source="{DynamicResource DatabaseIcon}"/>
+                </Image.Source>
+              </Image>
               <TextBlock Margin="10" Text="Данные"/>
             </StackPanel>
           </Button>
-          <Button HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="48" Command="{Binding OpenPage}" CommandParameter="Builder">
+          <Button HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="48" Background="Transparent" Command="{Binding OpenPage}" CommandParameter="Builder">
             <StackPanel Orientation="Horizontal">
-              <Image Width="32" Source="avares://RouteOptimization/Assets/Icons/crane.png"/>
-              <TextBlock Margin="10" Text="Конструктор"/>
+              <Image Width="32" Height="32">
+                <Image.Source>
+                  <SvgImage Source="{DynamicResource MapIcon}"/>
+                </Image.Source>
+              </Image>
+              <TextBlock Margin="10" Text="Карта"/>
             </StackPanel>
           </Button>
-          <Button HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="48" Command="{Binding OpenPage}" CommandParameter="Route">
+          <Button HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="48" Background="Transparent" Command="{Binding OpenPage}" CommandParameter="Route">
             <StackPanel Orientation="Horizontal">
-              <Image Width="32" Source="avares://RouteOptimization/Assets/Icons/office.png"/>
+              <Image Width="32" Height="32">
+                <Image.Source>
+                  <SvgImage Source="{DynamicResource MarkIcon}"/>
+                </Image.Source>
+              </Image>
               <TextBlock Margin="10" Text="Маршрут"/>
             </StackPanel>
           </Button>

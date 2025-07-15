@@ -1,7 +1,6 @@
 ﻿using ReactiveUI;
 using RouteOptimization.Models;
-using RouteOptimization.Repository;
-using RouteOptimization.Repository.SQLite;
+using RouteOptimization.Models.Entities;
 using RouteOptimization.ViewModels.Pages.DataEditors;
 using System;
 using System.Collections.Generic;
@@ -15,7 +14,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 {
     public class LocationsViewModel : ViewModelBase
     {
-        ILocationsRepository _repository;
+        LocationsModel _model;
         ObservableCollection<Location?>? _list;
 
         public ObservableCollection<Location?>? List 
@@ -29,24 +28,27 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
-        public ReactiveCommand<Location, Unit> EditCommand { get; }
-        public ReactiveCommand<Location, Unit> DeleteCommand { get; }
+        public ReactiveCommand<Location?, Unit> EditCommand { get; }
+        public ReactiveCommand<Location?, Unit> DeleteCommand { get; }
+
         public LocationsViewModel()
         {
-            _repository = new SQLiteLocationsRepository();
-
             ShowDialog = new Interaction<LocationsEditorViewModel, Location?>();
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
             AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
-            EditCommand = ReactiveCommand.CreateFromTask<Location>(ExecuteEditCommand);
-            DeleteCommand = ReactiveCommand.CreateFromTask<Location>(ExecuteDeleteCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<Location?>(ExecuteEditCommand);
+            DeleteCommand = ReactiveCommand.CreateFromTask<Location?>(ExecuteDeleteCommand);
+        }
+        public LocationsViewModel(LocationsModel model) : this()
+        {
+            _model = model;
         }
 
         private async Task ExecuteLoadCommand()
         {
-            List = new(await _repository.GetAll());
+            List = new(await _model.GetAll());
         }
 
         private async Task ExecuteAddCommand()
@@ -56,28 +58,33 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
             {
-                await _repository.Create(result);
+                await _model.Create(result);
                 List?.Add(result);
             }
         }
-        private async Task ExecuteEditCommand(Location location)
+        private async Task ExecuteEditCommand(Location? location)
         {
-            var dialog = new LocationsEditorViewModel(location);
+            if (location == null) return;
+
+            var dialog = new LocationsEditorViewModel(location.Clone());
 
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
             {
-                await _repository.Edit(result);
+                location.CopyFrom(result);
+                await _model.Edit(location);
             }
         }
-        private async Task ExecuteDeleteCommand(Location location)
+        private async Task ExecuteDeleteCommand(Location? location)
         {
+            if (location == null) return;
+
             var dialog = new DeleteViewModel();
 
             var result = await ShowDeleteDialog.Handle(dialog);
             if (result != false)
             {
-                await _repository.Delete(location);
+                await _model.Delete(location);
                 List?.Remove(location);
             }
         }

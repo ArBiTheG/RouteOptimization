@@ -1,4 +1,4 @@
-﻿using RouteOptimization.Models;
+﻿using RouteOptimization.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Repository
 {
-    public interface IShipmentsRepository
+    public interface IShipmentsRepository: IRepository<Shipment>
     {
-        Task<IEnumerable<Shipment?>> GetAll();
-        Task<Shipment?> GetByID(int id);
-        Task<Shipment?> Create(Shipment entity);
-        Task Edit(Shipment entity);
-        Task Delete(Shipment entity);
+        Task CreateShipmentsEditCargosVehicle(IEnumerable<Shipment> shipments, IEnumerable<Cargo> cargos, Vehicle vehicle);
+        Task<IEnumerable<Shipment?>> GetUncompleteShipments();
+        Task AcceptShipment(Shipment shipment);
+        Task CancelShipment(Shipment shipment);
     }
 }

@@ -1051,7 +1051,7 @@ Console.WriteLine("Граф был построен за: " + stopwatch1.Elapsed
 Stopwatch stopwatch2 = new Stopwatch();
 stopwatch2.Start();
 
-Route route = RouteBuilder.Create(graph_debug)
+Way route = WayBuilder.Create(graph_debug)
     .SetBegin(1)
     .SetEnd(1025)
     .Build();

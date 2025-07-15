@@ -10,34 +10,92 @@
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
     <vm:HomeViewModel />
   </Design.DataContext>
-
-  <StackPanel>
-    <TextBlock Text="Главная" FontSize="24"/>
-    <WrapPanel Grid.IsSharedSizeScope="True">
-      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Handle">
-        <Grid>
-          <TextBlock>Управление данными</TextBlock>
-          <Image Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/database.png"/>
-        </Grid>
-      </Button>
-      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Builder">
-        <Grid>
-          <TextBlock>Конструктор карты</TextBlock>
-          <Image Width="128" Height="128" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/map_construct.png"/>
-        </Grid>
-      </Button>
-      <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Route">
-        <Grid>
-          <TextBlock>Установить маршрут</TextBlock>
-          <Image Width="128" Height="128" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/map_route.png"/>
-        </Grid>
-      </Button>
-      <Button Margin="2" Width="256" Height="128">
-        <Grid>
-          <TextBlock>Настройки приложения</TextBlock>
-          <Image Width="96" Height="96" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Assets/Icons/gear.png"/>
-        </Grid>
-      </Button>
-    </WrapPanel>
-  </StackPanel>
+  <Grid>
+    <Grid RowDefinitions="auto,*,auto" Margin="4">
+      <Label Grid.Row="0" Margin="4">
+        <StackPanel Orientation="Horizontal">
+          <Image Width="32" Height="32" Margin="0,0,8,0">
+            <Image.Source>
+              <SvgImage Source="{DynamicResource HouseIcon}"/>
+            </Image.Source>
+          </Image>
+          <TextBlock VerticalAlignment="Center" Text="Главная" FontSize="24"/>
+        </StackPanel>
+      </Label>
+      <WrapPanel Grid.Row="1" Margin="2" Grid.IsSharedSizeScope="True">
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Handle">
+          <Grid>
+            <TextBlock FontSize="20">Управление данными</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="{DynamicResource DatabaseIcon}"/>
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Builder">
+          <Grid>
+            <TextBlock FontSize="20">Карта</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="{DynamicResource MapIcon}"/>
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Route">
+          <Grid>
+            <TextBlock FontSize="20">Система навигации</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="{DynamicResource RouteIcon}"/>
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Loading">
+          <Grid>
+            <TextBlock FontSize="20">Погрузка</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="{DynamicResource BoxIcon}"/>
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Warehouse">
+          <Grid>
+            <TextBlock FontSize="20">Склад</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="{DynamicResource WarehouseIcon}"/>
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+        <Button Margin="2" Width="256" Height="128" Command="{Binding OpenPage}" CommandParameter="Handling">
+          <Grid>
+            <TextBlock FontSize="20">Усправления доставкой</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="{DynamicResource TaskIcon}"/>
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+        <Button Margin="2" Width="256" Height="128">
+          <Grid>
+            <TextBlock FontSize="20">Настройки приложения</TextBlock>
+            <Image Width="64" Height="64" Margin="-5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <Image.Source>
+                <SvgImage Source="{DynamicResource GearIcon}"/>
+              </Image.Source>
+            </Image>
+          </Grid>
+        </Button>
+      </WrapPanel>
+    </Grid>
+    <Image ZIndex="-2" Margin="-16" Height="256" VerticalAlignment="Bottom" HorizontalAlignment="Left" Source="/Assets/city.png"/>
+    <Image ZIndex="-1" Margin="-16" Height="320" VerticalAlignment="Bottom" HorizontalAlignment="Right" Source="/Assets/home.png"/>
+  </Grid>
 </UserControl>

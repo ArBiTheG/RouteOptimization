@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
-using RouteOptimization.Models;
+using RouteOptimization.Models.Entities;
 using RouteOptimization.ViewModels.Pages.DataEditors;
 using RouteOptimization.ViewModels.Pages.DataViewers;
 using RouteOptimization.Views.DialogWindows;
@@ -22,7 +22,7 @@ namespace RouteOptimization.Views.Pages.DataViewers
             this.WhenActivated(action =>
                 action(ViewModel!.ShowDeleteDialog.RegisterHandler(DoShowDeleteDialogAsync)));
         }
-        private async Task DoShowDialogAsync(InteractionContext<VehicleStatusesEditorViewModel, VehicleStatus?> interaction)
+        private async Task DoShowDialogAsync(IInteractionContext<VehicleStatusesEditorViewModel, VehicleStatus?> interaction)
         {
             var dialog = new VehicleStatusesEditorWindow();
             dialog.DataContext = interaction.Input;
@@ -31,7 +31,7 @@ namespace RouteOptimization.Views.Pages.DataViewers
             interaction.SetOutput(result);
         }
 
-        private async Task DoShowDeleteDialogAsync(InteractionContext<DeleteViewModel, bool> interaction)
+        private async Task DoShowDeleteDialogAsync(IInteractionContext<DeleteViewModel, bool> interaction)
         {
             var dialog = new DeleteWindow();
             dialog.DataContext = interaction.Input;

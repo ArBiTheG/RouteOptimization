@@ -5,7 +5,7 @@
         xmlns:views="using:RouteOptimization.Views.Pages.DataEditors" 
         mc:Ignorable="d"
         x:Class="RouteOptimization.Views.DialogWindows.LocationsEditorWindow"
-        Width="600" Height="400" CanResize="False" 
+        Width="600" Height="600" CanResize="False" 
         WindowStartupLocation="CenterOwner"
         Title="Редактирование локации">
   <Panel Margin="20">

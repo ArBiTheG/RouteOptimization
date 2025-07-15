@@ -1,0 +1,101 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:RouteOptimization.ViewModels.Pages"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="RouteOptimization.Views.Pages.LoadingView">
+  <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <vm:LoadingViewModel />
+  </Design.DataContext>
+  <i:Interaction.Behaviors>
+    <ia:EventTriggerBehavior EventName="Loaded">
+      <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
+    </ia:EventTriggerBehavior>
+  </i:Interaction.Behaviors>
+  <Grid>
+    <Grid Margin="4" RowDefinitions="auto,*,auto">
+      <Label Grid.Row="0" Margin="4">
+        <StackPanel Orientation="Horizontal">
+          <Image Width="32" Height="32" Margin="0,0,8,0">
+            <Image.Source>
+              <SvgImage Source="{DynamicResource BoxIcon}"/>
+            </Image.Source>
+          </Image>
+          <TextBlock VerticalAlignment="Center" Text="Погрузка" FontSize="24"/>
+        </StackPanel>
+      </Label>
+      <Grid Grid.Row="1" Margin="4" ColumnDefinitions="2*,*">
+        <ScrollViewer>
+          <StackPanel>
+            <StackPanel Margin="4">
+              <TextBlock Text="1. Выберите транспорт:"/>
+              <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Vehicles}" SelectedItem="{Binding SelectedVehicle}" DisplayMemberBinding="{Binding Name}"/>
+              <HyperlinkButton HorizontalAlignment="Right"
+                               Content="Здесь нет нужного транспорта"/>
+            </StackPanel>
+            <StackPanel Margin="4">
+              <TextBlock Text="2. Выберите склад:"/>
+              <ComboBox x:Name="startLocations" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectedItem="{Binding SelectedOrigin}" ItemsSource="{Binding Locations}" DisplayMemberBinding="{Binding Name}">
+                <i:Interaction.Behaviors>
+                  <ia:EventTriggerBehavior EventName="SelectionChanged">
+                    <ia:EventTriggerBehavior.Actions>
+                      <ia:InvokeCommandAction Command="{Binding LoadCargosStorageCommand}" CommandParameter="{Binding SelectedItem, ElementName=startLocations}"/>
+                    </ia:EventTriggerBehavior.Actions>
+                  </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+              </ComboBox>
+              <HyperlinkButton HorizontalAlignment="Right"
+                               Content="Здесь нет нужного склада"/>
+            </StackPanel>
+            <StackPanel Margin="4" IsEnabled="{Binding IsContinueFilling}">
+              <TextBlock Text="3. Выберите товары:"/>
+              <Grid ColumnDefinitions="*,auto,*" Height="200">
+                <Grid Grid.Column="0" RowDefinitions="auto,*">
+                  <TextBlock Grid.Row="0" Text="Товаров на складе:"/>
+                  <ListBox x:Name="leftList" Grid.Row="1"
+                         ItemsSource="{Binding CargosStorage}" DisplayMemberBinding="{Binding Name}"/>
+                </Grid>
+                <StackPanel VerticalAlignment="Center" Grid.Column="1">
+                  <Button Content="Направо" Command="{Binding CargoToCartCommand}" CommandParameter="{Binding SelectedItem, ElementName=leftList}"/>
+                  <Button Content="Налево" Command="{Binding CargoToStorageCommand}" CommandParameter="{Binding SelectedItem, ElementName=rightList}"/>
+                  <Button Content="Сбросить" Command="{Binding CargoToStorageAllCommand}"/>
+                </StackPanel>
+                <Grid Grid.Column="2" RowDefinitions="auto,*">
+                  <TextBlock Grid.Row="0" Text="Выбраные товары для перевозки:"/>
+                  <ListBox x:Name="rightList" Grid.Row="1"
+                         ItemsSource="{Binding CargosCart}" DisplayMemberBinding="{Binding Name}"/>
+                </Grid>
+              </Grid>
+              <HyperlinkButton HorizontalAlignment="Right"
+                               Content="Здесь нет нужного товара"/>
+            </StackPanel>
+            <StackPanel Margin="4" IsEnabled="{Binding IsContinueFilling}">
+              <TextBlock Text="4. Выберите куда доставить товар:"/>
+              <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ItemsSource="{Binding Locations}" SelectedItem="{Binding SelectedDestination}" DisplayMemberBinding="{Binding Name}"/>
+              <HyperlinkButton HorizontalAlignment="Right"
+                               Content="Здесь нет нужной локации"/>
+            </StackPanel>
+            <StackPanel Margin="4" IsEnabled="{Binding IsContinueFilling}">
+              <TextBlock Text="5. Укажите в какой день должен быть доставлен товар:"/>
+              <CalendarDatePicker HorizontalAlignment="Stretch" FirstDayOfWeek="Monday" IsTodayHighlighted="True" SelectedDateFormat="Short" SelectedDate="{Binding SelectedDateTimeFinish}"/>
+            </StackPanel>
+          </StackPanel>
+        </ScrollViewer>
+        <StackPanel Grid.Column="1">
+          <TextBlock Text="Сводка"/>
+          <TextBlock Text="{Binding TextInfo}"/>
+        </StackPanel>
+      </Grid>
+      <StackPanel Grid.Row="2" Margin="4" Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button Content="Посчитать" Command="{Binding CheckCommand}" IsEnabled="{Binding IsContinueFilling}"/>
+        <Button Content="Добавить" Command="{Binding ApplyCommand}" IsEnabled="{Binding IsContinueFilling}"/>
+        <Button Content="Очистить"/>
+      </StackPanel>
+    </Grid>
+  </Grid>
+</UserControl>

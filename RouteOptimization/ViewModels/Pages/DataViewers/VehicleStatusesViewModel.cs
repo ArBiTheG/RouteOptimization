@@ -1,7 +1,6 @@
 ﻿using ReactiveUI;
 using RouteOptimization.Models;
-using RouteOptimization.Repository;
-using RouteOptimization.Repository.SQLite;
+using RouteOptimization.Models.Entities;
 using RouteOptimization.ViewModels.Pages.DataEditors;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,7 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
 {
     public class VehicleStatusesViewModel : ViewModelBase
     {
-        IVehicleStatusesRepository _repository;
+        VehicleStatusesModel _model;
         ObservableCollection<VehicleStatus?>? _list;
 
         public ObservableCollection<VehicleStatus?>? List
@@ -29,59 +28,38 @@ namespace RouteOptimization.ViewModels.Pages.DataViewers
         public Interaction<DeleteViewModel, bool> ShowDeleteDialog { get; }
 
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
-        public ReactiveCommand<Unit, Unit> AddCommand { get; }
-        public ReactiveCommand<VehicleStatus, Unit> EditCommand { get; }
-        public ReactiveCommand<VehicleStatus, Unit> DeleteCommand { get; }
+        public ReactiveCommand<VehicleStatus?, Unit> EditCommand { get; }
 
         public VehicleStatusesViewModel()
         {
-            _repository = new SQLiteVehicleStatusesRepository();
-
             ShowDialog = new Interaction<VehicleStatusesEditorViewModel, VehicleStatus?>();
             ShowDeleteDialog = new Interaction<DeleteViewModel, bool>();
 
             LoadCommand = ReactiveCommand.CreateFromTask(ExecuteLoadCommand);
-            AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
-            EditCommand = ReactiveCommand.CreateFromTask<VehicleStatus>(ExecuteEditCommand);
-            DeleteCommand = ReactiveCommand.CreateFromTask<VehicleStatus>(ExecuteDeleteCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<VehicleStatus?>(ExecuteEditCommand);
+        }
+        public VehicleStatusesViewModel(VehicleStatusesModel model) :this()
+        {
+            _model = model;
         }
 
 
         private async Task ExecuteLoadCommand()
         {
-            List = new ObservableCollection<VehicleStatus?>(await _repository.GetAll());
+            List = new ObservableCollection<VehicleStatus?>(await _model.GetAll());
         }
 
-        private async Task ExecuteAddCommand()
+        private async Task ExecuteEditCommand(VehicleStatus? vehicleStatus)
         {
-            var dialog = new VehicleStatusesEditorViewModel();
+            if (vehicleStatus == null) return;
+
+            var dialog = new VehicleStatusesEditorViewModel(vehicleStatus.Clone());
 
             var result = await ShowDialog.Handle(dialog);
             if (result != null)
             {
-                await _repository.Create(result);
-                List?.Add(result);
-            }
-        }
-        private async Task ExecuteEditCommand(VehicleStatus vehicleStatus)
-        {
-            var dialog = new VehicleStatusesEditorViewModel(vehicleStatus);
-
-            var result = await ShowDialog.Handle(dialog);
-            if (result != null)
-            {
-                await _repository.Edit(result);
-            }
-        }
-        private async Task ExecuteDeleteCommand(VehicleStatus vehicleStatus)
-        {
-            var dialog = new DeleteViewModel();
-
-            var result = await ShowDeleteDialog.Handle(dialog);
-            if (result != false)
-            {
-                await _repository.Delete(vehicleStatus);
-                List?.Remove(vehicleStatus);
+                vehicleStatus.CopyFrom(result);
+                await _model.Edit(vehicleStatus);
             }
         }
     }

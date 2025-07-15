@@ -3,9 +3,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:local="clr-namespace:RouteOptimization.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:RouteOptimization.ViewModels.Pages.DataEditors"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="450"
              x:Class="RouteOptimization.Views.Pages.DataEditors.LocationsEditorView">
   <Design.DataContext>
     <!-- This only sets the DataContext for the previewer in an IDE,
@@ -17,32 +18,37 @@
       <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
     </ia:EventTriggerBehavior>
   </i:Interaction.Behaviors>
-  <Grid Grid.RowDefinitions="1*,36">
-    <Border Grid.Row="0">
-      <StackPanel>
-        <Grid Margin="2" ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Наименование:"/>
-          <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedLocation.Name}"/>
-        </Grid>
-        <Grid Margin="2" ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Описание:"/>
-          <TextBox Grid.Column="1" VerticalAlignment="Center" Height="64" Text="{Binding SelectedLocation.Description}"/>
-        </Grid>
-        <Grid Margin="2" ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Позиция по оси X"/>
-          <TextBox Grid.Column="2" VerticalAlignment="Center" Text="{Binding SelectedLocation.X}"/>
-        </Grid>
-        <Grid Margin="2" ColumnDefinitions="2*,4*">
-          <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Позиция по оси Y"/>
-          <TextBox Grid.Column="2" VerticalAlignment="Center" Text="{Binding SelectedLocation.Y}"/>
-        </Grid>
-      </StackPanel>
-    </Border>
-    <Border Grid.Row="1">
-      <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-        <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="ОК" IsDefault="True" Command="{Binding ApplyCommand}" CommandParameter="{x:True}"/>
-        <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="Отмена" Command="{Binding ApplyCommand}" CommandParameter="{x:False}"/>
-      </StackPanel>
-    </Border>
+  <Grid>
+    <Grid Grid.RowDefinitions="auto,*,auto">
+      <Border Grid.Row="0">
+        <StackPanel>
+          <Grid Margin="2" ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Наименование:"/>
+            <TextBox x:Name="nameTextBox" Grid.Column="1" VerticalAlignment="Center" Text="{Binding SelectedLocation.Name}"/>
+          </Grid>
+          <Grid Margin="2" ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Описание:"/>
+            <TextBox Grid.Column="1" VerticalAlignment="Center" Height="64" Text="{Binding SelectedLocation.Description}"/>
+          </Grid>
+          <Grid Margin="2" ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Позиция по оси X"/>
+            <TextBox x:Name="locationXTextBox" Grid.Column="2" VerticalAlignment="Center" Text="{Binding SelectedLocation.X}"/>
+          </Grid>
+          <Grid Margin="2" ColumnDefinitions="2*,4*">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Позиция по оси Y"/>
+            <TextBox x:Name="locationYTextBox" Grid.Column="2" VerticalAlignment="Center" Text="{Binding SelectedLocation.Y}"/>
+          </Grid>
+        </StackPanel>
+      </Border>
+      <Border Grid.Row="1" Margin="2"  CornerRadius="4" BorderThickness="1" BorderBrush="Black" ClipToBounds="True">
+        <local:MapConstructorControl x:Name="mapControl"/>
+      </Border>
+      <Border Grid.Row="2">
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+          <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="ОК" IsDefault="True" Command="{Binding ApplyCommand}" CommandParameter="{x:True}"/>
+          <Button Margin="2" Width="96" HorizontalContentAlignment="Center" Content="Отмена" Command="{Binding ApplyCommand}" CommandParameter="{x:False}"/>
+        </StackPanel>
+      </Border>
+    </Grid>
   </Grid>
 </UserControl>

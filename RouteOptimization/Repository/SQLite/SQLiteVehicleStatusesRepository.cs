@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RouteOptimization.Models;
+using RouteOptimization.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,24 +8,19 @@ using System.Threading.Tasks;
 
 namespace RouteOptimization.Repository.SQLite
 {
-    public class SQLiteVehicleStatusesRepository : IVehicleStatusesRepository
+    public class SQLiteVehicleStatusesRepository : IRepository<VehicleStatus>
     {
         public async Task<VehicleStatus?> Create(VehicleStatus entity)
         {
-            using SQLiteContext context = new SQLiteContext();
-            await context.VehicleStatuses.AddAsync(entity);
-            await context.SaveChangesAsync();
-            return entity;
+            throw new NotImplementedException();
         }
 
         public async Task Delete(VehicleStatus entity)
         {
-            using SQLiteContext context = new SQLiteContext();
-            context.VehicleStatuses.Remove(entity);
-            await context.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task Edit(VehicleStatus entity)
+        public async Task Update(VehicleStatus entity)
         {
             using SQLiteContext context = new SQLiteContext();
             context.VehicleStatuses.Entry(entity).State = EntityState.Modified;
@@ -39,10 +34,23 @@ namespace RouteOptimization.Repository.SQLite
             return context.VehicleStatuses.Local.ToArray();
         }
 
+        public async Task<IEnumerable<VehicleStatus?>> GetAll(int page, int pageSize = 10, string filter = "")
+        {
+            using SQLiteContext context = new SQLiteContext();
+            await context.VehicleStatuses.Skip((page - 1) * pageSize).Take(pageSize).LoadAsync();
+            return context.VehicleStatuses.ToArray();
+        }
+
         public async Task<VehicleStatus?> GetByID(int id)
         {
             using SQLiteContext context = new SQLiteContext();
             return await context.VehicleStatuses.FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<int?> Count()
+        {
+            using SQLiteContext context = new SQLiteContext();
+            return await context.VehicleStatuses.CountAsync();
         }
     }
 }

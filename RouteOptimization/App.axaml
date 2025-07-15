@@ -5,11 +5,53 @@
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
-    <Application.DataTemplates>
-      <local:ViewLocator/>
-    </Application.DataTemplates>
-  
-    <Application.Styles>
-        <FluentTheme />
-    </Application.Styles>
+  <Application.DataTemplates>
+    <local:ViewLocator/>
+  </Application.DataTemplates>
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key='Light'>
+          <SvgSource x:Key="BlueprintIcon" Path="/Assets/Icons/blueprint.svg" Css="#svg{fill:#000}"/>
+          <SvgSource x:Key="BoxIcon" Path="/Assets/Icons/box.svg" Css="#svg{fill:#000}"/>
+          <SvgSource x:Key="BuildRouteIcon" Path="/Assets/Icons/build_route.svg" Css="#svg{fill:#000}"/>
+          <SvgSource x:Key="DatabaseIcon" Path="/Assets/Icons/database.svg" Css="#svg{fill:#000}"/>
+          <SvgSource x:Key="GearIcon" Path="/Assets/Icons/gear.svg" Css="#svg{fill:#000}"/>
+          <SvgSource x:Key="HouseIcon" Path="/Assets/Icons/house.svg" Css="#svg{fill:#000}"/>
+          <SvgSource x:Key="LinesIcon" Path="/Assets/Icons/lines.svg" Css="#svg{fill:#000}"/>
+          <SvgSource x:Key="MarkIcon" Path="/Assets/Icons/mark.svg" Css="#svg{fill:#000}"/>
+          <SvgSource x:Key="RouteIcon" Path="/Assets/Icons/route.svg" Css="#svg{fill:#000}"/>
+          <SvgSource x:Key="TruckIcon" Path="/Assets/Icons/truck.svg" Css="#svg{fill:#000}"/>
+          <SvgSource x:Key="WarehouseIcon" Path="/Assets/Icons/warehouse.svg" Css="#svg{fill:#000}"/>
+          <SvgSource x:Key="MapIcon" Path="/Assets/Icons/map.svg" Css="#svg{fill:#000}"/>
+          <SvgSource x:Key="TaskIcon" Path="/Assets/Icons/task.svg" Css="#svg{fill:#000}"/>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key='Dark'>
+          <SvgSource x:Key="BlueprintIcon" Path="/Assets/Icons/blueprint.svg" Css="#svg{fill:#fff}"/>
+          <SvgSource x:Key="BoxIcon" Path="/Assets/Icons/box.svg" Css="#svg{fill:#fff}"/>
+          <SvgSource x:Key="BuildRouteIcon" Path="/Assets/Icons/build_route.svg" Css="#svg{fill:#fff}"/>
+          <SvgSource x:Key="DatabaseIcon" Path="/Assets/Icons/database.svg" Css="#svg{fill:#fff}"/>
+          <SvgSource x:Key="GearIcon" Path="/Assets/Icons/gear.svg" Css="#svg{fill:#fff}"/>
+          <SvgSource x:Key="HouseIcon" Path="/Assets/Icons/house.svg" Css="#svg{fill:#fff}"/>
+          <SvgSource x:Key="LinesIcon" Path="/Assets/Icons/lines.svg" Css="#svg{fill:#fff}"/>
+          <SvgSource x:Key="MarkIcon" Path="/Assets/Icons/mark.svg" Css="#svg{fill:#fff}"/>
+          <SvgSource x:Key="RouteIcon" Path="/Assets/Icons/route.svg" Css="#svg{fill:#fff}"/>
+          <SvgSource x:Key="TruckIcon" Path="/Assets/Icons/truck.svg" Css="#svg{fill:#fff}"/>
+          <SvgSource x:Key="WarehouseIcon" Path="/Assets/Icons/warehouse.svg" Css="#svg{fill:#fff}"/>
+          <SvgSource x:Key="MapIcon" Path="/Assets/Icons/map.svg" Css="#svg{fill:#fff}"/>
+          <SvgSource x:Key="TaskIcon" Path="/Assets/Icons/task.svg" Css="#svg{fill:#fff}"/>
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme>
+      <FluentTheme.Palettes>
+        <ColorPaletteResources x:Key="Light" Accent="#ff0041f2" AltHigh="White" AltLow="White" AltMedium="White" AltMediumHigh="White" AltMediumLow="White" BaseHigh="Black" BaseLow="#ff4ca0e0" BaseMedium="#ff1e69aa" BaseMediumHigh="#ff004486" BaseMediumLow="#ff0f5698" ChromeAltLow="#ff004486" ChromeBlackHigh="Black" ChromeBlackLow="#ff4ca0e0" ChromeBlackMedium="#ff004486" ChromeBlackMediumLow="#ff1e69aa" ChromeDisabledHigh="#ff4ca0e0" ChromeDisabledLow="#ff1e69aa" ChromeGray="#ff0f5698" ChromeHigh="#ff4ca0e0" ChromeLow="#ffb0deff" ChromeMedium="#ff9cd2f9" ChromeMediumLow="#ffb0deff" ChromeWhite="White" ListLow="#ff9cd2f9" ListMedium="#ff4ca0e0" RegionColor="#ffcfeaff" />
+        <ColorPaletteResources x:Key="Dark" Accent="#ff0041f2" AltHigh="Black" AltLow="Black" AltMedium="Black" AltMediumHigh="Black" AltMediumLow="Black" BaseHigh="White" BaseLow="#ff1468a8" BaseMedium="#ff80b6dd" BaseMediumHigh="#ff9bc9ea" BaseMediumLow="#ff4a8fc2" ChromeAltLow="#ff9bc9ea" ChromeBlackHigh="Black" ChromeBlackLow="#ff9bc9ea" ChromeBlackMedium="Black" ChromeBlackMediumLow="Black" ChromeDisabledHigh="#ff1468a8" ChromeDisabledLow="#ff80b6dd" ChromeGray="#ff65a2d0" ChromeHigh="#ff65a2d0" ChromeLow="#ff043171" ChromeMedium="#ff083f7f" ChromeMediumLow="#ff105a9a" ChromeWhite="White" ListLow="#ff083f7f" ListMedium="#ff1468a8" RegionColor="#ff08182b" />
+      </FluentTheme.Palettes>
+    </FluentTheme>
+  </Application.Styles>
 </Application>

@@ -2,6 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:local="clr-namespace:RouteOptimization.Controls"
              xmlns:vm="clr-namespace:RouteOptimization.ViewModels.Pages"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -11,4 +13,48 @@
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
     <vm:MapRouteViewModel />
   </Design.DataContext>
+  <i:Interaction.Behaviors>
+    <ia:EventTriggerBehavior EventName="Loaded">
+      <ia:InvokeCommandAction Command="{Binding LoadCommand}" />
+    </ia:EventTriggerBehavior>
+  </i:Interaction.Behaviors>
+  <Grid>
+    <Grid RowDefinitions="auto,*" Margin="4">
+      <Label Margin="4">
+        <StackPanel Orientation="Horizontal">
+          <Image Width="32" Height="32" Margin="0,0,8,0">
+            <Image.Source>
+              <SvgImage Source="{DynamicResource RouteIcon}"/>
+            </Image.Source>
+          </Image>
+          <TextBlock VerticalAlignment="Center" Text="Система навигации" FontSize="24"/>
+        </StackPanel>
+      </Label>
+      <Grid Grid.Row="1" ColumnDefinitions="*,256">
+        <Border Grid.Column="0" Margin="4" CornerRadius="4" ClipToBounds="True">
+          <local:MapConstructorControl x:Name="map" MapSource="{Binding Map}"/>
+        </Border>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+          <StackPanel Margin="4">
+            <TextBlock Text="Укажите первую точку"/>
+            <ComboBox HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding Locations}" SelectedItem="{Binding SelectedStartLocation}" DisplayMemberBinding="{Binding Name}"/>
+          </StackPanel>
+          <StackPanel Margin="4">
+            <TextBlock Text="Укажите вторую точку"/>
+            <ComboBox HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding Locations}" SelectedItem="{Binding SelectedFinishLocation}" DisplayMemberBinding="{Binding Name}"/>
+          </StackPanel>
+          <StackPanel Margin="4" Orientation="Horizontal">
+            <Button Margin="4" Content="Построить" Command="{Binding BuildRouteCommand}"/>
+            <Button Margin="4" Content="Сбросить" Command="{Binding ClearRouteCommand}"/>
+          </StackPanel>
+          <StackPanel Margin="4">
+            <TextBlock Text="Сводка:"/>
+            <TextBlock Text="{Binding TextInfo}"/>
+          </StackPanel>
+        </StackPanel>
+      </Grid>
+    </Grid>
+  </Grid>
 </UserControl>

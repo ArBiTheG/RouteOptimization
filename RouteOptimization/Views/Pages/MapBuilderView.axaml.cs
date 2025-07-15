@@ -21,7 +21,7 @@ namespace RouteOptimization.Views.Pages
                 action(ViewModel!.ShowDeleteDialog.RegisterHandler(DoShowDeleteDialogAsync)));
         }
 
-        private async Task DoShowDeleteDialogAsync(InteractionContext<DeleteViewModel, bool> interaction)
+        private async Task DoShowDeleteDialogAsync(IInteractionContext<DeleteViewModel, bool> interaction)
         {
             var dialog = new DeleteWindow();
             dialog.DataContext = interaction.Input;

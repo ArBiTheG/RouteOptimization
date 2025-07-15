@@ -16,18 +16,25 @@ namespace RouteOptimization.ViewModels.Pages
             new PageItem("Handle", typeof(DatabaseViewModel)),
             new PageItem("Builder", typeof(MapBuilderViewModel)),
             new PageItem("Route", typeof(MapRouteViewModel)),
+            new PageItem("Loading", typeof(LoadingViewModel)),
+            new PageItem("Handling", typeof(HandlingViewModel)),
+            new PageItem("Warehouse", typeof(WarehouseViewModel)),
         };
 
         private HistoryRouter<ViewModelBase> _router;
         public ReactiveCommand<string, Unit> OpenPage { get; }
 
 
-        public HomeViewModel(HistoryRouter<ViewModelBase> router)
+        public HomeViewModel()
         {
-            _router = router;
-
             OpenPage = ReactiveCommand.Create<string>(ExecuteOpenPage);
         }
+        public HomeViewModel(HistoryRouter<ViewModelBase> router): this()
+        {
+
+            _router = router;
+        }
+
         private void ExecuteOpenPage(string pageName)
         {
             foreach (var item in PageItems)
